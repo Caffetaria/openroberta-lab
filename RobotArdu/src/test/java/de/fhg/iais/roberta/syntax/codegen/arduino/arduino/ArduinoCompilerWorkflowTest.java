@@ -20,7 +20,7 @@ import de.fhg.iais.roberta.factory.MegaFactory;
 import de.fhg.iais.roberta.factory.NanoFactory;
 import de.fhg.iais.roberta.factory.SenseboxFactory;
 import de.fhg.iais.roberta.factory.UnoFactory;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.ServerProperties;
 import de.fhg.iais.roberta.util.Util1;
@@ -71,7 +71,7 @@ public class ArduinoCompilerWorkflowTest {
     public void arduinoCompilerWorkflowTest() throws Exception {
         String configurationXML = Util1.readResourceContent("/syntax/actions/action_configuration.xml");
         String programXML = Util1.readResourceContent("/syntax/actions/action_program.xml");
-        BlocklyProgramAndConfigTransformer transformer = BlocklyProgramAndConfigTransformer.transform(this.unoFactory, programXML, configurationXML);
+        Project transformer = Project.setupWithExportXML(this.unoFactory, programXML, configurationXML);
         this.arduinoCompilerWorkflow.generateSourceAndCompile("ABCDEFGH", "action", transformer, null);
     }
 
@@ -80,7 +80,7 @@ public class ArduinoCompilerWorkflowTest {
     public void bob3CompilerWorkflowTest() throws Exception {
         String configurationXML = Util1.readResourceContent("/syntax/actions/action_configuration.xml");
         String programXML = Util1.readResourceContent("/syntax/actions/action_program.xml");
-        BlocklyProgramAndConfigTransformer transformer = BlocklyProgramAndConfigTransformer.transform(this.bob3Factory, programXML, configurationXML);
+        Project transformer = Project.setupWithExportXML(this.bob3Factory, programXML, configurationXML);
         this.bob3CompilerWorkflow.generateSourceAndCompile("ABCDEFGH", "action", transformer, null);
     }
 
@@ -89,7 +89,7 @@ public class ArduinoCompilerWorkflowTest {
     public void mbotCompilerWorkflowTest() throws Exception {
         String configurationXML = Util1.readResourceContent("/syntax/actions/action_configuration.xml");
         String programXML = Util1.readResourceContent("/syntax/actions/action_program.xml");
-        BlocklyProgramAndConfigTransformer transformer = BlocklyProgramAndConfigTransformer.transform(this.mbotFactory, programXML, configurationXML);
+        Project transformer = Project.setupWithExportXML(this.mbotFactory, programXML, configurationXML);
         this.mbotCompilerWorkflow.generateSourceAndCompile("ABCDEFGH", "action", transformer, null);
     }
 
@@ -98,7 +98,7 @@ public class ArduinoCompilerWorkflowTest {
     public void botnrollCompilerWorkflowTest() throws Exception {
         String configurationXML = Util1.readResourceContent("/syntax/actions/action_configuration.xml");
         String programXML = Util1.readResourceContent("/syntax/actions/action_program.xml");
-        BlocklyProgramAndConfigTransformer transformer = BlocklyProgramAndConfigTransformer.transform(this.botnrollFactory, programXML, configurationXML);
+        Project transformer = Project.setupWithExportXML(this.botnrollFactory, programXML, configurationXML);
         this.botnrollCompilerWorkflow.generateSourceAndCompile("ABCDEFGH", "action", transformer, null);
     }
 
@@ -107,7 +107,7 @@ public class ArduinoCompilerWorkflowTest {
     public void senseboxCompilerWorkflowTest() throws Exception {
         String configurationXML = Util1.readResourceContent("/syntax/actions/action_configuration.xml");
         String programXML = Util1.readResourceContent("/syntax/actions/action_program.xml");
-        BlocklyProgramAndConfigTransformer transformer = BlocklyProgramAndConfigTransformer.transform(this.senseboxFactory, programXML, configurationXML);
+        Project transformer = Project.setupWithExportXML(this.senseboxFactory, programXML, configurationXML);
         this.senseboxCompilerWorkflow.generateSourceAndCompile("ABCDEFGH", "action", transformer, null);
     }
 }

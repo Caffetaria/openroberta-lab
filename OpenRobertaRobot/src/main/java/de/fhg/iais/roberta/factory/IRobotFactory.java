@@ -1,15 +1,18 @@
 package de.fhg.iais.roberta.factory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
 import de.fhg.iais.roberta.codegen.ICompilerWorkflow;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.PluginProperties;
-import de.fhg.iais.roberta.visitor.validate.AbstractConfigurationValidatorVisitor;
+import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.validate.AbstractProgramValidatorVisitor;
 import de.fhg.iais.roberta.visitor.validate.AbstractSimValidatorVisitor;
+import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public interface IRobotFactory {
 
@@ -70,21 +73,17 @@ public interface IRobotFactory {
 
     Boolean hasConfiguration();
 
-    AbstractSimValidatorVisitor getSimProgramCheckVisitor(Configuration brickConfiguration);
+    AbstractSimValidatorVisitor getSimProgramCheckVisitor(ConfigurationAst brickConfiguration);
 
-    default AbstractConfigurationValidatorVisitor getRobotConfigurationCheckVisitor(Configuration configuration) {
-        return null;
-    }
+    AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(ConfigurationAst brickConfiguration);
 
-    AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(Configuration brickConfiguration);
-
-    default AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(Configuration robotConfiguration, String SSID, String password) {
-        return null;
+    default AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(ConfigurationAst robotConfiguration, String SSID, String password) {
+        return getRobotProgramCheckVisitor(robotConfiguration);
     }
 
     String getGroup();
 
-    String generateCode(Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping);
+    String generateCode(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping);
 
     default String getMenuVersion() {
         return null;
@@ -100,4 +99,14 @@ public interface IRobotFactory {
      * @return the helper method generator
      */
     HelperMethodGenerator getHelperMethodGenerator();
+    
+    default List<String> getWorkerNames() {
+        return null;
+    }
+
+    void execute(Project project, List<String> workerNames);
+
+    default public List<IWorker> getWorkerPipe(String workflow) {
+        throw new DbcException("Get worker pipe fails");
+    }
 }

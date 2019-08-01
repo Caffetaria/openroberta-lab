@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.text.WordUtils;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.mode.action.MotorStopMode;
 import de.fhg.iais.roberta.mode.action.mbed.DisplayTextMode;
 import de.fhg.iais.roberta.mode.general.IndexLocation;
@@ -106,7 +106,7 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
  */
 public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbedVisitor<Void> {
     private final MbedUsedHardwareCollectorVisitor codePreprocess;
-    private final Configuration configuration;
+    private final ConfigurationAst configuration;
     ArrayList<VarDeclaration<Void>> usedVars;
 
     /**
@@ -128,7 +128,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    private CalliopeCppVisitor(Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
+    private CalliopeCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
         super(programPhrases, indentation);
         this.configuration = brickConfiguration;
         this.codePreprocess = new MbedUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
@@ -145,7 +145,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    public static String generate(Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
+    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
         Assert.notNull(brickConfiguration);
 
         final CalliopeCppVisitor astVisitor = new CalliopeCppVisitor(brickConfiguration, programPhrases, 0);

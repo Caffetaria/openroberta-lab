@@ -1,6 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.action.generic.PinWriteValueAction;
 import de.fhg.iais.roberta.syntax.action.mbed.BothMotorsOnAction;
@@ -46,7 +46,7 @@ import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 
 public final class CalliopeSimValidatorVisitor extends AbstractSimValidatorVisitor implements IMbedVisitor<Void> {
 
-    public CalliopeSimValidatorVisitor(Configuration brickConfiguration) {
+    public CalliopeSimValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

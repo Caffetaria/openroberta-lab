@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import de.fhg.iais.roberta.codegen.Ev3LejosCompilerWorkflow;
 import de.fhg.iais.roberta.codegen.Ev3SimCompilerWorkflow;
 import de.fhg.iais.roberta.codegen.ICompilerWorkflow;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.inter.mode.action.IShowPicture;
 import de.fhg.iais.roberta.mode.action.ev3.ShowPicture;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -37,17 +37,17 @@ public abstract class AbstractEV3Factory extends AbstractRobotFactory {
     }
 
     @Override
-    public AbstractSimValidatorVisitor getSimProgramCheckVisitor(Configuration brickConfiguration) {
+    public AbstractSimValidatorVisitor getSimProgramCheckVisitor(ConfigurationAst brickConfiguration) {
         return new Ev3SimValidatorVisitor(brickConfiguration);
     }
 
     @Override
-    public AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(Configuration brickConfiguration) {
+    public AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(ConfigurationAst brickConfiguration) {
         return new Ev3BrickValidatorVisitor(brickConfiguration);
     }
 
     @Override
-    public String generateCode(Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping) {
+    public String generateCode(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping) {
         return null;
     }
 }

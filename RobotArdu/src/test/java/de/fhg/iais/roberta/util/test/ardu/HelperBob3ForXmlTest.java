@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.util.test.ardu;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.Bob3Factory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
 import de.fhg.iais.roberta.util.PluginProperties;
@@ -13,7 +13,7 @@ import de.fhg.iais.roberta.visitor.codegen.Bob3CppVisitor;
 public class HelperBob3ForXmlTest extends AbstractHelperForXmlTest {
 
     public HelperBob3ForXmlTest() {
-        super(new Bob3Factory(new PluginProperties("bob3", "", "", Util1.loadProperties("classpath:/bob3.properties"))), new Configuration.Builder().build());
+        super(new Bob3Factory(new PluginProperties("bob3", "", "", Util1.loadProperties("classpath:/bob3.properties"))), new ConfigurationAst.Builder().build());
     }
 
     public String generateCpp(String pathToProgramXml) throws Exception {

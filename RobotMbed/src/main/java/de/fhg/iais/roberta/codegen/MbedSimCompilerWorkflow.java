@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.transformer.mbed.Jaxb2MbedConfigurationAst;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
@@ -23,10 +23,10 @@ public class MbedSimCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer data, ILanguage language) {
-        if ( data.getErrorMessage() == null ) {
+    public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
+        if ( data.getErrorMessages().isEmpty() ) {
             try {
-                this.generatedSourceCode = MbedStackMachineVisitor.generate(data.getRobotConfiguration(), data.getProgramTransformer().getTree());
+                this.generatedSourceCode = MbedStackMachineVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree());
                 this.crosscompilerResponse = "mbed simulation code generated";
                 this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
             } catch ( Exception e ) {
@@ -35,7 +35,7 @@ public class MbedSimCompilerWorkflow extends AbstractCompilerWorkflow {
                 this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;
             }
         } else {
-            this.crosscompilerResponse = "mbed simulation code generation with key " + data.getErrorMessage();
+            this.crosscompilerResponse = "mbed simulation code generation with key " + data.getErrorMessages();
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;
         }
     }
@@ -46,12 +46,12 @@ public class MbedSimCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceAndCompile(String token, String programName, BlocklyProgramAndConfigTransformer transformer, ILanguage language) {
+    public void generateSourceAndCompile(String token, String programName, Project transformer, ILanguage language) {
         throw new DbcException("Operation not supported");
     }
 
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
         BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         Jaxb2MbedConfigurationAst transformer = new Jaxb2MbedConfigurationAst(factory);
         return transformer.transform(project);

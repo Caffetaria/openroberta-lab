@@ -222,14 +222,14 @@ public abstract class AbstractCollectorVisitor implements ILanguageVisitor<Void>
     }
 
     @Override
-    public Void visitExprList(ExprList<Void> exprList) {
+    public final Void visitExprList(ExprList<Void> exprList) {
         this.setListsUsed(true);
         exprList.get().stream().forEach(expr -> expr.visit(this));
         return null;
     }
 
     @Override
-    public Void visitAssignStmt(AssignStmt<Void> assignStmt) {
+    public final Void visitAssignStmt(AssignStmt<Void> assignStmt) {
         assignStmt.getExpr().visit(this);
         String variableName = assignStmt.getName().getValue();
         if ( this.globalVariables.contains(variableName) ) {

@@ -1,4 +1,4 @@
-package de.fhg.iais.roberta.javaServer.restServices.robot;
+package de.fhg.iais.roberta.javaServer.restServices.robot.v1;
 
 import java.io.File;
 import java.io.FileInputStream;

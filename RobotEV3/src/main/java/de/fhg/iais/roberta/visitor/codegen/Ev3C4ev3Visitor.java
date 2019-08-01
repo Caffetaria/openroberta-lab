@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -112,7 +112,7 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
     private final String programName;
     private final ILanguage language;
     private final boolean isSayTextUsed;
-    private final Configuration brickConfiguration;
+    private final ConfigurationAst brickConfiguration;
     private final Set<UsedActor> usedActors;
     private final Set<UsedSensor> usedSensors;
 
@@ -123,7 +123,7 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
      * @param indentation    to start with. Will be incr/decr depending on block structure
      */
     private Ev3C4ev3Visitor(
-        String programName, Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation, ILanguage language) {
+        String programName, ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation, ILanguage language) {
         super(programPhrases, indentation);
         this.programName = programName;
         Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
@@ -154,7 +154,7 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
      * @return
      */
     public static String generate(
-        String programName, Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping, ILanguage language) {
+        String programName, ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping, ILanguage language) {
         Assert.notNull(programName);
         Assert.notNull(brickConfiguration);
 

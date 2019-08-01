@@ -3,7 +3,7 @@ package de.fhg.iais.roberta.visitor.codegen;
 import java.util.ArrayList;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.inter.mode.general.IMode;
 import de.fhg.iais.roberta.mode.action.mbed.DisplayTextMode;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -70,7 +70,7 @@ public final class MicrobitPythonVisitor extends AbstractPythonVisitor implement
      * @param helperMethodGenerator
      */
     private MicrobitPythonVisitor(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
         HelperMethodGenerator helperMethodGenerator) {
@@ -88,7 +88,7 @@ public final class MicrobitPythonVisitor extends AbstractPythonVisitor implement
      * @param programPhrases to generate the code from
      */
     public static String generate(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
         HelperMethodGenerator helperMethodGenerator) {

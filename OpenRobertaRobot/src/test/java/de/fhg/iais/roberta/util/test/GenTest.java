@@ -16,7 +16,7 @@ import com.google.common.io.Resources;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
 import de.fhg.iais.roberta.blockly.generated.Instance;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.lang.blocksequence.Location;
@@ -28,9 +28,9 @@ import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
  */
 public abstract class GenTest {
     private final IRobotFactory robotFactory;
-    private final Configuration robotConfiguration;
+    private final ConfigurationAst robotConfiguration;
 
-    protected GenTest(IRobotFactory robotFactory, Configuration robotConfiguration) {
+    protected GenTest(IRobotFactory robotFactory, ConfigurationAst robotConfiguration) {
         this.robotFactory = robotFactory;
         this.robotConfiguration = robotConfiguration;
     }
@@ -39,7 +39,7 @@ public abstract class GenTest {
         return this.robotFactory;
     }
 
-    protected Configuration getRobotConfiguration() {
+    protected ConfigurationAst getRobotConfiguration() {
         return this.robotConfiguration;
     }
 

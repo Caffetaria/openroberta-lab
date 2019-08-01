@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.factory.NxtFactory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
@@ -24,7 +24,7 @@ public class HelperNxtForXmlTest extends AbstractHelperForXmlTest {
         super(new NxtFactory(new PluginProperties("nxt", "", "", Util1.loadProperties("classpath:/nxt.properties"))), makeConfiguration());
     }
 
-    public static Configuration makeConfiguration() {
+    public static ConfigurationAst makeConfiguration() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "NONE");
         ConfigurationComponent motorA = new ConfigurationComponent("LARGE", true, "A", "A", motorAproperties);
 
@@ -38,7 +38,7 @@ public class HelperNxtForXmlTest extends AbstractHelperForXmlTest {
         ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", Collections.emptyMap());
         ConfigurationComponent ultrasonicSensor2 = new ConfigurationComponent("ULTRASONIC", false, "S2", "2", Collections.emptyMap());
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(11f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, motorC, ultrasonicSensor, ultrasonicSensor2));
         return builder.build();
     }
@@ -63,7 +63,7 @@ public class HelperNxtForXmlTest extends AbstractHelperForXmlTest {
      * @return the code as string
      * @throws Exception
      */
-    public String generateNXC(String pathToProgramXml, Configuration brickConfiguration) throws Exception {
+    public String generateNXC(String pathToProgramXml, ConfigurationAst brickConfiguration) throws Exception {
         final Jaxb2ProgramAst<Void> transformer = generateTransformer(pathToProgramXml);
         final String code = NxtNxcVisitor.generate(brickConfiguration, transformer.getTree(), true);
         return code;
@@ -82,11 +82,11 @@ public class HelperNxtForXmlTest extends AbstractHelperForXmlTest {
     }
 
     public void assertWrappedCodeIsOk(String correctJavaCode, String fileName) throws Exception {
-        Configuration brickConfiguration = makeConfiguration();
+        ConfigurationAst brickConfiguration = makeConfiguration();
         Assert.assertEquals(correctJavaCode.replaceAll("\\s+", ""), generateNXC(fileName, brickConfiguration).replaceAll("\\s+", ""));
     }
 
-    public void compareExistingAndGeneratedNxcSource(String sourceCodeFilename, String xmlFilename, Configuration configuration) throws Exception {
+    public void compareExistingAndGeneratedNxcSource(String sourceCodeFilename, String xmlFilename, ConfigurationAst configuration) throws Exception {
         Assert
             .assertEquals(Util1.readResourceContent(sourceCodeFilename).replaceAll("\\s+", ""), generateNXC(xmlFilename, configuration).replaceAll("\\s+", ""));
     }

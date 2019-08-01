@@ -1,6 +1,9 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import java.util.HashMap;
+import java.util.Map;
+
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.action.display.ClearDisplayAction;
@@ -26,14 +29,43 @@ import de.fhg.iais.roberta.syntax.sensor.generic.PulseSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.RfidSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
+import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.visitor.hardware.IArduinoVisitor;
 import de.fhg.iais.roberta.visitor.hardware.sensor.ISensorVisitor;
 
-public final class ArduinoBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements ISensorVisitor<Void>, IArduinoVisitor<Void> {
+public final class ArduinoBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements ISensorVisitor<Void>, IArduinoVisitor<Void>, IWorker {
 
-    public ArduinoBrickValidatorVisitor(Configuration brickConfiguration) {
+    public ArduinoBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
+    }
+
+    @Override
+    public String getName() {
+        return "consistencyProgramAndConfig";
+    }
+
+    @Override
+    public void execute(Project project) {
+        /*
+         * run all needed checks here
+         */
+    }
+
+    @Override
+    public Map<String, String> getResult() {
+        Map<String, String> result = new HashMap<>();
+        result.put("ERROR_COUNT", Integer.toString(this.errorCount));
+        return null;
+    }
+
+    @Override
+    public Key getResultKey() {
+        if ( this.errorCount != 0 ) {
+            return Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
+        }
+        return null;
     }
 
     @Override

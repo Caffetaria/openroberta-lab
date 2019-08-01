@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiCommunicator;
 import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiConfiguration;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.transformer.raspberrypi.Jaxb2RaspberryPiConfigurationTransformer;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
@@ -32,16 +32,16 @@ public class RaspberryPiCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer data, ILanguage language) {
-        if ( data.getErrorMessage() != null ) {
+    public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
+        if ( data.getErrorMessages() != null ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
         } else {
             try {
                 this.generatedSourceCode =
                     RaspberryPiPythonVisitor
                         .generate(
-                            (RaspberryPiConfiguration) data.getRobotConfiguration(),
-                            data.getProgramTransformer().getTree(),
+                            (RaspberryPiConfiguration) data.getConfigurationAst(),
+                            data.getProgramAst().getTree(),
                             true,
                             language,
                             this.helperMethodGenerator);
@@ -72,7 +72,7 @@ public class RaspberryPiCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
         BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         Jaxb2RaspberryPiConfigurationTransformer transformer = new Jaxb2RaspberryPiConfigurationTransformer(factory);
         return transformer.transform(project);

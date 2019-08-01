@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.syntax.codegen.sensebox;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.util.test.ardu.HelperSenseboxForXmlTest;
 
@@ -11,7 +11,7 @@ public class SenseboxSensorTest {
 
     @Test
     public void builtinAndSimpleActorsTest() throws Exception {
-        Configuration config =
+        ConfigurationAst config =
             this.senseboxHelper.regenerateConfiguration(Util1.readResourceContent("/ast/sensors/sensebox_simple_and_builtin_sensor_test_config.xml"));
         this.senseboxHelper
             .compareExistingAndGeneratedSource(

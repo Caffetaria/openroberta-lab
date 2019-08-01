@@ -11,16 +11,16 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
 import de.fhg.iais.roberta.factory.IRobotFactory;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientAdmin;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientConfiguration;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientPing;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientProgram;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientToolbox;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientUser;
-import de.fhg.iais.roberta.javaServer.restServices.all.RestExample;
-import de.fhg.iais.roberta.javaServer.restServices.robot.RobotCommand;
-import de.fhg.iais.roberta.javaServer.restServices.robot.RobotDownloadProgram;
-import de.fhg.iais.roberta.javaServer.restServices.robot.RobotSensorLogging;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientAdmin;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientConfiguration;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientPing;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientProgram;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientToolbox;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientUser;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.RestExample;
+import de.fhg.iais.roberta.javaServer.restServices.robot.v1.RobotCommand;
+import de.fhg.iais.roberta.javaServer.restServices.robot.v1.RobotDownloadProgram;
+import de.fhg.iais.roberta.javaServer.restServices.robot.v1.RobotSensorLogging;
 import de.fhg.iais.roberta.main.IIpToCountry;
 import de.fhg.iais.roberta.main.MailManagement;
 import de.fhg.iais.roberta.persistence.util.SessionFactoryWrapper;
@@ -63,10 +63,10 @@ public class RobertaGuiceModule extends AbstractModule {
         bind(SessionFactoryWrapper.class).in(Singleton.class);
         bind(RobotCommunicator.class).toInstance(this.robotCommunicator);
         bind(MailManagement.class).in(Singleton.class);
-        bind(IIpToCountry.class).toInstance(ipToCountry);
+        bind(IIpToCountry.class).toInstance(this.ipToCountry);
 
         bind(new TypeLiteral<Map<String, IRobotFactory>>() {
-        }).annotatedWith(Names.named("robotPluginMap")).toInstance(robotPluginMap);
+        }).annotatedWith(Names.named("robotPluginMap")).toInstance(this.robotPluginMap);
         bind(String.class).annotatedWith(Names.named("hibernate.config.xml")).toInstance("hibernate-cfg.xml");
 
         try {

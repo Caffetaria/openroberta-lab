@@ -1,4 +1,4 @@
-package de.fhg.iais.roberta.javaServer.restServices.all;
+package de.fhg.iais.roberta.javaServer.restServices.all.v1;
 
 import java.sql.Timestamp;
 import java.util.Arrays;

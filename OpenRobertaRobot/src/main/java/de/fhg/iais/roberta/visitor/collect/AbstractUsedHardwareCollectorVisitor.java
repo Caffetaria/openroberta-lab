@@ -3,7 +3,7 @@ package de.fhg.iais.roberta.visitor.collect;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -62,11 +62,11 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
     protected final Set<UsedSensor> usedSensors = new LinkedHashSet<>();
     protected final Set<UsedActor> usedActors = new LinkedHashSet<>();
 
-    protected final Configuration robotConfiguration;
+    protected final ConfigurationAst robotConfiguration;
 
     protected boolean isTimerSensorUsed;
 
-    public AbstractUsedHardwareCollectorVisitor(Configuration robotConfiguration) {
+    public AbstractUsedHardwareCollectorVisitor(ConfigurationAst robotConfiguration) {
         this.robotConfiguration = robotConfiguration;
     }
 

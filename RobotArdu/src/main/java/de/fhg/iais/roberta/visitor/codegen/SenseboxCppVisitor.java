@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import de.fhg.iais.roberta.components.Category;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -55,7 +55,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
     private final String password;
 
     public SenseboxCppVisitor(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         String SSID,
         String password,
@@ -153,14 +153,14 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
      * @param programPhrases to generate the code from
      * @param withWrapping if false the generated code will be without the surrounding configuration code
      */
-    public static String generate(Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
+    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
         SenseboxCppVisitor astVisitor = new SenseboxCppVisitor(brickConfiguration, programPhrases, "", "", withWrapping ? 1 : 0);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
 
     public static String generate(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         String SSID,
         String password,

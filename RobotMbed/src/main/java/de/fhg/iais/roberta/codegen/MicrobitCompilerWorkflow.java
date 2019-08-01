@@ -4,15 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.transformer.mbed.Jaxb2MbedConfigurationAst;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
 import de.fhg.iais.roberta.visitor.codegen.MicrobitPythonVisitor;
+import de.fhg.iais.roberta.visitor.validate.AbstractProgramValidatorVisitor;
+import de.fhg.iais.roberta.visitor.validate.MbedBoardValidatorVisitor;
 
 public class MicrobitCompilerWorkflow extends AbstractCompilerWorkflow {
 
@@ -28,14 +30,20 @@ public class MicrobitCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer data, ILanguage language) {
-        if ( data.getErrorMessage() != null ) {
+    public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
+        if ( !data.getErrorMessages().isEmpty() ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
             return;
         }
+        final ConfigurationAst configuration = data.getConfigurationAst();
+        final AbstractProgramValidatorVisitor programValidator = new MbedBoardValidatorVisitor(configuration);
+        programValidator.check(data.getProgramAst().getTree());
+        if ( programValidator.getErrorCount() > 0 ) {
+            this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
+        }
         try {
             this.generatedSourceCode =
-                MicrobitPythonVisitor.generate(data.getRobotConfiguration(), data.getProgramTransformer().getTree(), true, this.helperMethodGenerator);
+                MicrobitPythonVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true, this.helperMethodGenerator);
             LOG.info("microbit python code generated");
         } catch ( Exception e ) {
             LOG.error("microbit python code generation failed", e);
@@ -54,7 +62,7 @@ public class MicrobitCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
         BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         Jaxb2MbedConfigurationAst transformer = new Jaxb2MbedConfigurationAst(factory);
         return transformer.transform(project);

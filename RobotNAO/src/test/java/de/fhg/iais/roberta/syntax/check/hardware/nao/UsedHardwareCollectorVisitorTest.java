@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.util.test.nao.HelperNaoForXmlTest;
 import de.fhg.iais.roberta.visitor.collect.NaoUsedHardwareCollectorVisitor;
@@ -13,8 +13,8 @@ import de.fhg.iais.roberta.visitor.collect.NaoUsedHardwareCollectorVisitor;
 public class UsedHardwareCollectorVisitorTest {
     HelperNaoForXmlTest h = new HelperNaoForXmlTest();
 
-    private Configuration makeConfiguration() {
-        return new Configuration.Builder().build();
+    private ConfigurationAst makeConfiguration() {
+        return new ConfigurationAst.Builder().build();
     }
 
     @Test

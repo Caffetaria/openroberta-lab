@@ -7,12 +7,12 @@ import java.util.Map;
 
 import com.google.common.collect.Lists;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.BlocklyConstants;
 import de.fhg.iais.roberta.syntax.SC;
 
-public class RaspberryPiConfiguration extends Configuration {
+public class RaspberryPiConfiguration extends ConfigurationAst {
     private static ArrayList<ConfigurationComponent> components;
     private final String ipAddress;
     private final String portNumber;
@@ -100,9 +100,9 @@ public class RaspberryPiConfiguration extends Configuration {
     }
 
     /**
-     * This class is a builder of {@link Configuration}
+     * This class is a builder of {@link ConfigurationAst}
      */
-    public static class Builder extends Configuration.Builder {
+    public static class Builder extends ConfigurationAst.Builder {
         private String ipAddress;
         private String portNumber;
         private String userName;

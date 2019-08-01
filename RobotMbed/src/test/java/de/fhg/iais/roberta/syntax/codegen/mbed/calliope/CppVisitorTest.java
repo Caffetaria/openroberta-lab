@@ -6,7 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.components.CalliopeConfiguration;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.util.test.mbed.HelperCalliopeForXmlTest;
 
 public class CppVisitorTest {
@@ -25,7 +25,7 @@ public class CppVisitorTest {
 
     private static final String END = "release_fiber();}";
 
-    private static Configuration brickConfiguration;
+    private static ConfigurationAst brickConfiguration;
 
     @BeforeClass
     public static void setupConfigurationForAllTests() {

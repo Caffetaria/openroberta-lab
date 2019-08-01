@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import de.fhg.iais.roberta.codegen.ICompilerWorkflow;
 import de.fhg.iais.roberta.codegen.NaoCompilerWorkflow;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.inter.mode.general.IMode;
 import de.fhg.iais.roberta.mode.action.Language;
 import de.fhg.iais.roberta.mode.sensor.DetectFaceSensorMode;
@@ -45,17 +45,17 @@ public class NaoFactory extends AbstractRobotFactory {
     }
 
     @Override
-    public AbstractSimValidatorVisitor getSimProgramCheckVisitor(Configuration brickConfiguration) {
+    public AbstractSimValidatorVisitor getSimProgramCheckVisitor(ConfigurationAst brickConfiguration) {
         return null;
     }
 
     @Override
-    public AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(Configuration brickConfiguration) {
+    public AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(ConfigurationAst brickConfiguration) {
         return null;
     }
 
     @Override
-    public String generateCode(Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping) {
+    public String generateCode(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping) {
         return NaoPythonVisitor.generate(brickConfiguration, phrasesSet, withWrapping, Language.GERMAN, this.helperMethodGenerator);
     }
 

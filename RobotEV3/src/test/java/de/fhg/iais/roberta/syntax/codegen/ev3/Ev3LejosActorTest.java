@@ -5,24 +5,24 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
 
 public class Ev3LejosActorTest {
     private final HelperEv3ForXmlTest ev3lejosHelper = new HelperEv3ForXmlTest();
-    Configuration configuration = makeConfigurationWithMediumAndOther();
+    ConfigurationAst configuration = makeConfigurationWithMediumAndOther();
 
-    public static Configuration makeConfigurationWithMediumAndOther() {
+    public static ConfigurationAst makeConfigurationWithMediumAndOther() {
         Map<String, String> motorAproperties = HelperEv3ForXmlTest.createMap("MOTOR_REGULATION", "FALSE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "NONE");
         ConfigurationComponent motorA = new ConfigurationComponent("OTHER", true, "A", "A", motorAproperties);
 
         Map<String, String> motorBproperties = HelperEv3ForXmlTest.createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "NONE");
         ConfigurationComponent motorB = new ConfigurationComponent("MEDIUM", true, "B", "B", motorBproperties);
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(18f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB));
-        Configuration configuration = builder.build();
+        ConfigurationAst configuration = builder.build();
         configuration.setRobotName("ev3lejosV1");
         return configuration;
     }

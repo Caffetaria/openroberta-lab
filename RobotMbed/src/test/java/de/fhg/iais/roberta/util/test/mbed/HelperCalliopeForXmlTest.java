@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.factory.Calliope2016Factory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
@@ -25,7 +25,7 @@ public class HelperCalliopeForXmlTest extends de.fhg.iais.roberta.util.test.Abst
             makeConfiguration());
     }
 
-    public static Configuration makeConfiguration() {
+    public static ConfigurationAst makeConfiguration() {
         Map<String, String> motorMproperties = createMap("NAME", "M", "VAR", "W", "CONNECTOR", "1");
         ConfigurationComponent motorM = new ConfigurationComponent("LARGE", true, "M", "M", motorMproperties);
 
@@ -44,7 +44,7 @@ public class HelperCalliopeForXmlTest extends de.fhg.iais.roberta.util.test.Abst
         Map<String, String> ledProperties = createMap("NAME", "L", "VAR", "W");
         ConfigurationComponent led = new ConfigurationComponent("LIGHT", false, "L", "L", ledProperties);
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(11f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorM, keySensor, gyroSensor, infraredSensor, buzzer, led));
         return builder.build();
     }
@@ -56,7 +56,7 @@ public class HelperCalliopeForXmlTest extends de.fhg.iais.roberta.util.test.Abst
      * @return the code as string
      * @throws Exception
      */
-    public String generateCpp(String pathToProgramXml, Configuration brickConfiguration) throws Exception {
+    public String generateCpp(String pathToProgramXml, ConfigurationAst brickConfiguration) throws Exception {
         final Jaxb2ProgramAst<Void> transformer = generateTransformer(pathToProgramXml);
         final String code = CalliopeCppVisitor.generate(brickConfiguration, transformer.getTree(), true);
         return code;
@@ -76,7 +76,7 @@ public class HelperCalliopeForXmlTest extends de.fhg.iais.roberta.util.test.Abst
         Assert
             .assertEquals(
                 Util1.readResourceContent(sourceCodeFilename).replaceAll("\\s+", ""),
-                generateCpp(xmlFilename, new Configuration.Builder().build()).replaceAll("\\s+", ""));
+                generateCpp(xmlFilename, new ConfigurationAst.Builder().build()).replaceAll("\\s+", ""));
     }
 
 }

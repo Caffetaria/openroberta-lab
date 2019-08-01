@@ -1,6 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
@@ -15,7 +15,7 @@ import de.fhg.iais.roberta.typecheck.NepoInfo;
 
 public final class WedoBrickValidatorVisitor<V> extends AbstractBrickValidatorVisitor {
 
-    public WedoBrickValidatorVisitor(Configuration brickConfiguration) {
+    public WedoBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

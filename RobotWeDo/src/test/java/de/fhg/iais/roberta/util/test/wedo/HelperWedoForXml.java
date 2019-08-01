@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.factory.WeDoFactory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
@@ -16,13 +16,13 @@ import de.fhg.iais.roberta.visitor.WeDoStackMachineVisitor;
 
 public class HelperWedoForXml extends AbstractHelperForXmlTest {
 
-    Configuration configuration = makeConfiguration();
+    ConfigurationAst configuration = makeConfiguration();
 
     public HelperWedoForXml() {
         super(new WeDoFactory(new PluginProperties("wedo", "", "", Util1.loadProperties("classpath:/wedo.properties"))), makeConfiguration());
     }
 
-    public static Configuration makeConfiguration() {
+    public static ConfigurationAst makeConfiguration() {
         Map<String, String> motorMproperties = createMap("NAME", "M", "VAR", "W", "CONNECTOR", "1");
         ConfigurationComponent motorM = new ConfigurationComponent("LARGE", true, "M", "M", motorMproperties);
 
@@ -41,7 +41,7 @@ public class HelperWedoForXml extends AbstractHelperForXmlTest {
         Map<String, String> ledProperties = createMap("NAME", "L", "VAR", "W");
         ConfigurationComponent led = new ConfigurationComponent("LIGHT", false, "L", "L", ledProperties);
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(11f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorM, keySensor, gyroSensor, infraredSensor, buzzer, led));
         return builder.build();
     }

@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.dbc.Assert;
@@ -38,7 +38,7 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
     }
 
     @Override
-    public void generateSourceAndCompile(String token, String programName, BlocklyProgramAndConfigTransformer transformer, ILanguage language) {
+    public void generateSourceAndCompile(String token, String programName, Project transformer, ILanguage language) {
         generateSourceCode(token, programName, transformer, language);
         if ( this.workflowResult == Key.COMPILERWORKFLOW_SUCCESS ) {
             compileSourceCode(token, programName, language, null);

@@ -9,8 +9,8 @@ import com.google.common.collect.Lists;
 
 import de.fhg.iais.roberta.util.dbc.DbcException;
 
-public class CalliopeConfiguration extends Configuration {
-    private static final Configuration configuration;
+public class CalliopeConfiguration extends ConfigurationAst {
+    private static final ConfigurationAst configuration;
     static {
         ConfigurationComponent pin0 = new ConfigurationComponent("pin0", false, "P12", "0", Collections.emptyMap());
         ConfigurationComponent pin1 = new ConfigurationComponent("pin1", false, "P0", "1", Collections.emptyMap());
@@ -69,7 +69,7 @@ public class CalliopeConfiguration extends Configuration {
                 A,
                 B,
                 AB);
-        configuration = new Configuration.Builder().addComponents(components).build();
+        configuration = new ConfigurationAst.Builder().addComponents(components).build();
     }
 
     public CalliopeConfiguration(Collection<ConfigurationComponent> configurationComponents, float wheelDiameterCM, float trackWidthCM) {
@@ -77,7 +77,7 @@ public class CalliopeConfiguration extends Configuration {
 
     }
 
-    public static class Builder extends Configuration.Builder {
+    public static class Builder extends ConfigurationAst.Builder {
 
         @Override
         public Builder addComponents(List<ConfigurationComponent> components) {
@@ -95,7 +95,7 @@ public class CalliopeConfiguration extends Configuration {
         }
 
         @Override
-        public Configuration build() {
+        public ConfigurationAst build() {
             return configuration;
         }
     }

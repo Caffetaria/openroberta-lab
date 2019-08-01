@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.visitor.validate;
 
 import java.util.ArrayList;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.MotorDuration;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -48,9 +48,9 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     protected ArrayList<ArrayList<Phrase<Void>>> checkedProgram;
     protected int errorCount = 0;
     protected int warningCount = 0;
-    protected Configuration robotConfiguration;
+    protected ConfigurationAst robotConfiguration;
 
-    public AbstractProgramValidatorVisitor(Configuration robotConfiguration) {
+    public AbstractProgramValidatorVisitor(ConfigurationAst robotConfiguration) {
         this.robotConfiguration = robotConfiguration;
     }
 

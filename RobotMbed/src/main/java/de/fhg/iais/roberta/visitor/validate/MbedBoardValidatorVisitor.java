@@ -1,6 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.mode.action.mbed.DisplayImageMode;
 import de.fhg.iais.roberta.syntax.action.generic.PinWriteValueAction;
 import de.fhg.iais.roberta.syntax.action.mbed.BothMotorsOnAction;
@@ -40,7 +40,7 @@ import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 
 public final class MbedBoardValidatorVisitor extends AbstractBoardValidatorVisitor implements IMbedVisitor<Void> {
 
-    public MbedBoardValidatorVisitor(Configuration brickConfiguration) {
+    public MbedBoardValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

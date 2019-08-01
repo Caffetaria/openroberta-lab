@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.visitor.validate;
 
 import java.util.List;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.action.ev3.ShowPictureAction;
@@ -18,7 +18,7 @@ import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 
 public final class Ev3BrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IEv3Visitor<Void> {
 
-    public Ev3BrickValidatorVisitor(Configuration brickConfiguration) {
+    public Ev3BrickValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

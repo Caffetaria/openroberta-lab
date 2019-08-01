@@ -1,6 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.BlocklyConstants;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.action.display.ClearDisplayAction;
@@ -33,7 +33,7 @@ public class SenseboxBrickValidatorVisitor extends AbstractBrickValidatorVisitor
     private final String SSID;
     private final String password;
 
-    public SenseboxBrickValidatorVisitor(Configuration brickConfiguration, String SSID, String password) {
+    public SenseboxBrickValidatorVisitor(ConfigurationAst brickConfiguration, String SSID, String password) {
         super(brickConfiguration);
         this.SSID = SSID;
         this.password = password;

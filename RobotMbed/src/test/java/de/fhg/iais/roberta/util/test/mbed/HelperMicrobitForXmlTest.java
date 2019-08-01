@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.util.test.mbed;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.MicrobitConfiguration;
 import de.fhg.iais.roberta.factory.MicrobitFactory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
@@ -28,7 +28,7 @@ public class HelperMicrobitForXmlTest extends de.fhg.iais.roberta.util.test.Abst
      * @return the code as string
      * @throws Exception
      */
-    public String generatePython(String pathToProgramXml, Configuration brickConfiguration) throws Exception {
+    public String generatePython(String pathToProgramXml, ConfigurationAst brickConfiguration) throws Exception {
         Jaxb2ProgramAst<Void> transformer = generateTransformer(pathToProgramXml);
         String code = MicrobitPythonVisitor.generate(brickConfiguration, transformer.getTree(), true, getRobotFactory().getHelperMethodGenerator());
         // System.out.println(code); // only needed for EXTREME debugging

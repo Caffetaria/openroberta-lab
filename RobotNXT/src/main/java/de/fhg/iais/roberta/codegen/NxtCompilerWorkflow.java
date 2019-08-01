@@ -8,16 +8,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.transformer.nxt.Jaxb2NxtConfigurationTransformer;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.dbc.VisitorException;
 import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
 import de.fhg.iais.roberta.visitor.codegen.NxtNxcVisitor;
+import de.fhg.iais.roberta.visitor.validate.AbstractProgramValidatorVisitor;
+import de.fhg.iais.roberta.visitor.validate.NxtBrickValidatorVisitor;
 
 public class NxtCompilerWorkflow extends AbstractCompilerWorkflow {
 
@@ -28,14 +30,19 @@ public class NxtCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer data, ILanguage language) //
-    {
-        if ( data.getErrorMessage() != null ) {
+    public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
+        if ( !data.getErrorMessages().isEmpty() ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
             return;
         }
+        final ConfigurationAst configuration = data.getConfigurationAst();
+        final AbstractProgramValidatorVisitor programValidator = new NxtBrickValidatorVisitor(configuration);
+        programValidator.check(data.getProgramAst().getTree());
+        if ( programValidator.getErrorCount() > 0 ) {
+            this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
+        }
         try {
-            this.generatedSourceCode = NxtNxcVisitor.generate(data.getRobotConfiguration(), data.getProgramTransformer().getTree(), true);
+            this.generatedSourceCode = NxtNxcVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true);
             LOG.info("nxt code generated");
         } catch ( VisitorException v ) {
             LOG.error("NXT code generation failed due to error on the list block", v);
@@ -61,7 +68,7 @@ public class NxtCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
         BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         Jaxb2NxtConfigurationTransformer transformer = new Jaxb2NxtConfigurationTransformer(factory);
         return transformer.transform(project);

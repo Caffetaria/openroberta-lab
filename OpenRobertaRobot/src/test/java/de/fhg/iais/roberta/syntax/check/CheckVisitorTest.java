@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.display.ClearDisplayAction;
 import de.fhg.iais.roberta.syntax.action.display.ShowTextAction;
@@ -29,7 +29,7 @@ public class CheckVisitorTest {
 
     class TestProgramCheckVisitor extends AbstractProgramValidatorVisitor {
 
-        public TestProgramCheckVisitor(Configuration brickConfiguration) {
+        public TestProgramCheckVisitor(ConfigurationAst brickConfiguration) {
             super(brickConfiguration);
         }
 

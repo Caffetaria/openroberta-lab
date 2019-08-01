@@ -10,7 +10,7 @@ import de.fhg.iais.roberta.blockly.generated.BlockSet;
 import de.fhg.iais.roberta.blockly.generated.Field;
 import de.fhg.iais.roberta.blockly.generated.Instance;
 import de.fhg.iais.roberta.blockly.generated.Value;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.factory.BlocklyDropdownFactory;
 import de.fhg.iais.roberta.util.dbc.Assert;
@@ -55,7 +55,7 @@ public class Jaxb2ConfigurationAstHelper {
         return startingBlock;
     }
 
-    public static Configuration block2OldConfiguration(Block topBlock, BlocklyDropdownFactory factory, String sensorsPrefix) {
+    public static ConfigurationAst block2OldConfiguration(Block topBlock, BlocklyDropdownFactory factory, String sensorsPrefix) {
         List<Field> fields = extractFields(topBlock, (short) 2);
         float wheelDiameter = Float.valueOf(extractField(fields, "WHEEL_DIAMETER", (short) 0)).floatValue();
         float trackWidth = Float.valueOf(extractField(fields, "TRACK_WIDTH", (short) 1)).floatValue();
@@ -63,17 +63,17 @@ public class Jaxb2ConfigurationAstHelper {
         List<Value> values = extractValues(topBlock, (short) 8);
         List<ConfigurationComponent> allComponents = extractOldConfigurationComponent(values, factory, sensorsPrefix);
 
-        return new Configuration.Builder().setTrackWidth(trackWidth).setWheelDiameter(wheelDiameter).addComponents(allComponents).build();
+        return new ConfigurationAst.Builder().setTrackWidth(trackWidth).setWheelDiameter(wheelDiameter).addComponents(allComponents).build();
     }
 
-    public static Configuration block2OldConfigurationWithFixedBase(
+    public static ConfigurationAst block2OldConfigurationWithFixedBase(
         Block topBlock,
         BlocklyDropdownFactory factory,
         String sensorsPrefix,
         int configurationBlockQuantity) {
         List<Value> values = extractValues(topBlock, (short) configurationBlockQuantity);
         List<ConfigurationComponent> allComponents = extractOldConfigurationComponent(values, factory, sensorsPrefix);
-        return new Configuration.Builder().setTrackWidth(-1).setWheelDiameter(-1).addComponents(allComponents).build();
+        return new ConfigurationAst.Builder().setTrackWidth(-1).setWheelDiameter(-1).addComponents(allComponents).build();
     }
 
     public static List<ConfigurationComponent> extractOldConfigurationComponent(List<Value> values, BlocklyDropdownFactory factory, String sensorsPrefix) {
@@ -102,12 +102,12 @@ public class Jaxb2ConfigurationAstHelper {
         return allComponents;
     }
 
-    public static Configuration blocks2NewConfiguration(List<List<Block>> blocks, BlocklyDropdownFactory factory) {
+    public static ConfigurationAst blocks2NewConfiguration(List<List<Block>> blocks, BlocklyDropdownFactory factory) {
         List<ConfigurationComponent> allComponents = new ArrayList<>();
         for ( List<Block> block : blocks ) {
             allComponents.add(extractNewConfigurationComponent(block, factory));
         }
-        return new Configuration.Builder().setTrackWidth(0.0f).setWheelDiameter(0.0f).addComponents(allComponents).build();
+        return new ConfigurationAst.Builder().setTrackWidth(0.0f).setWheelDiameter(0.0f).addComponents(allComponents).build();
     }
 
     private static ConfigurationComponent extractNewConfigurationComponent(List<Block> block, BlocklyDropdownFactory factory) {

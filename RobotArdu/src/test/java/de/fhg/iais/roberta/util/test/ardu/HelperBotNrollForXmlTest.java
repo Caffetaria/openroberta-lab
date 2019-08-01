@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.factory.BotnrollFactory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
@@ -20,7 +20,7 @@ public class HelperBotNrollForXmlTest extends AbstractHelperForXmlTest {
         super(new BotnrollFactory(new PluginProperties("botnroll", "", "", Util1.loadProperties("classpath:/botnroll.properties"))), makeConfiguration());
     }
 
-    public static Configuration makeConfiguration() {
+    public static ConfigurationAst makeConfiguration() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
         ConfigurationComponent motorA = new ConfigurationComponent("LARGE", true, "A", "A", motorAproperties);
 
@@ -33,18 +33,18 @@ public class HelperBotNrollForXmlTest extends AbstractHelperForXmlTest {
         Map<String, String> motorDproperties = createMap("MOTOR_REGULATION", "FALSE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "NONE");
         ConfigurationComponent motorD = new ConfigurationComponent("MEDIUM", true, "D", "D", motorDproperties);
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, motorC, motorD));
         return builder.build();
     }
 
-    public String generateCpp(String pathToProgramXml, Configuration configuration) throws Exception {
+    public String generateCpp(String pathToProgramXml, ConfigurationAst configuration) throws Exception {
         Jaxb2ProgramAst<Void> transformer = generateTransformer(pathToProgramXml);
         String code = BotnrollCppVisitor.generate(configuration, transformer.getTree(), true);
         return code;
     }
 
-    public void compareExistingAndGeneratedSource(String sourceCodeFilename, String xmlFilename, Configuration configuration) throws Exception {
+    public void compareExistingAndGeneratedSource(String sourceCodeFilename, String xmlFilename, ConfigurationAst configuration) throws Exception {
         Assert
             .assertEquals(Util1.readResourceContent(sourceCodeFilename).replaceAll("\\s+", ""), generateCpp(xmlFilename, configuration).replaceAll("\\s+", ""));
     }

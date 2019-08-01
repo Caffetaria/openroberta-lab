@@ -1,14 +1,13 @@
 package de.fhg.iais.roberta.syntax.codegen.ev3;
 
-import de.fhg.iais.roberta.components.Configuration;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
-public class Ast2C4ev3VisitorTest {
+import org.junit.Test;
 
+import de.fhg.iais.roberta.components.ConfigurationAst;
+import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+
+public class Ast2C4ev3VisitorTest {
 
     private static final String CONSTANTS_AND_IMPORTS =
         "" //
@@ -37,23 +36,23 @@ public class Ast2C4ev3VisitorTest {
 
     private static final String BEGIN_MAIN__TOUCH_NULL_INFRARED_ULTRASONIC =
         "" //
-        + MAIN_INIT_EV3
-        + "    NEPOSetAllSensors(EV3Touch, NULL, EV3Ir, EV3Ultrasonic);\n";
+            + MAIN_INIT_EV3
+            + "    NEPOSetAllSensors(EV3Touch, NULL, EV3Ir, EV3Ultrasonic);\n";
 
     private static final String BEGIN_MAIN__TOUCH_NULL_NULL_ULTRASONIC =
         "" //
-        + MAIN_INIT_EV3
-        + "    NEPOSetAllSensors(EV3Touch, NULL, NULL, EV3Ultrasonic);\n\n";
+            + MAIN_INIT_EV3
+            + "    NEPOSetAllSensors(EV3Touch, NULL, NULL, EV3Ultrasonic);\n\n";
 
     private static final String BEGIN_MAIN__TOUCH_NULL_COLOR_NULL =
         "" //
-        + MAIN_INIT_EV3
-        + "    NEPOSetAllSensors(EV3Touch, NULL, EV3Color, NULL);\n\n";
+            + MAIN_INIT_EV3
+            + "    NEPOSetAllSensors(EV3Touch, NULL, EV3Color, NULL);\n\n";
 
     private static final String BEGIN_MAIN__NULL_NULL_COLOR_NULL =
         "" //
-        + MAIN_INIT_EV3
-        + "    NEPOSetAllSensors(NULL, NULL, EV3Color, NULL);\n\n";
+            + MAIN_INIT_EV3
+            + "    NEPOSetAllSensors(NULL, NULL, EV3Color, NULL);\n\n";
 
     private static final String BEGIN_MAIN__NULL_NULL_HTCOLORV2_NULL =
         "" //
@@ -65,7 +64,6 @@ public class Ast2C4ev3VisitorTest {
             + MAIN_INIT_EV3
             + "    NEPOSetAllSensors(NULL, NULL, NULL, NULL);\n\n";
 
-
     private static final String END_MAIN =
         "" //
             + "    \n"
@@ -73,10 +71,9 @@ public class Ast2C4ev3VisitorTest {
             + "    return 0;\n"
             + "}\n";
 
-    private static Configuration standardBrickConfiguration = HelperEv3ForXmlTest.makeStandardEv3DevConfiguration();
+    private static ConfigurationAst standardBrickConfiguration = HelperEv3ForXmlTest.makeStandardEv3DevConfiguration();
 
     private final HelperEv3ForXmlTest helper = new HelperEv3ForXmlTest();
-
 
     @Test
     public void testLcdText() throws Exception {
@@ -122,12 +119,14 @@ public class Ast2C4ev3VisitorTest {
                 + "    RotateMotorForAngle(OUT_B, Speed(30), 360 * 1);\n"
                 + "}\n"
                 + END_MAIN;
-        checkCodeGeneratorForInput("/syntax/code_generator/java/java_code_generator2.xml", expectedCode, HelperEv3ForXmlTest.makeTouchUltrasonicColorConfiguration());
+        checkCodeGeneratorForInput(
+            "/syntax/code_generator/java/java_code_generator2.xml",
+            expectedCode,
+            HelperEv3ForXmlTest.makeTouchUltrasonicColorConfiguration());
     }
 
-
     @Test
-    public void testIfPressedLedElseIfPressedLedElseIfNearLcdPictureElseMove () throws Exception {
+    public void testIfPressedLedElseIfPressedLedElseIfNearLcdPictureElseMove() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS__WITH_SMALLER_TRACK_WIDTH
@@ -146,11 +145,14 @@ public class Ast2C4ev3VisitorTest {
                 + "    }\n"
                 + "}\n"
                 + END_MAIN;
-        checkCodeGeneratorForInput("/syntax/code_generator/java/java_code_generator3.xml", expectedCode, HelperEv3ForXmlTest.makeTouchUltrasonicColorUltrasonicConfiguration());
+        checkCodeGeneratorForInput(
+            "/syntax/code_generator/java/java_code_generator3.xml",
+            expectedCode,
+            HelperEv3ForXmlTest.makeTouchUltrasonicColorUltrasonicConfiguration());
     }
 
     @Test
-    public void testIfNearRotateThenIfTachoThenLedElsePictureThenLed () throws Exception {
+    public void testIfNearRotateThenIfTachoThenLedElsePictureThenLed() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS__WITH_SMALLER_TRACK_WIDTH
@@ -174,9 +176,8 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput("/syntax/code_generator/java/java_code_generator4.xml", expectedCode, HelperEv3ForXmlTest.makeTouchGyroInfraredUltrasonic());
     }
 
-
     @Test
-    public void testMotorsAndSound () throws Exception {
+    public void testMotorsAndSound() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -202,7 +203,6 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput("/syntax/code_generator/java/java_code_generator6.xml", expectedCode);
     }
 
-
     @Test
     public void testMotorAction() throws Exception {
         String expectedCode =
@@ -215,7 +215,6 @@ public class Ast2C4ev3VisitorTest {
 
         checkCodeGeneratorForInput("/syntax/code_generator/java/java_code_generator7.xml", expectedCode);
     }
-
 
     @Test
     public void testVariablesAndLcdText() throws Exception {
@@ -251,7 +250,6 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput("/syntax/code_generator/java/java_code_generator9.xml", expectedCode);
     }
 
-
     @Test
     public void testVariables() throws Exception {
         String expectedCode =
@@ -273,7 +271,7 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testMoveAndDefineAndCallFunction () throws Exception {
+    public void testMoveAndDefineAndCallFunction() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -287,9 +285,8 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput("/syntax/methods/method_void_1.xml", expectedCode);
     }
 
-
     @Test
-    public void testVoidFunction () throws Exception {
+    public void testVoidFunction() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -302,9 +299,8 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput("/syntax/methods/method_void_2.xml", expectedCode);
     }
 
-
     @Test
-    public void testVoidFunctionIfTrueReturn () throws Exception {
+    public void testVoidFunctionIfTrueReturn() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -319,7 +315,7 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testMultipleVoidFunctions () throws Exception {
+    public void testMultipleVoidFunctions() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -340,7 +336,7 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testFunctionReturnsDouble () throws Exception {
+    public void testFunctionReturnsDouble() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -356,7 +352,7 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testFunctionReturnsColor () throws Exception {
+    public void testFunctionReturnsColor() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -371,9 +367,8 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput("/syntax/methods/method_return_2.xml", expectedCode);
     }
 
-
     @Test
-    public void testFunctionReturnsRedOrNullColor () throws Exception {
+    public void testFunctionReturnsRedOrNullColor() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -389,9 +384,8 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput("/syntax/methods/method_if_return_2.xml", expectedCode);
     }
 
-
     @Test
-    public void testCompareString () throws Exception {
+    public void testCompareString() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -405,7 +399,7 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testDeclareTwoVariables () throws Exception {
+    public void testDeclareTwoVariables() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -417,7 +411,7 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testReadColorSensorInDifferentModes () throws Exception {
+    public void testReadColorSensorInDifferentModes() throws Exception {
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS
@@ -434,8 +428,8 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testReadHiTecColorSensorV2InDifferentModes () throws Exception {
-        Configuration configuration = HelperEv3ForXmlTest.makeHiTecColorSensorConfiguration();
+    public void testReadHiTecColorSensorV2InDifferentModes() throws Exception {
+        ConfigurationAst configuration = HelperEv3ForXmlTest.makeHiTecColorSensorConfiguration();
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS__WITH_SMALLER_TRACK_WIDTH
@@ -452,8 +446,8 @@ public class Ast2C4ev3VisitorTest {
     }
 
     @Test
-    public void testRotateRegulatedUnregulatedForwardBackwardMotors () throws Exception {
-        Configuration configuration = HelperEv3ForXmlTest.makeRotateRegulatedUnregulatedForwardBackwardMotors();
+    public void testRotateRegulatedUnregulatedForwardBackwardMotors() throws Exception {
+        ConfigurationAst configuration = HelperEv3ForXmlTest.makeRotateRegulatedUnregulatedForwardBackwardMotors();
         String expectedCode =
             "" //
                 + CONSTANTS_AND_IMPORTS__WITH_SMALLER_TRACK_WIDTH
@@ -474,12 +468,12 @@ public class Ast2C4ev3VisitorTest {
         checkCodeGeneratorForInput(fileName, expectedSourceCode, standardBrickConfiguration);
     }
 
-    private void checkCodeGeneratorForInput(String fileName, String expectedSourceCode, Configuration configuration) throws Exception {
-        String generatedSourceCode = helper.generateC4ev3(fileName, configuration);
+    private void checkCodeGeneratorForInput(String fileName, String expectedSourceCode, ConfigurationAst configuration) throws Exception {
+        String generatedSourceCode = this.helper.generateC4ev3(fileName, configuration);
         assertEquals(removeSpaces(expectedSourceCode), removeSpaces(generatedSourceCode));
     }
 
-    private static String removeSpaces (String string) {
+    private static String removeSpaces(String string) {
         return string.replaceAll("\\s+", "");
     }
 

@@ -1,13 +1,27 @@
 package de.fhg.iais.roberta.factory;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.Util1;
+import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
+import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public abstract class AbstractRobotFactory implements IRobotFactory {
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractRobotFactory.class);
 
     private static final String DEFAULT_HELPER_FILE = "classpath:/helperMethodsCommon.yml"; // TODO is this nice?
 
@@ -19,6 +33,8 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
     protected final String configurationToolbox;
     protected final String configurationDefault;
     protected final HelperMethodGenerator helperMethodGenerator;
+    protected Map<String, IWorker> workers = new HashMap<>(); //worker type to impllementing class(es) collect->de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorWorker
+    protected Map<String, List<String>> workflows = new HashMap<>(); //workflow name to a list of types of applicable workers: showsource->collect,generate
 
     public AbstractRobotFactory(PluginProperties pluginProperties) {
         this.pluginProperties = pluginProperties;
@@ -35,6 +51,8 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
         helperMethodFile = helperMethodFile == null ? DEFAULT_HELPER_FILE : helperMethodFile;
         Util1.loadYAMLRecursive("", helperMethods, helperMethodFile, true);
         this.helperMethodGenerator = new HelperMethodGenerator(helperMethods, getLanguageFromFileExtension());
+
+        loadWorkers();
     }
 
     @Override
@@ -164,6 +182,63 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
                 return HelperMethodGenerator.Language.JSON;
             default:
                 throw new DbcException("File extension not implemented!");
+        }
+    }
+
+    private void loadWorkers() {
+        LOG.debug("Loading workers...");
+        this.pluginProperties.getPluginProperties().forEach((k, v) -> {
+            if ( k.toString().startsWith("robot.plugin.workers") ) {
+                String[] workersForType = k.toString().split("\\.");
+                String workersType = workersForType[workersForType.length - 1];
+                List<String> workerClassNames = Stream.of(v.toString().trim().split("\\s*,\\s*")).collect(Collectors.toList());
+                workerClassNames.forEach(workerClassName -> {
+                    workerClassName = workerClassName.trim();
+                    LOG.debug("Loading worker " + workerClassName);
+                    try {
+                        IWorker newWorker = (IWorker) Class.forName(workerClassName).newInstance();
+                        Assert.isNull(this.workers.put(workersType, newWorker));
+                    } catch ( InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | SecurityException e ) {
+                        throw new DbcException("Provided worker class is invalid", e);
+                    }
+                });
+            }
+            if ( k.toString().startsWith("robot.plugin.workflows") ) {
+                String[] workflowsForType = k.toString().split("\\.");
+                String workflowName = workflowsForType[workflowsForType.length - 1];
+                this.workflows.put(workflowName, Stream.of(v.toString().trim().split("\\s*,\\s*")).collect(Collectors.toList()));
+            }
+        });
+
+    }
+
+    @Override
+    public List<IWorker> getWorkerPipe(String workflow) {
+        List<String> workerTypes = this.workflows.get(workflow);
+        List<IWorker> workerPipe = new ArrayList<>();
+        for ( String type : workerTypes ) {
+            workerPipe.add(this.workers.get(type));
+        }
+        return workerPipe;
+    }
+
+    @Override
+    public void execute(Project project, List<String> workerNames) {
+        for ( String workerName : workerNames ) {
+            IWorker worker = this.workers.get(workerName);
+            worker.execute(project);
+            if ( !project.getErrorMessages().isEmpty() ) {
+                return; // TODO: a better, not such drastic strategy
+            }
+        }
+    }
+
+    @Override
+    public List<String> getWorkerNames() {
+        if ( this.workers != null ) {
+            return new ArrayList<>(this.workers.keySet());
+        } else {
+            return Collections.emptyList();
         }
     }
 }

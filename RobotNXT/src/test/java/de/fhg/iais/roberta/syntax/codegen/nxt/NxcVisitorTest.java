@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
 
@@ -27,7 +27,7 @@ public class NxcVisitorTest {
             + "#include\"NEPODefs.h\" // contains NEPO declarations for the NXC NXT API resources";
 
     private static final String SUFFIX = "";
-    private static Configuration brickConfiguration;
+    private static ConfigurationAst brickConfiguration;
 
     @BeforeClass
     public static void setupConfigurationForAllTests() {
@@ -42,7 +42,7 @@ public class NxcVisitorTest {
         ConfigurationComponent sensorS3 = new ConfigurationComponent("COLOR", true, "S3", "3", Collections.emptyMap());
         ConfigurationComponent sensorS4 = new ConfigurationComponent("LIGHT", true, "S4", "4", Collections.emptyMap());
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(11f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, sensorS1, sensorS2, sensorS3, sensorS4));
         brickConfiguration = builder.build();
     }

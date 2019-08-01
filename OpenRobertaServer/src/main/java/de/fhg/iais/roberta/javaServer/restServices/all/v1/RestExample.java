@@ -1,4 +1,4 @@
-package de.fhg.iais.roberta.javaServer.restServices.all;
+package de.fhg.iais.roberta.javaServer.restServices.all.v1;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

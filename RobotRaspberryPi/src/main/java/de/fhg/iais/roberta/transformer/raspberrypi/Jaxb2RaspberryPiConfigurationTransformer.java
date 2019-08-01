@@ -9,7 +9,7 @@ import de.fhg.iais.roberta.blockly.generated.Block;
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
 import de.fhg.iais.roberta.blockly.generated.Field;
 import de.fhg.iais.roberta.blockly.generated.Instance;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiConfiguration;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.util.dbc.DbcException;
@@ -24,13 +24,13 @@ public class Jaxb2RaspberryPiConfigurationTransformer {
         this.factory = factory;
     }
 
-    public Configuration transform(BlockSet blockSet) {
+    public ConfigurationAst transform(BlockSet blockSet) {
         List<Instance> instances = blockSet.getInstance();
         List<Block> blocks = instances.get(0).getBlock();
         return blockToBrickConfiguration(blocks.get(0));
     }
 
-    private Configuration blockToBrickConfiguration(Block block) {
+    private ConfigurationAst blockToBrickConfiguration(Block block) {
         switch ( block.getType() ) {
             case "robBrick_vorwerk-Brick":
                 List<Field> fields = extractFields(block, (short) 4);

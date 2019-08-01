@@ -1,12 +1,12 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.action.MoveAction;
 import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
 
 public abstract class AbstractBoardValidatorVisitor extends AbstractProgramValidatorVisitor {
 
-    public AbstractBoardValidatorVisitor(Configuration brickConfiguration) {
+    public AbstractBoardValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

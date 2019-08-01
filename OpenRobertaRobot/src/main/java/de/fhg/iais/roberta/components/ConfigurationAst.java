@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import de.fhg.iais.roberta.blockly.generated.BlockSet;
+import de.fhg.iais.roberta.blockly.generated.Instance;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
@@ -14,9 +16,9 @@ import de.fhg.iais.roberta.util.dbc.DbcException;
 /**
  * This class represents model of the hardware configuration of a robot (assume we have "left" and "right" motor). It is used in the code generation. <br>
  * <br>
- * The {@link Configuration} contains four sensor ports and four actor ports. Client cannot connect more than that.
+ * The {@link ConfigurationAst} contains four sensor ports and four actor ports. Client cannot connect more than that.
  */
-public class Configuration {
+public class ConfigurationAst {
     protected final Map<String, ConfigurationComponent> configurationComponents;
 
     private String robotName;
@@ -24,7 +26,7 @@ public class Configuration {
     private final float trackWidthCM;
     private final List<String> componentTypes;
 
-    public Configuration(Collection<ConfigurationComponent> configurationComponents, float wheelDiameterCM, float trackWidthCM) {
+    public ConfigurationAst(Collection<ConfigurationComponent> configurationComponents, float wheelDiameterCM, float trackWidthCM) {
         this.configurationComponents = buildConfigurationComponentMap(configurationComponents);
         this.wheelDiameterCM = wheelDiameterCM;
         this.trackWidthCM = trackWidthCM;
@@ -138,6 +140,16 @@ public class Configuration {
         return map;
     }
 
+    public BlockSet generateBlockSet() {
+        final BlockSet blockSet = new BlockSet();
+        this.configurationComponents.values().forEach(v -> {
+            final Instance instance = new Instance();
+            blockSet.getInstance().add(instance);
+            instance.getBlock().add(v.astToBlock());
+        });
+        return blockSet;
+    }
+
     /**
      * @return text which defines the brick configuration
      */
@@ -146,7 +158,7 @@ public class Configuration {
     }
 
     /**
-     * This class is a builder of {@link Configuration}
+     * This class is a builder of {@link ConfigurationAst}
      */
     public static class Builder {
         private List<ConfigurationComponent> configurationComponents = new ArrayList<>();
@@ -188,8 +200,8 @@ public class Configuration {
             return this;
         }
 
-        public Configuration build() {
-            return new Configuration(this.configurationComponents, this.wheelDiameter, this.trackWidth);
+        public ConfigurationAst build() {
+            return new ConfigurationAst(this.configurationComponents, this.wheelDiameter, this.trackWidth);
         }
 
         public <CC> CC build(Class<CC> clazz) {

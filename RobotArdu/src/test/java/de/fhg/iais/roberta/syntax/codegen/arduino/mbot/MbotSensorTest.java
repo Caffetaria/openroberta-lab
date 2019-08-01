@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.ardu.HelperArduinoForXmlTest;
 import de.fhg.iais.roberta.util.test.ardu.HelperMBotForXmlTest;
@@ -13,14 +13,14 @@ import de.fhg.iais.roberta.util.test.ardu.HelperMBotForXmlTest;
 public class MbotSensorTest {
     HelperMBotForXmlTest mbotHelper = new HelperMBotForXmlTest();
 
-    private final Configuration standardMbotConfiguration = makeMbotStandardConfiguration();
+    private final ConfigurationAst standardMbotConfiguration = makeMbotStandardConfiguration();
 
-    private Configuration makeMbotStandardConfiguration() {
+    private ConfigurationAst makeMbotStandardConfiguration() {
         Map<String, String> motorRightConfig = HelperArduinoForXmlTest.createMap("MOTOR_DRIVE", "RIGHT");
         ConfigurationComponent motorRight = new ConfigurationComponent("GEARED_MOTOR", true, "M2", "2", motorRightConfig);
         Map<String, String> motorLeftConfig = HelperArduinoForXmlTest.createMap("MOTOR_DRIVE", "LEFT");
         ConfigurationComponent motorleft = new ConfigurationComponent("GEARED_MOTOR", true, "M1", "1", motorLeftConfig);
-        Configuration.Builder builder = new Configuration.Builder();
+        ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorleft, motorRight));
         return builder.build();
     }

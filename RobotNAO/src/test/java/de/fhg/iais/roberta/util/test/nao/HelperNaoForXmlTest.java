@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.util.test.nao;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.NaoFactory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
 import de.fhg.iais.roberta.util.PluginProperties;
@@ -15,7 +15,7 @@ import de.fhg.iais.roberta.visitor.codegen.NaoPythonVisitor;
 public class HelperNaoForXmlTest extends de.fhg.iais.roberta.util.test.AbstractHelperForXmlTest {
 
     public HelperNaoForXmlTest() {
-        super(new NaoFactory(new PluginProperties("nao", "", "", Util1.loadProperties("classpath:/nao.properties"))), new Configuration.Builder().build());
+        super(new NaoFactory(new PluginProperties("nao", "", "", Util1.loadProperties("classpath:/nao.properties"))), new ConfigurationAst.Builder().build());
     }
 
     public String generateCpp(String pathToProgramXml) throws Exception {

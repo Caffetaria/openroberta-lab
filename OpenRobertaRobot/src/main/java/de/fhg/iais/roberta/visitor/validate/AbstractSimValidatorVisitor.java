@@ -1,6 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.action.communication.BluetoothCheckConnectAction;
 import de.fhg.iais.roberta.syntax.action.communication.BluetoothConnectAction;
@@ -17,7 +17,7 @@ import de.fhg.iais.roberta.typecheck.NepoInfo;
 
 public abstract class AbstractSimValidatorVisitor extends AbstractProgramValidatorVisitor {
 
-    public AbstractSimValidatorVisitor(Configuration brickConfiguration) {
+    public AbstractSimValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

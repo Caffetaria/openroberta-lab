@@ -27,11 +27,11 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 import de.fhg.iais.roberta.factory.IRobotFactory;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientAdmin;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientProgram;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientUser;
-import de.fhg.iais.roberta.javaServer.restServices.robot.RobotCommand;
-import de.fhg.iais.roberta.javaServer.restServices.robot.RobotDownloadProgram;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientAdmin;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientProgram;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientUser;
+import de.fhg.iais.roberta.javaServer.restServices.robot.v1.RobotCommand;
+import de.fhg.iais.roberta.javaServer.restServices.robot.v1.RobotDownloadProgram;
 import de.fhg.iais.roberta.main.ServerStarter;
 import de.fhg.iais.roberta.persistence.util.DbSetup;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;

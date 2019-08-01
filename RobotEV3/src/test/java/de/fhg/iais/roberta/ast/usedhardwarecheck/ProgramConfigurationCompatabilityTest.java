@@ -8,7 +8,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
@@ -31,10 +31,10 @@ public class ProgramConfigurationCompatabilityTest {
         ConfigurationComponent ultrasonicSensor =
             new ConfigurationComponent("ULTRASONIC", false, "S2", "2", createMap("TYPE", "ULTRASONIC"));
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, ultrasonicSensor));
 
-        Configuration brickConfiguration = builder.build();
+        ConfigurationAst brickConfiguration = builder.build();
         ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/program_config_compatibility.xml");
 
         AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(brickConfiguration);
@@ -54,7 +54,7 @@ public class ProgramConfigurationCompatabilityTest {
 
     @Test
     public void ev3program_configuration_compatibility_0_errors() throws Exception {
-        Configuration.Builder builder = new Configuration.Builder();
+        ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
 
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
         ConfigurationComponent motorA = new ConfigurationComponent("MEDIUM", true, "A", "A", motorAproperties);
@@ -70,7 +70,7 @@ public class ProgramConfigurationCompatabilityTest {
 
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, colorSensor, gyroSensor, ultrasonicSensor));
 
-        Configuration brickConfiguration = builder.build();
+        ConfigurationAst brickConfiguration = builder.build();
         ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/program_config_compatibility_gyro_touch_ultra_color.xml");
 
         AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(brickConfiguration);

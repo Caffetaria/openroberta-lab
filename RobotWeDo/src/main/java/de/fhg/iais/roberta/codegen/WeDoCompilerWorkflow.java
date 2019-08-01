@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.transformer.wedo.Jaxb2WeDoConfigurationTransformer;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
@@ -23,14 +23,14 @@ public class WeDoCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer data, ILanguage language) //
+    public void generateSourceCode(String token, String programName, Project data, ILanguage language) //
     {
-        if ( data.getErrorMessage() != null ) {
+        if ( !data.getErrorMessages().isEmpty() ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
             return;
         }
         try {
-            this.generatedSourceCode = WeDoStackMachineVisitor.generate(data.getRobotConfiguration(), data.getProgramTransformer().getTree());
+            this.generatedSourceCode = WeDoStackMachineVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree());
             LOG.info("wedo stack machine code generated");
         } catch ( Exception e ) {
             LOG.error("wedo stack machine code generation failed", e);
@@ -43,7 +43,7 @@ public class WeDoCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
         BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         Jaxb2WeDoConfigurationTransformer transformer = new Jaxb2WeDoConfigurationTransformer(factory);
         return transformer.transform(project);

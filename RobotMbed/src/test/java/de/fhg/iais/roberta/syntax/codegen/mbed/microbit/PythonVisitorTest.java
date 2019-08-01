@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.MicrobitConfiguration;
 import de.fhg.iais.roberta.util.test.mbed.HelperMicrobitForXmlTest;
 
@@ -20,7 +20,7 @@ public class PythonVisitorTest {
             + "class ContinueLoop(Exception): pass\n\n"
             + "timer1 = microbit.running_time()\n";
 
-    private static Configuration brickConfiguration;
+    private static ConfigurationAst brickConfiguration;
 
     @BeforeClass
     public static void setupConfigurationForAllTests() {

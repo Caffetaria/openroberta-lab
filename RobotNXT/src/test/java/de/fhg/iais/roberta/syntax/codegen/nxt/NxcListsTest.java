@@ -2,12 +2,12 @@ package de.fhg.iais.roberta.syntax.codegen.nxt;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
 
 public class NxcListsTest {
     private final HelperNxtForXmlTest nxtHelper = new HelperNxtForXmlTest();
-    Configuration standardConfiguration = HelperNxtForXmlTest.makeConfiguration();
+    ConfigurationAst standardConfiguration = HelperNxtForXmlTest.makeConfiguration();
 
     @Test
     public void nxtListsGetSetFindTest() throws Exception {

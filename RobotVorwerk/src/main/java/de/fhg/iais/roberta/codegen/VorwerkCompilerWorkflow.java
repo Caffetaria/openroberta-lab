@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.vorwerk.VorwerkCommunicator;
 import de.fhg.iais.roberta.components.vorwerk.VorwerkConfiguration;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.transformer.vorwerk.Jaxb2VorwerkConfigurationTransformer;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
@@ -33,19 +33,19 @@ public class VorwerkCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer data, ILanguage language) {
-        if ( data.getErrorMessage() != null ) {
+    public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
+        if ( !data.getErrorMessages().isEmpty() ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
             return;
         }
         try {
-            VorwerkConfiguration configuration = (VorwerkConfiguration) data.getRobotConfiguration();
+            VorwerkConfiguration configuration = (VorwerkConfiguration) data.getConfigurationAst();
             this.vorwerkCommunicator.setCredentials(configuration.getIpAddress(), configuration.getUserName(), configuration.getPassword());
             this.generatedSourceCode =
                 VorwerkPythonVisitor
                     .generate(
-                        (VorwerkConfiguration) data.getRobotConfiguration(),
-                        data.getProgramTransformer().getTree(),
+                        (VorwerkConfiguration) data.getConfigurationAst(),
+                        data.getProgramAst().getTree(),
                         true,
                         language,
                         this.helperMethodGenerator);
@@ -73,7 +73,7 @@ public class VorwerkCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
         BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         Jaxb2VorwerkConfigurationTransformer transformer = new Jaxb2VorwerkConfigurationTransformer(factory);
         return transformer.transform(project);

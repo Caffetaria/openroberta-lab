@@ -4,37 +4,56 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import de.fhg.iais.roberta.components.Configuration;
-import de.fhg.iais.roberta.util.dbc.DbcException;
+import de.fhg.iais.roberta.components.ConfigurationComponent;
+import de.fhg.iais.roberta.transformer.Project;
+import de.fhg.iais.roberta.typecheck.NepoInfo;
+import de.fhg.iais.roberta.util.Key;
 
 public class ArduinoConfigurationValidatorVisitor extends AbstractConfigurationValidatorVisitor {
 
-    private final List<String> freePins =
-        Stream.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-                  "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-                  "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
-                  "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
-                  "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
-                  "50", "51", "52", "53",
-                  "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
-                  "A10", "A11", "A12", "A13", "A14", "A15"
-                 ).collect(Collectors.toList());
-
+    private List<String> freePins;
     private String incorrectPin;
     private String failingBlock;
-
-    private boolean checkSuccess = false;
-
+    private Key resultKey;
     int errorCount;
 
-    public ArduinoConfigurationValidatorVisitor(Configuration configuration) {
-        super(configuration);
+    @Override
+    public String getName() {
+        return "arduinoConfigValidator";
     }
 
-    public void checkConfigurationBlock(Map<String, String> componentProperties, /*Map<String, List<String>> inputToPinsMapping,*/ String blockType) {
+    @Override
+    public void execute(Project project) {
+        this.incorrectPin = null;
+        this.failingBlock = null;
+        this.resultKey = null;
+        project.getConfigurationAst().getConfigurationComponents().forEach((k, v) -> {
+            checkConfigurationBlock(v);
+        });
+    }
+
+    @Override
+    public Map<String, String> getResult() {
+        Map<String, String> result = new HashMap<>();
+        result.put("BLOCK", this.failingBlock);
+        result.put("PIN", this.incorrectPin);
+        return result;
+    }
+
+    @Override
+    public Key getResultKey() {
+        return this.resultKey;
+    }
+
+    public void setFreePins(List<String> freePins) {
+        this.freePins = freePins;
+    }
+
+    public void checkConfigurationBlock(ConfigurationComponent configurationComponent) {
+        Map<String, String> componentProperties = configurationComponent.getComponentProperties();
+        /*Map<String, List<String>> inputToPinsMapping,*/
+        String blockType = configurationComponent.getComponentType();
         List<String> blockPins = new ArrayList<>();
         componentProperties
             .forEach(
@@ -47,7 +66,9 @@ public class ArduinoConfigurationValidatorVisitor extends AbstractConfigurationV
                         this.errorCount++;
                         this.incorrectPin = v;
                         this.failingBlock = blockType;
-                        throw new DbcException("Pin " + v + " is not allowed for " + k + " input/output");
+                        this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
+                        configurationComponent.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
+                        //throw new DbcException("Pin " + v + " is not allowed for " + k + " input/output");
                     } else {
                         blockPins.add(v);
                         this.freePins.removeIf(s -> s.equals(v));
@@ -63,38 +84,9 @@ public class ArduinoConfigurationValidatorVisitor extends AbstractConfigurationV
             //block.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
             this.errorCount++;
             this.incorrectPin = "NON_UNIQUE";
-            throw new DbcException("Pins must be unique");
+            this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
+            configurationComponent.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
+            //throw new DbcException("Pins must be unique");
         }
-        this.checkSuccess = true;
-    }
-
-    @Override
-    public String getFailingBlock() {
-        return this.failingBlock;
-    }
-
-    @Override
-    public String getIncorrectPin() {
-        return this.incorrectPin;
-    }
-
-    @Override
-    public void checkConfiguration() {
-        this.robotConfiguration.getConfigurationComponentsValues().forEach(v -> {
-            checkConfigurationBlock(v.getComponentProperties(), /*inputToPinsMapping,*/ v.getComponentType());
-        });
-    }
-
-    @Override
-    public void validate() {
-        checkConfiguration();
-    }
-
-    @Override
-    public Map<String, String> getResult() {
-        Map<String, String> result = new HashMap<>();
-        result.put("BLOCK", getFailingBlock());
-        result.put("PIN", getIncorrectPin());
-        return result;
     }
 }

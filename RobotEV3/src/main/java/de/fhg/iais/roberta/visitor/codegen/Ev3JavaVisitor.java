@@ -16,11 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.fhg.iais.roberta.visitor.codegen.utilities.TTSLanguageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -91,6 +90,7 @@ import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
+import de.fhg.iais.roberta.visitor.codegen.utilities.TTSLanguageMapper;
 import de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractJavaVisitor;
@@ -103,7 +103,7 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractJavaVisitor;
 public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Visitor<Void> {
     private static final Logger LOG = LoggerFactory.getLogger(Ev3JavaVisitor.class);
 
-    protected final Configuration brickConfiguration;
+    protected final ConfigurationAst brickConfiguration;
 
     protected Map<String, String> predefinedImage = new HashMap<>();
     protected final Set<UsedSensor> usedSensors;
@@ -121,10 +121,10 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
      * @param usedSensors in the current program
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
-    private Ev3JavaVisitor(
+    public Ev3JavaVisitor(
         String programName,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         int indentation,
         ILanguage language) {
         super(programPhrases, programName, indentation);
@@ -154,7 +154,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
      */
     public static String generate(
         String programName,
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
         boolean withWrapping,
         ILanguage language) {
@@ -259,6 +259,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         }
         return null;
     }
+
     @Override
     public Void visitSetLanguageAction(SetLanguageAction<Void> setLanguageAction) {
         if ( !this.brickConfiguration.getRobotName().equals("ev3lejosv0") ) {

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import com.google.common.collect.Lists;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.mode.action.DriveDirection;
 import de.fhg.iais.roberta.mode.action.TurnDirection;
@@ -44,9 +44,9 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
     protected JSONObject fctDecls = new JSONObject();
     protected List<JSONObject> opArray = new ArrayList<>();
     protected final List<List<JSONObject>> opArrayStack = new ArrayList<>();
-    protected final Configuration configuration;
+    protected final ConfigurationAst configuration;
 
-    protected AbstractStackMachineVisitor(Configuration configuration) {
+    protected AbstractStackMachineVisitor(ConfigurationAst configuration) {
         this.configuration = configuration;
     }
 

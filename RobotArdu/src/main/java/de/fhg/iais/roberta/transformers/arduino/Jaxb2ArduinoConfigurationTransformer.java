@@ -8,7 +8,7 @@ import java.util.List;
 import de.fhg.iais.roberta.blockly.generated.Block;
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
 import de.fhg.iais.roberta.blockly.generated.Instance;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.BlocklyDropdownFactory;
 
 /**
@@ -21,7 +21,7 @@ public class Jaxb2ArduinoConfigurationTransformer {
         this.factory = factory;
     }
 
-    public Configuration transform(BlockSet blockSet) {
+    public ConfigurationAst transform(BlockSet blockSet) {
         List<Instance> instances = blockSet.getInstance();
         List<List<Block>> blocks = new ArrayList<>();
         for ( int i = 0; i < instances.size(); i++ ) {

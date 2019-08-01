@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.Export;
 import de.fhg.iais.roberta.factory.IRobotFactory;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientAdmin;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientProgram;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientAdmin;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientProgram;
 import de.fhg.iais.roberta.main.ServerStarter;
 import de.fhg.iais.roberta.persistence.util.DbSession;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;

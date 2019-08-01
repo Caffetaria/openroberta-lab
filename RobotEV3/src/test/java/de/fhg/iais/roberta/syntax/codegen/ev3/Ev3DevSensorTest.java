@@ -5,22 +5,22 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
 
 public class Ev3DevSensorTest {
     private final HelperEv3ForXmlTest ev3DevHelper = new HelperEv3ForXmlTest();
-    private final Configuration configuration = makeConfigurationWithHTSensors();
+    private final ConfigurationAst configuration = makeConfigurationWithHTSensors();
 
-    public static Configuration makeConfigurationWithHTSensors() {
+    public static ConfigurationAst makeConfigurationWithHTSensors() {
         ConfigurationComponent htCompasss = new ConfigurationComponent("COMPASS", false, "S2", "2", Collections.emptyMap());
 
         ConfigurationComponent htInfrared = new ConfigurationComponent("IRSEEKER", false, "S1", "1", Collections.emptyMap());
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(18f).setWheelDiameter(5.6f).addComponents(Arrays.asList(htCompasss, htInfrared));
-        Configuration configuration = builder.build();
+        ConfigurationAst configuration = builder.build();
         configuration.setRobotName("ev3dev");
         return configuration;
     }

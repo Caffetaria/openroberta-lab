@@ -1,6 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.action.motor.MotorGetPowerAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorSetPowerAction;
@@ -24,7 +24,7 @@ import de.fhg.iais.roberta.syntax.sensor.vorwerk.WallSensor;
 import de.fhg.iais.roberta.visitor.hardware.IVorwerkVisitor;
 
 public final class VorwerkBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IVorwerkVisitor<Void> {
-    public VorwerkBrickValidatorVisitor(Configuration brickConfiguration) {
+    public VorwerkBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

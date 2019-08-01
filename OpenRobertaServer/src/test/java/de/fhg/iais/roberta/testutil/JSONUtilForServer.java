@@ -10,10 +10,10 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientAdmin;
-import de.fhg.iais.roberta.javaServer.restServices.all.ClientProgram;
-import de.fhg.iais.roberta.javaServer.restServices.robot.RobotCommand;
-import de.fhg.iais.roberta.javaServer.restServices.robot.RobotDownloadProgram;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientAdmin;
+import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientProgram;
+import de.fhg.iais.roberta.javaServer.restServices.robot.v1.RobotCommand;
+import de.fhg.iais.roberta.javaServer.restServices.robot.v1.RobotDownloadProgram;
 import de.fhg.iais.roberta.persistence.util.DbSession;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;
 import de.fhg.iais.roberta.util.Key;

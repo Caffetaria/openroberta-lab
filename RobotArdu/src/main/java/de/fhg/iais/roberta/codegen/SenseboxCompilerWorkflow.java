@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.transformers.arduino.Jaxb2ArduinoConfigurationTransformer;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
@@ -29,14 +29,14 @@ public class SenseboxCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer data, ILanguage language) {
-        if ( data.getErrorMessage() != null ) {
+    public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
+        if ( data.getErrorMessages() != null ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
             return;
         }
         try {
-            Configuration configuration = data.getRobotConfiguration();
-            this.generatedSourceCode = SenseboxCppVisitor.generate(configuration, data.getProgramTransformer().getTree(), true);
+            ConfigurationAst configuration = data.getConfigurationAst();
+            this.generatedSourceCode = SenseboxCppVisitor.generate(configuration, data.getProgramAst().getTree(), true);
             LOG.info("senseBox c++ code generated");
         } catch ( Exception e ) {
             LOG.error("senseBox c++ code generation failed", e);
@@ -45,20 +45,10 @@ public class SenseboxCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public void generateSourceCode(
-        String token,
-        String programName,
-        BlocklyProgramAndConfigTransformer data,
-        String SSID,
-        String password,
-        ILanguage language) {
-        if ( data.getErrorMessage() != null ) {
-            this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
-            return;
-        }
+    public void generateSourceCode(String token, String programName, Project transformer, String SSID, String password, ILanguage language) {
         try {
-            Configuration configuration = data.getRobotConfiguration();
-            this.generatedSourceCode = SenseboxCppVisitor.generate(configuration, data.getProgramTransformer().getTree(), SSID, password, true);
+            ConfigurationAst configuration = transformer.getConfigurationAst();
+            this.generatedSourceCode = SenseboxCppVisitor.generate(configuration, transformer.getProgramAst().getTree(), SSID, password, true);
             LOG.info("senseBox c++ code generated");
         } catch ( Exception e ) {
             LOG.error("senseBox c++ code generation failed", e);
@@ -80,7 +70,7 @@ public class SenseboxCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
         BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         Jaxb2ArduinoConfigurationTransformer transformer = new Jaxb2ArduinoConfigurationTransformer(factory.getBlocklyDropdownFactory());
         return transformer.transform(project);

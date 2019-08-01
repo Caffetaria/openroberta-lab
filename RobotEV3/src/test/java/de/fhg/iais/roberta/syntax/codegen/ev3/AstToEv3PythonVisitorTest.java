@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
 
@@ -104,7 +104,7 @@ public class AstToEv3PythonVisitorTest {
             + "        raise\n\n"
             + "if __name__ == \"__main__\":\n"
             + "    main()";
-    private static Configuration brickConfiguration;
+    private static ConfigurationAst brickConfiguration;
 
     private static Map<String, String> createMap(String... args) {
         Map<String, String> m = new HashMap<>();
@@ -127,7 +127,7 @@ public class AstToEv3PythonVisitorTest {
         ConfigurationComponent ultrasonicSensor2 = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", Collections.emptyMap());
         ConfigurationComponent gyro = new ConfigurationComponent("GYRO", false, "S2", "2", Collections.emptyMap());
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         brickConfiguration =
             builder
                 .setTrackWidth(17f)
@@ -324,7 +324,7 @@ public class AstToEv3PythonVisitorTest {
 
     @Test
     public void testReadHiTecColorSensorV2InDifferentModes() throws Exception {
-        Configuration configuration = HelperEv3ForXmlTest.makeHiTecColorSensorConfiguration();
+        ConfigurationAst configuration = HelperEv3ForXmlTest.makeHiTecColorSensorConfiguration();
         String a =
             "" //
                 + IMPORTS
@@ -345,7 +345,7 @@ public class AstToEv3PythonVisitorTest {
 
     @Test
     public void testRotateRegulatedUnregulatedForwardBackwardMotors() throws Exception {
-        Configuration configuration = HelperEv3ForXmlTest.makeRotateRegulatedUnregulatedForwardBackwardMotors();
+        ConfigurationAst configuration = HelperEv3ForXmlTest.makeRotateRegulatedUnregulatedForwardBackwardMotors();
         String a =
             "" //
                 + IMPORTS
@@ -933,7 +933,7 @@ public class AstToEv3PythonVisitorTest {
         assertCodeWithConfigIsOk(a, fileName, brickConfiguration);
     }
 
-    private void assertCodeWithConfigIsOk(String a, String fileName, Configuration configuration) throws Exception {
+    private void assertCodeWithConfigIsOk(String a, String fileName, ConfigurationAst configuration) throws Exception {
         String b = this.h.generatePython(fileName, configuration);
         Assert.assertEquals(a, b);
         //Assert.assertEquals(a.replaceAll("\\s+", ""), b.replaceAll("\\s+", ""));

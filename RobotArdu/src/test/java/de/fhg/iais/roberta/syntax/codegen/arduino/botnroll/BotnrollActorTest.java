@@ -2,13 +2,13 @@ package de.fhg.iais.roberta.syntax.codegen.arduino.botnroll;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
 
 public class BotnrollActorTest {
     HelperBotNrollForXmlTest botnrollHelper = new HelperBotNrollForXmlTest();
 
-    Configuration configuration = HelperBotNrollForXmlTest.makeConfiguration();
+    ConfigurationAst configuration = HelperBotNrollForXmlTest.makeConfiguration();
 
     @Test
     public void botnrollLcdTest() throws Exception {

@@ -214,12 +214,11 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      *            {String} - WLAN password for WiFi enabled robots
      */
     function showSourceProgram(programName, configName, xmlTextProgram, xmlTextConfig, SSID, password, language, successFn) {
-        COMM.json("/program", {
-            "cmd" : "showSourceP",
-            "name" : programName,
-            "configuration" : configName,
-            "programText" : xmlTextProgram,
-            "configurationText" : xmlTextConfig,
+        COMM.json("/project/source", {
+            "programName" : programName,
+            "configurationName" : configName,
+            "programBlockSet" : xmlTextProgram,
+            "configurationBlockSet" : xmlTextConfig,
             "SSID" : SSID,
             "password" : password,
             "language" : language

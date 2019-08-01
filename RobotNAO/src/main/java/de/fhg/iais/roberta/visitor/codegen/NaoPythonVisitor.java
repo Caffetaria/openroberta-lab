@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.UsedSensor;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.mode.action.DriveDirection;
@@ -97,7 +97,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
      * @param helperMethodGenerator
      */
     private NaoPythonVisitor(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
         ILanguage language,
@@ -121,7 +121,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
      * @param phrases to generate the code from
      */
     public static String generate(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
         boolean withWrapping,
         ILanguage language,

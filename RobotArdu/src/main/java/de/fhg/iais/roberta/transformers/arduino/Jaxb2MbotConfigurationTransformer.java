@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.transformers.arduino;
 
 import de.fhg.iais.roberta.blockly.generated.Block;
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.BlocklyDropdownFactory;
 import de.fhg.iais.roberta.transformer.Jaxb2ConfigurationAstHelper;
 
@@ -16,7 +16,7 @@ public class Jaxb2MbotConfigurationTransformer {
         this.factory = factory;
     }
 
-    public Configuration transform(BlockSet blockSet) {
+    public ConfigurationAst transform(BlockSet blockSet) {
         Block startingBlock = Jaxb2ConfigurationAstHelper.getTopBlock(blockSet, "robBrick_mBot-Brick");
         return Jaxb2ConfigurationAstHelper.block2OldConfigurationWithFixedBase(startingBlock, this.factory, "P", 6);
     }

@@ -3,7 +3,7 @@ package de.fhg.iais.roberta.visitor.codegen;
 import java.util.ArrayList;
 import java.util.Set;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.UsedSensor;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
@@ -48,7 +48,7 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
     private Bob3CppVisitor(ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
-        super(new Configuration.Builder().build(), phrases, indentation);
+        super(new ConfigurationAst.Builder().build(), phrases, indentation);
         Bob3UsedHardwareCollectorVisitor codePreprocessVisitor = new Bob3UsedHardwareCollectorVisitor(phrases);
         this.usedVars = codePreprocessVisitor.getVisitedVars();
         this.isTimerSensorUsed = codePreprocessVisitor.isTimerSensorUsed();

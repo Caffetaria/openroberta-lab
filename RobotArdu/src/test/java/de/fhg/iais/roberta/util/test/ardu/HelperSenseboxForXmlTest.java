@@ -6,7 +6,7 @@ import java.util.Map;
 import org.junit.Assert;
 
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.factory.SenseboxFactory;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
@@ -25,13 +25,13 @@ public class HelperSenseboxForXmlTest extends AbstractHelperForXmlTest {
         this.senseboxFactory = (SenseboxFactory) super.getRobotFactory();
     }
 
-    public Configuration regenerateConfiguration(String blocklyXml) throws Exception {
+    public ConfigurationAst regenerateConfiguration(String blocklyXml) throws Exception {
         final BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
         final Jaxb2ArduinoConfigurationTransformer transformer = new Jaxb2ArduinoConfigurationTransformer(this.senseboxFactory.getBlocklyDropdownFactory());
         return transformer.transform(project);
     }
 
-    public static Configuration makeConfiguration() {
+    public static ConfigurationAst makeConfiguration() {
         Map<String, String> wireless = createMap("NAME", "W", "SSID", "mySSID", "PASSWORD", "myPassw0rd", "Connector", "XBEE1");
         ConfigurationComponent wirelessComponent = new ConfigurationComponent("WIRELESS", true, "W", "W", wireless);
 
@@ -44,7 +44,7 @@ public class HelperSenseboxForXmlTest extends AbstractHelperForXmlTest {
         Map<String, String> lightVeml = createMap("NAME", "V", "I2C", "I2C");
         ConfigurationComponent lightVemlComponent = new ConfigurationComponent("LIGHTVEML", false, "V", "V", lightVeml);
 
-        final Configuration.Builder builder = new Configuration.Builder();
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder
             .setTrackWidth(17f)
             .setWheelDiameter(5.6f)
@@ -52,13 +52,13 @@ public class HelperSenseboxForXmlTest extends AbstractHelperForXmlTest {
         return builder.build();
     }
 
-    public String generateCpp(String pathToProgramXml, Configuration configuration) throws Exception {
+    public String generateCpp(String pathToProgramXml, ConfigurationAst configuration) throws Exception {
         Jaxb2ProgramAst<Void> transformer = generateTransformer(pathToProgramXml);
         String code = SenseboxCppVisitor.generate(configuration, transformer.getTree(), "mySSID", "myPassw0rd", true);
         return code + '\n';
     }
 
-    public void compareExistingAndGeneratedSource(String sourceCodeFilename, String xmlFilename, Configuration configuration) throws Exception {
+    public void compareExistingAndGeneratedSource(String sourceCodeFilename, String xmlFilename, ConfigurationAst configuration) throws Exception {
         Assert
             .assertEquals(Util1.readResourceContent(sourceCodeFilename).replaceAll("\\s+", ""), generateCpp(xmlFilename, configuration).replaceAll("\\s+", ""));
     }

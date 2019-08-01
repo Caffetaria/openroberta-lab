@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -77,7 +77,7 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
  * StringBuilder. <b>This representation is correct Python code.</b> <br>
  */
 public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv3Visitor<Void> {
-    protected final Configuration brickConfiguration;
+    protected final ConfigurationAst brickConfiguration;
 
     protected final Map<String, String> predefinedImage = new HashMap<>();
 
@@ -96,7 +96,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
     private Ev3PythonVisitor(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
         ILanguage language,
@@ -128,7 +128,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
      * @param programPhrases to generate the code from
      */
     public static String generate(
-        Configuration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
         ILanguage language,
