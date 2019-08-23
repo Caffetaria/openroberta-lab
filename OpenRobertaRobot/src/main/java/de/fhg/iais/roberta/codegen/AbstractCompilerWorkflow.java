@@ -29,7 +29,7 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
 
     protected final PluginProperties pluginProperties;
 
-    protected Key workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
+    protected Key workflowResult;// = Key.COMPILERWORKFLOW_SUCCESS;
     protected String crosscompilerResponse = "";
     protected String generatedSourceCode = null;
 

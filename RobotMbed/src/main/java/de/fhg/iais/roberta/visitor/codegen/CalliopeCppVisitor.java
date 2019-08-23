@@ -128,7 +128,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    private CalliopeCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
+    CalliopeCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
         super(programPhrases, indentation);
         this.configuration = brickConfiguration;
         this.codePreprocess = new MbedUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
@@ -533,7 +533,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     public Void visitGestureSensor(GestureSensor<Void> gestureSensor) {
         this.sb.append("(_uBit.accelerometer.getGesture() == MICROBIT_ACCELEROMETER_EVT_");
         String mode = gestureSensor.getMode();
-        if ( (mode.equals(SC.UP)) || (mode.equals(SC.DOWN)) || (mode.equals(SC.LEFT)) || (mode.equals(SC.RIGHT)) ) {
+        if ( mode.equals(SC.UP) || mode.equals(SC.DOWN) || mode.equals(SC.LEFT) || mode.equals(SC.RIGHT) ) {
             this.sb.append("TILT_");
         }
         this.sb.append(mode + ")");
@@ -829,7 +829,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
             this.sb.append("ManagedString(");
             parameters.get(i).visit(this);
             this.sb.append(")");
-            if ( i < (numberOfParameters - 1) ) {
+            if ( i < numberOfParameters - 1 ) {
                 this.sb.append(" + ");
             }
         }
@@ -1190,7 +1190,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     }
 
     private int map(int x, int in_min, int in_max, int out_min, int out_max) {
-        return (((x - in_min) * (out_max - out_min)) / (in_max - in_min)) + out_min;
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
     private void appendTextDisplayType(DisplayTextAction<Void> displayTextAction) {
@@ -1209,7 +1209,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     }
 
     private String capitalizeFirstLetter(String original) {
-        if ( (original == null) || (original.length() == 0) ) {
+        if ( original == null || original.length() == 0 ) {
             return original;
         }
         return original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
@@ -1322,7 +1322,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     private void writeToSerial(Expr<Void> valueToWrite) {
         if ( valueToWrite instanceof RgbColor<?>
             || valueToWrite instanceof ColorConst<?>
-            || (valueToWrite instanceof Var && ((Var<Void>) valueToWrite).getVarType().equals(BlocklyType.COLOR)) ) {
+            || valueToWrite instanceof Var && ((Var<Void>) valueToWrite).getVarType().equals(BlocklyType.COLOR) ) {
             this.sb.append("_uBit.serial.setTxBufferSize(ManagedString(_castColorToString(");
             valueToWrite.visit(this);
             this.sb.append(")).length() + 2);");

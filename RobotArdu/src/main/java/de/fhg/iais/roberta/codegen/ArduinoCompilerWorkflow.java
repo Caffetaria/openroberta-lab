@@ -40,7 +40,7 @@ public class ArduinoCompilerWorkflow extends AbstractCompilerWorkflow {
             }
             this.generatedSourceCode = ArduinoCppVisitor.generate(configuration, transformer.getProgramAst().getTree(), true);
             LOG.info("arduino c++ code generated");
-            this.workflowResult = Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS;
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( final Exception e ) {
             LOG.error("arduino c++ code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

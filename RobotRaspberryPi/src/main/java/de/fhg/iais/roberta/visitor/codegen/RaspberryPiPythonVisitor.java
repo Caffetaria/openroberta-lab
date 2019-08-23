@@ -3,7 +3,7 @@ package de.fhg.iais.roberta.visitor.codegen;
 import java.util.ArrayList;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
-import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiConfiguration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.SC;
@@ -34,7 +34,7 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
  * StringBuilder. <b>This representation is correct Python code.</b> <br>
  */
 public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implements IRaspberryPiVisitor<Void> {
-    protected final RaspberryPiConfiguration brickConfiguration;
+    protected final ConfigurationAst brickConfiguration;
 
     /**
      * initialize the Python code generator visitor.
@@ -43,8 +43,8 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
-    private RaspberryPiPythonVisitor(
-        RaspberryPiConfiguration brickConfiguration,
+    RaspberryPiPythonVisitor(
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
         ILanguage language,
@@ -67,7 +67,7 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
      * @param programPhrases to generate the code from
      */
     public static String generate(
-        RaspberryPiConfiguration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
         ILanguage language,

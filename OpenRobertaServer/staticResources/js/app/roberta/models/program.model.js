@@ -244,12 +244,11 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      *            {String} - WLAN password for WiFi enabled robots
      */
     function runOnBrick(programName, configName, xmlTextProgram, xmlTextConfig, SSID, password, language, successFn) {
-        COMM.json("/program", {
-            "cmd" : "runP",
-            "name" : programName,
-            "configuration" : configName,
-            "programText" : xmlTextProgram,
-            "configurationText" : xmlTextConfig,
+        COMM.json("/project/binary", {
+            "programName" : programName,
+            "configurationName" : configName,
+            "programBlockSet" : xmlTextProgram,
+            "configurationBlockSet" : xmlTextConfig,
             "SSID" : SSID,
             "password" : password,
             "language" : language
@@ -259,12 +258,11 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
     exports.runOnBrick = runOnBrick;
 
     function runOnBrickBack(programName, configName, xmlTextProgram, xmlTextConfig, SSID, password, language, successFn) {
-        COMM.json("/program", {
-            "cmd" : "runPBack",
-            "name" : programName,
-            "configuration" : configName,
-            "programText" : xmlTextProgram,
-            "configurationText" : xmlTextConfig,
+        COMM.json("/project/binary", {
+            "programName" : programName,
+            "configurationName" : configName,
+            "programBlockSet" : xmlTextProgram,
+            "configurationBlockSet" : xmlTextConfig,
             "SSID" : SSID,
             "password" : password,
             "language" : language

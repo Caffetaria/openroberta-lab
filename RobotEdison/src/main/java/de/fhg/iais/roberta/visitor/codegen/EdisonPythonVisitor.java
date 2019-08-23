@@ -6,7 +6,7 @@ import static de.fhg.iais.roberta.visitor.collect.EdisonMethods.*;
 import java.util.ArrayList;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
 import de.fhg.iais.roberta.syntax.action.light.LightStatusAction;
@@ -69,7 +69,7 @@ public class EdisonPythonVisitor extends AbstractPythonVisitor implements IEdiso
      * @param indentation to start with. Will be incremented/decremented depending on block structure
      */
     public EdisonPythonVisitor(
-        Configuration brickConfig,
+        ConfigurationAst brickConfig,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
         HelperMethodGenerator helperMethodGenerator) {
@@ -146,7 +146,7 @@ public class EdisonPythonVisitor extends AbstractPythonVisitor implements IEdiso
      * @return the source code as a String
      */
     public static String generate(
-        Configuration brickCfg,
+        ConfigurationAst brickCfg,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
         HelperMethodGenerator helperMethodGenerator) {
@@ -174,7 +174,7 @@ public class EdisonPythonVisitor extends AbstractPythonVisitor implements IEdiso
     /**
      * Function to get readings from the obstacle detector.
      * visit a {@link InfraredSensor} for the block "robSensors_infrared_getSample"
-     * 
+     *
      * @param infraredSensor to be visited
      */
     @Override
@@ -279,7 +279,7 @@ public class EdisonPythonVisitor extends AbstractPythonVisitor implements IEdiso
     /**
      * Function to receive data via infrared
      * visit a {@link SendIRAction} for the block "edisonCommunication_ir_receiveBlock"
-     * 
+     *
      * @param receiveIRAction
      * @return
      */
@@ -391,14 +391,14 @@ public class EdisonPythonVisitor extends AbstractPythonVisitor implements IEdiso
     public Void visitListCreate(ListCreate<Void> listCreate) {
         int listSize = listCreate.getValue().get().size();
 
-        this.sb.append("Ed.List(").append(listSize).append((", ["));
+        this.sb.append("Ed.List(").append(listSize).append(", [");
         if ( listSize == 0 ) {
             this.sb.append("]");
         } else {
             for ( int i = 0; i < listSize; i++ ) {
                 listCreate.getValue().get().get(i).visit(this);
-                if ( i < (listSize - 1) ) {
-                    this.sb.append((","));
+                if ( i < listSize - 1 ) {
+                    this.sb.append(",");
                 } else {
                     this.sb.append("]");
                 }

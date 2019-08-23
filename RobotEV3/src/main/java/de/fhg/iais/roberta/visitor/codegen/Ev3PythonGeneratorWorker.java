@@ -28,15 +28,15 @@ public final class Ev3PythonGeneratorWorker implements IWorker {
             }
         }
         project.setSourceCode(visitor.getSb().toString()); */
-        project
-            .setSourceCode(
-                Ev3PythonVisitor
-                    .generate(
-                        project.getConfigurationAst(),
-                        project.getProgramAst().getTree(),
-                        true,
-                        project.getLanguage(),
-                        project.getHelperMethodGenerator()));
+        Ev3PythonVisitor visitor =
+            new Ev3PythonVisitor(
+                project.getConfigurationAst(),
+                project.getProgramAst().getTree(),
+                1,
+                project.getLanguage(),
+                project.getHelperMethodGenerator());
+        visitor.setStringBuilders(project.getSourceCode(), project.getIndentation());
+        visitor.generateCode(true);
     }
 
     @Override

@@ -2,7 +2,7 @@ package de.fhg.iais.roberta.util.test.raspberrypi;
 
 import org.junit.Assert;
 
-import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiConfiguration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.RaspberryPiFactory;
 import de.fhg.iais.roberta.mode.action.Language;
 import de.fhg.iais.roberta.transformer.Jaxb2ProgramAst;
@@ -16,7 +16,7 @@ public class HelperRaspberryPiForXmlTest extends AbstractHelperForXmlTest {
     public HelperRaspberryPiForXmlTest() {
         super(
             new RaspberryPiFactory(new PluginProperties("raspberrypi", "", "", Util1.loadProperties("classpath:/raspberrypi.properties"))),
-            new RaspberryPiConfiguration.Builder().build());
+            new ConfigurationAst.Builder().build());
     }
 
     /**
@@ -30,12 +30,7 @@ public class HelperRaspberryPiForXmlTest extends AbstractHelperForXmlTest {
         Jaxb2ProgramAst<Void> transformer = generateTransformer(pathToProgramXml);
         String javaCode =
             RaspberryPiPythonVisitor
-                .generate(
-                    (RaspberryPiConfiguration) getRobotConfiguration(),
-                    transformer.getTree(),
-                    false,
-                    Language.ENGLISH,
-                    getRobotFactory().getHelperMethodGenerator());
+                .generate(getRobotConfiguration(), transformer.getTree(), false, Language.ENGLISH, getRobotFactory().getHelperMethodGenerator());
         return javaCode;
     }
 
@@ -58,7 +53,7 @@ public class HelperRaspberryPiForXmlTest extends AbstractHelperForXmlTest {
      * @return the code as string
      * @throws Exception
      */
-    public String generatePython(String pathToProgramXml, RaspberryPiConfiguration brickConfiguration) throws Exception {
+    public String generatePython(String pathToProgramXml, ConfigurationAst brickConfiguration) throws Exception {
         Jaxb2ProgramAst<Void> transformer = generateTransformer(pathToProgramXml);
         String code =
             RaspberryPiPythonVisitor.generate(brickConfiguration, transformer.getTree(), true, Language.ENGLISH, getRobotFactory().getHelperMethodGenerator());

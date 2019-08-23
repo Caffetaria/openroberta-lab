@@ -28,10 +28,10 @@ public final class Ev3CxxGeneratorWorker implements IWorker {
             }
         }
         project.setSourceCode(visitor.getSb().toString()); */
-        project
-            .setSourceCode(
-                Ev3C4ev3Visitor
-                    .generate(project.getProgramName(), project.getConfigurationAst(), project.getProgramAst().getTree(), true, project.getLanguage()));
+        Ev3C4ev3Visitor visitor =
+            new Ev3C4ev3Visitor(project.getProgramName(), project.getConfigurationAst(), project.getProgramAst().getTree(), 1, project.getLanguage());
+        visitor.setStringBuilders(project.getSourceCode(), project.getIndentation());
+        visitor.generateCode(true);
     }
 
     @Override

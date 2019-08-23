@@ -59,7 +59,7 @@ public class Ev3StackMachineVisitor<V> extends AbstractStackMachineVisitor<V> im
         Ev3StackMachineVisitor<Void> astVisitor = new Ev3StackMachineVisitor<>(brickConfiguration, phrasesSet, language);
         astVisitor.generateCodeFromPhrases(phrasesSet);
         JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.opArray).put(C.FUNCTION_DECLARATION, astVisitor.fctDecls);
+        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
         return generatedCode.toString(2);
     }
 

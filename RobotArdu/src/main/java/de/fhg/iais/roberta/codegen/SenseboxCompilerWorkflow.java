@@ -30,7 +30,7 @@ public class SenseboxCompilerWorkflow extends AbstractCompilerWorkflow {
 
     @Override
     public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
-        if ( data.getErrorMessages() != null ) {
+        if ( !data.getErrorMessages().isEmpty() ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
             return;
         }
@@ -38,6 +38,7 @@ public class SenseboxCompilerWorkflow extends AbstractCompilerWorkflow {
             ConfigurationAst configuration = data.getConfigurationAst();
             this.generatedSourceCode = SenseboxCppVisitor.generate(configuration, data.getProgramAst().getTree(), true);
             LOG.info("senseBox c++ code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("senseBox c++ code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

@@ -28,7 +28,7 @@ import de.fhg.iais.roberta.visitor.lang.codegen.AbstractStackMachineVisitor;
 public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> implements IWeDoVisitor<V> {
     protected ArrayList<VarDeclaration<Void>> usedVars;
 
-    private WeDoStackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases) {
+    WeDoStackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases) {
         super(configuration);
         WedoUsedHardwareCollectorVisitor codePreprocessVisitor = new WedoUsedHardwareCollectorVisitor(configuration);
         this.usedVars = codePreprocessVisitor.getVisitedVars();
@@ -41,7 +41,7 @@ public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisito
         WeDoStackMachineVisitor<Void> astVisitor = new WeDoStackMachineVisitor<>(brickConfiguration, phrasesSet);
         astVisitor.generateCodeFromPhrases(phrasesSet);
         JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.opArray).put(C.FUNCTION_DECLARATION, astVisitor.fctDecls);
+        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
         return generatedCode.toString(2);
     }
 

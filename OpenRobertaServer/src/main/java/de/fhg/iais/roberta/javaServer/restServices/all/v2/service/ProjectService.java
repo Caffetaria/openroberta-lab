@@ -18,6 +18,7 @@ import de.fhg.iais.roberta.persistence.AbstractProcessor;
 import de.fhg.iais.roberta.persistence.DummyProcessor;
 import de.fhg.iais.roberta.persistence.ProcessorStatus;
 import de.fhg.iais.roberta.transformer.Project;
+import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.Statistics;
 import de.fhg.iais.roberta.util.Util;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
@@ -26,7 +27,7 @@ public class ProjectService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProjectService.class);
 
-    public ProjectResponse executeWorkflow(String workflowName, IRobotFactory robotFactory, Project project) throws JSONException, JAXBException {
+    public String executeWorkflow(String workflowName, IRobotFactory robotFactory, Project project) throws JSONException, JAXBException {
         IRobotFactory factory = robotFactory;
         ICompilerWorkflow compilerWorkflow = factory.getRobotCompilerWorkflow();
         final JSONObject response = new JSONObject();
@@ -37,6 +38,9 @@ public class ProjectService {
 
         for ( IWorker worker : workflowPipe ) {
             worker.execute(project);
+            if ( !project.getValidationResults().isEmpty() ) { // TODO: here separators in the worker list should be used and not such a hard condition
+                break;
+            }
         }
 
         Collection<Map<String, String>> results = project.getValidationResults().values();
@@ -44,22 +48,23 @@ public class ProjectService {
             validationResults.putAll(result);
         }
 
-        sourceCode = project.getSourceCode();
+        sourceCode = project.getSourceCode().toString();
         ProcessorStatus status;
+        Key message;
         if ( sourceCode == null || !validationResults.isEmpty() ) {
             status = ProcessorStatus.FAILED;
+            message = (Key) project.getValidationResults().keySet().toArray()[0]; //TODO: validator visitor should put errors in project, as well as compiler workflow
         } else {
             status = ProcessorStatus.SUCCEEDED;
+            message = compilerWorkflow.getWorkflowResult();
         }
-        annotations.setStatus(status, compilerWorkflow.getWorkflowResult(), validationResults);
-        ProjectResponse projectResponse = new ProjectResponse();
-        projectResponse.setProgramSourceCode(sourceCode);
-        projectResponse.setProgramFileExtension(factory.getFileExtension());
-        projectResponse.setProgramBlockSet(project.getAnnotatedProgramAsXml());
-        projectResponse.setConfigurationBlockSet(project.getAnnotatedConfigurationAsXml());
-        projectResponse.setAnnotations(annotations);
+        annotations.setStatus(status, message, validationResults);
         Util.addResultInfo(response, annotations);
         Statistics.info("ProgramSource", "success", annotations.succeeded());
-        return projectResponse;
+        if ( status.equals(ProcessorStatus.FAILED) ) {
+            return "error";
+        } else {
+            return "ok";
+        }
     }
 }

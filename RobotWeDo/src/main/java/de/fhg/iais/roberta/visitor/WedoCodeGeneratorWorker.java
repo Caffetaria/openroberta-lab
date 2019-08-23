@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor;
 
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,16 +20,11 @@ public final class WedoCodeGeneratorWorker implements IWorker {
 
     @Override
     public void execute(Project project) {
-        /*final Ev3JavaVisitor visitor =
-            new Ev3JavaVisitor(project.getProgramName(), project.getProgramAst().getTree(), project.getConfigurationAst(), 4, project.getLanguage());
-        ArrayList<ArrayList<Phrase<Void>>> tree = project.getProgramAst().getTree();
-        for ( ArrayList<Phrase<Void>> phrases : tree ) {
-            for ( Phrase<Void> phrase : phrases ) {
-                phrase.visit(visitor); // TODO: REALLY REALLY BAD NAME !!!
-            }
-        }
-        project.setSourceCode(visitor.getSb().toString()); */
-        project.setSourceCode(WeDoStackMachineVisitor.generate(project.getConfigurationAst(), project.getProgramAst().getTree()));
+        WeDoStackMachineVisitor<Void> visitor = new WeDoStackMachineVisitor<>(project.getConfigurationAst(), project.getProgramAst().getTree());
+        visitor.generateCodeFromPhrases(project.getProgramAst().getTree());
+        JSONObject generatedCode = new JSONObject();
+        generatedCode.put(C.OPS, visitor.getOpArray()).put(C.FUNCTION_DECLARATION, visitor.getFctDecls());
+        project.setSourceCode(generatedCode.toString(2));
     }
 
     @Override

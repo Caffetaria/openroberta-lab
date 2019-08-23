@@ -1,5 +1,8 @@
 package de.fhg.iais.roberta.visitor.codegen;
 
+import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isEV3ColorSensor;
+import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isHiTecColorSensor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -99,9 +102,6 @@ import de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
 
-import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isHiTecColorSensor;
-import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isEV3ColorSensor;
-
 public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<Void> {
 
     private static final List<String> EV3_SENSOR_PORTS = Lists.newArrayList("1", "2", "3", "4");
@@ -120,10 +120,14 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
      * initialize the EV3 c4ev3 code generator visitor.
      *
      * @param programPhrases
-     * @param indentation    to start with. Will be incr/decr depending on block structure
+     * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    private Ev3C4ev3Visitor(
-        String programName, ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation, ILanguage language) {
+    Ev3C4ev3Visitor(
+        String programName,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        int indentation,
+        ILanguage language) {
         super(programPhrases, indentation);
         this.programName = programName;
         Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
@@ -154,7 +158,11 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
      * @return
      */
     public static String generate(
-        String programName, ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping, ILanguage language) {
+        String programName,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
+        boolean withWrapping,
+        ILanguage language) {
         Assert.notNull(programName);
         Assert.notNull(brickConfiguration);
 
@@ -173,13 +181,17 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
         this.sb.append("#define PROGRAM_NAME \"" + this.programName + "\"\n");
         this.sb.append("#define WHEEL_DIAMETER " + this.brickConfiguration.getWheelDiameterCM() + "\n");
         this.sb.append("#define TRACK_WIDTH " + this.brickConfiguration.getTrackWidthCM() + "\n");
-        nlIndent();
+        decrIndentation();
     }
 
     private void generateImports() {
-        this.sb.append("#include <ev3.h>\n");
-        this.sb.append("#include <math.h>\n");
-        this.sb.append("#include <list>\n");
+        nlIndent();
+        this.sb.append("#include <ev3.h>");
+        nlIndent();
+        this.sb.append("#include <math.h>");
+        nlIndent();
+        this.sb.append("#include <list>");
+        nlIndent();
         this.sb.append("#include \"NEPODefs.h\"");
     }
 
@@ -1060,7 +1072,7 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
     private boolean isReverseGivenBrickConfigurationAndAction(IDriveDirection direction) {
         boolean reverse = isAnyDriveMotorReverse();
         boolean localReverse = direction == DriveDirection.BACKWARD;
-        return (reverse && !localReverse) || (localReverse && !reverse);
+        return reverse && !localReverse || localReverse && !reverse;
     }
 
     private boolean isAnyDriveMotorReverse() {
@@ -1308,7 +1320,8 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
 
     @Override
     public Void visitIRSeekerSensor(IRSeekerSensor<Void> irSeekerSensor) {
-        this.sb.append("ReadHTIrSensor(")
+        this.sb
+            .append("ReadHTIrSensor(")
             .append(getPrefixedInputPort(irSeekerSensor.getPort()))
             .append(", ")
             .append(getIRSeekerSensorConstantMode(irSeekerSensor.getMode()))

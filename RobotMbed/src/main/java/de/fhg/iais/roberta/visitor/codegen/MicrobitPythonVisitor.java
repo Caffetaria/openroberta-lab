@@ -63,13 +63,13 @@ public final class MicrobitPythonVisitor extends AbstractPythonVisitor implement
 
     /**
      * initialize the Python code generator visitor.
-     * 
+     *
      * @param brickConfiguration hardware configuration of the brick
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be ince/decr depending on block structure
      * @param helperMethodGenerator
      */
-    private MicrobitPythonVisitor(
+    MicrobitPythonVisitor(
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,

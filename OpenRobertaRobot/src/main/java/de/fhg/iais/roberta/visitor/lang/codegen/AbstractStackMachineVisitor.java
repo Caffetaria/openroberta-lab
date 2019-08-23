@@ -19,15 +19,67 @@ import de.fhg.iais.roberta.syntax.lang.blocksequence.ActivityTask;
 import de.fhg.iais.roberta.syntax.lang.blocksequence.Location;
 import de.fhg.iais.roberta.syntax.lang.blocksequence.MainTask;
 import de.fhg.iais.roberta.syntax.lang.blocksequence.StartActivityTask;
-import de.fhg.iais.roberta.syntax.lang.expr.*;
-import de.fhg.iais.roberta.syntax.lang.functions.*;
+import de.fhg.iais.roberta.syntax.lang.expr.ActionExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.Binary;
+import de.fhg.iais.roberta.syntax.lang.expr.BoolConst;
+import de.fhg.iais.roberta.syntax.lang.expr.ColorConst;
+import de.fhg.iais.roberta.syntax.lang.expr.ConnectConst;
+import de.fhg.iais.roberta.syntax.lang.expr.EmptyExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.EmptyList;
+import de.fhg.iais.roberta.syntax.lang.expr.Expr;
+import de.fhg.iais.roberta.syntax.lang.expr.ExprList;
+import de.fhg.iais.roberta.syntax.lang.expr.FunctionExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.ListCreate;
+import de.fhg.iais.roberta.syntax.lang.expr.MathConst;
+import de.fhg.iais.roberta.syntax.lang.expr.MethodExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.NullConst;
+import de.fhg.iais.roberta.syntax.lang.expr.NumConst;
+import de.fhg.iais.roberta.syntax.lang.expr.RgbColor;
+import de.fhg.iais.roberta.syntax.lang.expr.SensorExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.ShadowExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.StmtExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.StringConst;
+import de.fhg.iais.roberta.syntax.lang.expr.Unary;
+import de.fhg.iais.roberta.syntax.lang.expr.Var;
+import de.fhg.iais.roberta.syntax.lang.expr.VarDeclaration;
+import de.fhg.iais.roberta.syntax.lang.functions.FunctionNames;
+import de.fhg.iais.roberta.syntax.lang.functions.GetSubFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.IndexOfFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.LengthOfIsEmptyFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.ListGetIndex;
+import de.fhg.iais.roberta.syntax.lang.functions.ListRepeat;
+import de.fhg.iais.roberta.syntax.lang.functions.ListSetIndex;
+import de.fhg.iais.roberta.syntax.lang.functions.MathConstrainFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.MathNumPropFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.MathOnListFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.MathPowerFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.MathRandomFloatFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.MathRandomIntFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.MathSingleFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.TextJoinFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.TextPrintFunct;
 import de.fhg.iais.roberta.syntax.lang.methods.MethodCall;
 import de.fhg.iais.roberta.syntax.lang.methods.MethodIfReturn;
 import de.fhg.iais.roberta.syntax.lang.methods.MethodReturn;
 import de.fhg.iais.roberta.syntax.lang.methods.MethodVoid;
-import de.fhg.iais.roberta.syntax.lang.stmt.*;
+import de.fhg.iais.roberta.syntax.lang.stmt.ActionStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.AssertStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.AssignStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.DebugAction;
+import de.fhg.iais.roberta.syntax.lang.stmt.ExprStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.FunctionStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.IfStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.MethodStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.RepeatStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.RepeatStmt.Mode;
+import de.fhg.iais.roberta.syntax.lang.stmt.SensorStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.Stmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon.Flow;
+import de.fhg.iais.roberta.syntax.lang.stmt.StmtList;
+import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
+import de.fhg.iais.roberta.syntax.lang.stmt.WaitStmt;
+import de.fhg.iais.roberta.syntax.lang.stmt.WaitTimeStmt;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.util.dbc.DbcException;
@@ -41,7 +93,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
     protected int stmtsNumber = 0;
     protected int methodsNumber = 0;
 
-    protected JSONObject fctDecls = new JSONObject();
+    private JSONObject fctDecls = new JSONObject();
     protected List<JSONObject> opArray = new ArrayList<>();
     protected final List<List<JSONObject>> opArrayStack = new ArrayList<>();
     protected final ConfigurationAst configuration;
@@ -297,15 +349,15 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
                 ifStmt.getExpr().get(i).visit(this);
                 pushOpArray();
                 ifStmt.getThenList().get(i).visit(this);
-                this.opArray.add(stmtListEnd);
+                this.getOpArray().add(stmtListEnd);
                 List<JSONObject> thenStmts = popOpArray();
                 JSONObject ifTrue = mk(C.IF_TRUE_STMT).put(C.STMT_LIST, thenStmts);
-                this.opArray.add(ifTrue);
+                this.getOpArray().add(ifTrue);
             }
             if ( !ifStmt.getElseList().get().isEmpty() ) {
                 ifStmt.getElseList().visit(this);
             }
-            this.opArray.add(stmtListEnd);
+            this.getOpArray().add(stmtListEnd);
             List<JSONObject> ifThenElseOps = popOpArray();
             JSONObject o = mk(C.IF_STMT).put(C.STMT_LIST, ifThenElseOps);
             return app(o);
@@ -322,14 +374,14 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
             pushOpArray();
             repeatStmt.getList().visit(this);
             JSONObject stmtListEnd = mk(C.FLOW_CONTROL).put(C.KIND, C.WAIT_STMT).put(C.CONDITIONAL, false).put(C.BREAK, true);
-            this.opArray.add(stmtListEnd);
+            this.getOpArray().add(stmtListEnd);
             List<JSONObject> waitBody = popOpArray();
             JSONObject o = mk(C.IF_TRUE_STMT).put(C.STMT_LIST, waitBody);
             return app(o);
         }
 
         // The "real" repeat cases
-        if ( (mode == Mode.FOREVER) || (mode == Mode.TIMES) || (mode == Mode.FOR) || (mode == Mode.FOR_EACH) ) {
+        if ( mode == Mode.FOREVER || mode == Mode.TIMES || mode == Mode.FOR || mode == Mode.FOR_EACH ) {
             pushOpArray();
             repeatStmt.getList().visit(this);
             List<JSONObject> repeatBody = popOpArray();
@@ -344,7 +396,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
                 JSONObject decl = timesExprs.remove(1);
                 JSONObject listName = timesExprs.remove(1);
                 timesExprs.set(1, mk(C.EXPR).put(C.EXPR, C.NUM_CONST).put(C.VALUE, 1));
-                this.opArray.addAll(timesExprs);
+                this.getOpArray().addAll(timesExprs);
                 String varName = decl.getString(C.NAME);
                 String runVarName = varName + "_runningVariable";
                 cont.put(C.NAME, varName).put(C.EACH_COUNTER, runVarName).put(C.LIST, listName.getString(C.NAME));
@@ -355,7 +407,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
                 repeatStmt.getExpr().visit(this); // expected: expr list length 4: var, start, end, incr
                 List<JSONObject> timesExprs = popOpArray();
                 JSONObject decl = timesExprs.remove(0);
-                this.opArray.addAll(timesExprs);
+                this.getOpArray().addAll(timesExprs);
                 String runVarName = decl.getString(C.NAME);
                 cont.put(C.NAME, runVarName);
                 repeat.put(C.NAME, runVarName);
@@ -363,7 +415,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
             }
         }
 
-        if ( (mode == Mode.WHILE) || (mode == Mode.UNTIL) ) {
+        if ( mode == Mode.WHILE || mode == Mode.UNTIL ) {
             pushOpArray();
             repeatStmt.getExpr().visit(this);
             List<JSONObject> expr = popOpArray();
@@ -432,8 +484,8 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
         for ( Stmt<V> repeatStmt : repeatStmts ) {
             repeatStmt.visit(this);
         }
-        this.opArray.add(mk(C.EXPR).put(C.EXPR, C.NUM_CONST).put(C.VALUE, 1));
-        this.opArray.add(mk(C.WAIT_TIME_STMT));
+        this.getOpArray().add(mk(C.EXPR).put(C.EXPR, C.NUM_CONST).put(C.VALUE, 1));
+        this.getOpArray().add(mk(C.WAIT_TIME_STMT));
         List<JSONObject> waitBlocks = popOpArray();
         JSONObject o = mk(C.WAIT_STMT).put(C.STMT_LIST, waitBlocks);
         return app(o);
@@ -599,10 +651,10 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
         pushOpArray();
         methodVoid.getBody().visit(this);
         JSONObject terminateMethodCall = mk(C.FLOW_CONTROL).put(C.KIND, C.METHOD_CALL_VOID).put(C.CONDITIONAL, false).put(C.BREAK, true);
-        this.opArray.add(terminateMethodCall);
+        this.getOpArray().add(terminateMethodCall);
         List<JSONObject> methodBody = popOpArray();
         JSONObject o = mk(C.METHOD_VOID).put(C.NAME, methodVoid.getMethodName()).put(C.STATEMENTS, methodBody);
-        this.fctDecls.put(methodVoid.getMethodName(), o);
+        this.getFctDecls().put(methodVoid.getMethodName(), o);
         return null;
     }
 
@@ -615,10 +667,10 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
         methodReturn.getBody().visit(this);
         methodReturn.getReturnValue().visit(this);
         JSONObject terminateMethodCall = mk(C.FLOW_CONTROL).put(C.KIND, C.METHOD_CALL_RETURN).put(C.CONDITIONAL, false).put(C.BREAK, true);
-        this.opArray.add(terminateMethodCall);
+        this.getOpArray().add(terminateMethodCall);
         List<JSONObject> methodBody = popOpArray();
         JSONObject o = mk(C.METHOD_RETURN).put(C.TYPE, methodReturn.getReturnType()).put(C.NAME, methodReturn.getMethodName()).put(C.STATEMENTS, methodBody);
-        this.fctDecls.put(methodReturn.getMethodName(), o);
+        this.getFctDecls().put(methodReturn.getMethodName(), o);
         return null;
     }
 
@@ -628,7 +680,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
         pushOpArray();
         methodIfReturn.getReturnValue().visit(this);
         JSONObject terminateMethodCall = mk(C.FLOW_CONTROL).put(C.KIND, C.METHOD_CALL_RETURN).put(C.CONDITIONAL, false).put(C.BREAK, true);
-        this.opArray.add(terminateMethodCall);
+        this.getOpArray().add(terminateMethodCall);
         List<JSONObject> returnValueExpr = popOpArray();
         JSONObject o = mk(C.IF_RETURN).put(C.STMT_LIST, returnValueExpr);
         return app(o);
@@ -645,7 +697,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
         List<Expr<V>> parametersNames = methodCall.getParameters().get();
         pushOpArray();
         parametersNames.stream().forEach(n -> n.visit(this));
-        List<String> names = this.opArray.stream().map(d -> d.getString(C.NAME)).collect(Collectors.toList());
+        List<String> names = this.getOpArray().stream().map(d -> d.getString(C.NAME)).collect(Collectors.toList());
         names = Lists.reverse(names);
         popOpArray();
         List<Expr<V>> parametersValues = methodCall.getParametersValues().get();
@@ -680,7 +732,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
         return isReverse ? TurnDirection.RIGHT : TurnDirection.LEFT;
     }
 
-    protected void generateCodeFromPhrases(ArrayList<ArrayList<Phrase<V>>> phrasesSet) {
+    public void generateCodeFromPhrases(ArrayList<ArrayList<Phrase<V>>> phrasesSet) {
         for ( ArrayList<Phrase<V>> phrases : phrasesSet ) {
             for ( Phrase<V> phrase : phrases ) {
                 phrase.visit(this);
@@ -693,18 +745,18 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
     }
 
     protected V app(JSONObject o) {
-        this.opArray.add(o);
+        this.getOpArray().add(o);
         return null;
     }
 
     protected void pushOpArray() {
-        this.opArrayStack.add(this.opArray);
-        this.opArray = new ArrayList<>();
+        this.opArrayStack.add(this.getOpArray());
+        this.setOpArray(new ArrayList<>());
     }
 
     protected List<JSONObject> popOpArray() {
-        List<JSONObject> opArray = this.opArray;
-        this.opArray = this.opArrayStack.remove(this.opArrayStack.size() - 1);
+        List<JSONObject> opArray = this.getOpArray();
+        this.setOpArray(this.opArrayStack.remove(this.opArrayStack.size() - 1));
         return opArray;
     }
 
@@ -714,7 +766,7 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
         assertStmt.getAssert().visit(this);
         ((Binary<Void>) assertStmt.getAssert()).getLeft().visit((IVisitor<Void>) this);
         ((Binary<Void>) assertStmt.getAssert()).getRight().visit((IVisitor<Void>) this);
-        String op = ((Binary<Void>) (assertStmt.getAssert())).getOp().toString();
+        String op = ((Binary<Void>) assertStmt.getAssert()).getOp().toString();
         JSONObject o = mk(C.ASSERT_ACTION).put(C.MSG, assertStmt.getMsg()).put(C.OP, op);
         return app(o);
     }
@@ -729,5 +781,21 @@ public abstract class AbstractStackMachineVisitor<V> implements ILanguageVisitor
     protected void generateProgramPrefix(boolean withWrapping) {
         // TODO Auto-generated method stub
 
+    }
+
+    public List<JSONObject> getOpArray() {
+        return this.opArray;
+    }
+
+    public void setOpArray(List<JSONObject> opArray) {
+        this.opArray = opArray;
+    }
+
+    public JSONObject getFctDecls() {
+        return this.fctDecls;
+    }
+
+    public void setFctDecls(JSONObject fctDecls) {
+        this.fctDecls = fctDecls;
     }
 }

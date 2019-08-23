@@ -103,7 +103,7 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    private NxtNxcVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
+    NxtNxcVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
         super(programPhrases, indentation);
         this.brickConfiguration = brickConfiguration;
         NxtUsedHardwareCollectorVisitor codePreprocessVisitor = new NxtUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
@@ -614,7 +614,7 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
         this.sb.append(methodName).append("(OUT_");
         String port = createSortedPorts(leftMotorPort, rightMotorPort);
         this.sb.append(port);
-        if ( (!reverse && localReverse) || (!localReverse && reverse) ) {
+        if ( !reverse && localReverse || !localReverse && reverse ) {
             this.sb.append(", -1 * ");
         } else {
             this.sb.append(", ");

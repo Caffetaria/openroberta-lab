@@ -96,7 +96,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
      * @param indentation to start with. Will be ince/decr depending on block structure
      * @param helperMethodGenerator
      */
-    private NaoPythonVisitor(
+    NaoPythonVisitor(
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,

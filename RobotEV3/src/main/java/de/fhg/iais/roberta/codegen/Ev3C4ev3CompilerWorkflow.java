@@ -49,6 +49,7 @@ public class Ev3C4ev3CompilerWorkflow extends AbstractCompilerWorkflow {
         try {
             this.generatedSourceCode = Ev3C4ev3Visitor.generate(programName, data.getConfigurationAst(), data.getProgramAst().getTree(), true, language);
             LOG.info("c4ev3 code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("c4ev3 code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

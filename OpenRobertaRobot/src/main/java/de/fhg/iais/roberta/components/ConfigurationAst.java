@@ -26,6 +26,11 @@ public class ConfigurationAst {
     private final float trackWidthCM;
     private final List<String> componentTypes;
 
+    private String ipAddress;
+    private String portNumber;
+    private String userName;
+    private String password;
+
     public ConfigurationAst(Collection<ConfigurationComponent> configurationComponents, float wheelDiameterCM, float trackWidthCM) {
         this.configurationComponents = buildConfigurationComponentMap(configurationComponents);
         this.wheelDiameterCM = wheelDiameterCM;
@@ -165,6 +170,30 @@ public class ConfigurationAst {
 
         private float wheelDiameter;
         private float trackWidth;
+        private String ipAddress;
+        private String portNumber;
+        private String userName;
+        private String password;
+
+        public Builder setIpAddress(String ipAddress) {
+            this.ipAddress = ipAddress;
+            return this;
+        }
+
+        public Builder setPortNumber(String portNumber) {
+            this.portNumber = portNumber;
+            return this;
+        }
+
+        public Builder setUserName(String userName) {
+            this.userName = userName;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
 
         /**
          * Client must provide list of hardware components ({@link ConfigurationComponent})
@@ -201,7 +230,12 @@ public class ConfigurationAst {
         }
 
         public ConfigurationAst build() {
-            return new ConfigurationAst(this.configurationComponents, this.wheelDiameter, this.trackWidth);
+            ConfigurationAst configurationAst = new ConfigurationAst(this.configurationComponents, this.wheelDiameter, this.trackWidth);
+            configurationAst.ipAddress = this.ipAddress;
+            configurationAst.portNumber = this.portNumber;
+            configurationAst.userName = this.userName;
+            configurationAst.password = this.password;
+            return configurationAst;
         }
 
         public <CC> CC build(Class<CC> clazz) {

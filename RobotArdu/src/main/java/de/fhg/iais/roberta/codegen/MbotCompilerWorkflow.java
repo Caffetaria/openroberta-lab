@@ -37,6 +37,7 @@ public class MbotCompilerWorkflow extends AbstractCompilerWorkflow {
         try {
             this.generatedSourceCode = MbotCppVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true);
             LOG.info("mbot c++ code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("mbot c++ code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

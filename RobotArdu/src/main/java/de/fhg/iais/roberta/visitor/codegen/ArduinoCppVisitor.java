@@ -58,7 +58,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    private ArduinoCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
+    ArduinoCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
         super(brickConfiguration, phrases, indentation);
         ArduinoUsedHardwareCollectorVisitor codePreprocessVisitor = new ArduinoUsedHardwareCollectorVisitor(phrases, brickConfiguration);
         this.usedSensors = codePreprocessVisitor.getUsedSensors();
@@ -431,9 +431,9 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
         long numberConf =
             this.programPhrases
                 .stream()
-                .filter(phrase -> (phrase.getKind().getCategory() == Category.METHOD) && !phrase.getKind().hasName("METHOD_CALL"))
+                .filter(phrase -> phrase.getKind().getCategory() == Category.METHOD && !phrase.getKind().hasName("METHOD_CALL"))
                 .count();
-        if ( (this.configuration.getConfigurationComponents().isEmpty() || this.isTimerSensorUsed) && (numberConf == 0) ) {
+        if ( (this.configuration.getConfigurationComponents().isEmpty() || this.isTimerSensorUsed) && numberConf == 0 ) {
             nlIndent();
         }
         generateUserDefinedMethods();

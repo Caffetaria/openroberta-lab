@@ -31,11 +31,14 @@ import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
 public class Project {
 
     private static final Logger LOG = LoggerFactory.getLogger(Project.class);
-    private final List<Key> errorMessage = new ArrayList<>();
+    private final List<Key> errorMessages = new ArrayList<>();
     private ProgramAst<Void> program = null;
     private ConfigurationAst configuration = null;
     Map<Key, Map<String, String>> validationResults = new HashMap<>();
-    private String sourceCode;
+    private StringBuilder sourceCode = new StringBuilder();
+    private final StringBuilder indentation = new StringBuilder();
+    private String compiledHex = "";
+
     private HelperMethodGenerator helperMethodGenerator;
 
     private String token;
@@ -44,6 +47,7 @@ public class Project {
     private String programBlockSet;
     private String configurationName;
     private String configurationBlockSet;
+    private String fileExtension;
     private String SSID;
     private String password;
     private ILanguage language;
@@ -74,6 +78,14 @@ public class Project {
         this.language = language;
 
         // make transformation here instead of just setting fields?
+    }
+
+    public String getCompiledHex() {
+        return this.compiledHex;
+    }
+
+    public void setCompiledHex(String compiledHex) {
+        this.compiledHex = compiledHex;
     }
 
     public String getToken() {
@@ -124,6 +136,14 @@ public class Project {
         this.configurationBlockSet = configurationBlockSet;
     }
 
+    public String getFileExtension() {
+        return this.fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
+    }
+
     public String getSSID() {
         return this.SSID;
     }
@@ -148,8 +168,16 @@ public class Project {
         this.language = language;
     }
 
+    public StringBuilder getSourceCode() {
+        return this.sourceCode;
+    }
+
     public void setSourceCode(String sourceCode) {
-        this.sourceCode = sourceCode;
+        this.sourceCode = new StringBuilder(sourceCode);
+    }
+
+    public StringBuilder getIndentation() {
+        return this.indentation;
     }
 
     public static Project setupWithExportXML(IRobotFactory factory, String exportXmlAsString) {
@@ -165,10 +193,6 @@ public class Project {
         return Project.transform(factory, programXmlAsString, configurationXmlAsString);
     }
 
-    public String getSourceCode() {
-        return this.sourceCode;
-    }
-
     public HelperMethodGenerator getHelperMethodGenerator() {
         return this.helperMethodGenerator;
     }
@@ -179,6 +203,21 @@ public class Project {
 
     public Map<Key, Map<String, String>> getValidationResults() {
         return this.validationResults;
+    }
+
+    public Map<String, String> getPinValidationResults() {
+        Map<String, String> result = new HashMap<>();
+        String[] keys =
+            {
+                "BLOCK",
+                "PIN"
+            };
+        Map<String, String> values = this.validationResults.get(Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS);
+        if ( values != null ) {
+            result.put(keys[0], (String) values.keySet().toArray()[0]);
+            result.put(keys[1], (String) values.values().toArray()[0]);
+        }
+        return result;
     }
 
     public void setValidationResults(Map<Key, Map<String, String>> validationResults) {
@@ -216,7 +255,7 @@ public class Project {
         }
         Project project = new Project(programTransformer.getData(), brickConfiguration);
         if ( errorMessage != null ) {
-            project.errorMessage.add(errorMessage);
+            project.errorMessages.add(errorMessage);
         }
         return project;
     }
@@ -225,7 +264,15 @@ public class Project {
      * @return the list of keys with errorMessages
      */
     public List<Key> getErrorMessages() {
-        return this.errorMessage;
+        return this.errorMessages;
+    }
+
+    public Key getErrorMessage() {
+        if ( !this.errorMessages.isEmpty() && this.errorMessages != null ) {
+            return this.errorMessages.get(0);
+        } else {
+            return Key.COMPILERWORKFLOW_SUCCESS;
+        }
     }
 
     /**
@@ -300,6 +347,7 @@ public class Project {
         private String programBlockSet;
         private String configurationName;
         private String configurationBlockSet;
+        private String fileExtension;
         private String SSID;
         private String password;
         private ILanguage language;
@@ -338,6 +386,11 @@ public class Project {
             return this;
         }
 
+        public Builder setFileExtension(String fileExtension) {
+            this.fileExtension = fileExtension;
+            return this;
+        }
+
         public Builder setSSID(String sSID) {
             this.SSID = sSID;
             return this;
@@ -367,9 +420,11 @@ public class Project {
             project.setProgramBlockSet(this.programBlockSet);
             project.setConfigurationName(this.configurationName);
             project.setConfigurationBlockSet(this.configurationBlockSet);
+            project.setFileExtension(this.fileExtension);
             project.setSSID(this.SSID);
             project.setPassword(this.password);
             project.setLanguage(this.language);
+            project.getConfigurationAst().setRobotName(this.robot);
             return project;
         }
 

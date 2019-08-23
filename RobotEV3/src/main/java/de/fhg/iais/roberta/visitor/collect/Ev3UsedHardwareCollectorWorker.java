@@ -21,7 +21,7 @@ public final class Ev3UsedHardwareCollectorWorker implements IWorker {
 
     @Override
     public void execute(Project project) {
-        final Ev3UsedHardwareCollectorVisitorNew visitor = new Ev3UsedHardwareCollectorVisitorNew(project.getConfigurationAst());
+        final Ev3UsedHardwareCollectorVisitor visitor = new Ev3UsedHardwareCollectorVisitor(project.getProgramAst().getTree(), project.getConfigurationAst());
         ArrayList<ArrayList<Phrase<Void>>> tree = project.getProgramAst().getTree();
         for ( ArrayList<Phrase<Void>> phrases : tree ) {
             for ( Phrase<Void> phrase : phrases ) {

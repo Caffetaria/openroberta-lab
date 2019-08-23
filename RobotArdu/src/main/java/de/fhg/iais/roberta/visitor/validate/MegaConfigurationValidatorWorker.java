@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 import de.fhg.iais.roberta.transformer.Project;
 
-public class MegaConfigurationValidatorVisitor extends ArduinoConfigurationValidatorVisitor {
+public class MegaConfigurationValidatorWorker extends ArduinoConfigurationValidatorWorker {
     @Override
     public void execute(Project project) {
         super.setFreePins(

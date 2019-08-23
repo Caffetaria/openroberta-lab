@@ -38,6 +38,7 @@ public class Bob3CompilerWorkflow extends AbstractCompilerWorkflow {
         try {
             this.generatedSourceCode = Bob3CppVisitor.generate(data.getProgramAst().getTree(), true);
             LOG.info("bob3 c++ code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("bob3 c++ code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

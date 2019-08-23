@@ -35,12 +35,9 @@ import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.javaServer.provider.OraData;
 import de.fhg.iais.roberta.mode.action.Language;
-import de.fhg.iais.roberta.persistence.AbstractProcessor;
 import de.fhg.iais.roberta.persistence.AccessRightProcessor;
 import de.fhg.iais.roberta.persistence.ConfigurationProcessor;
-import de.fhg.iais.roberta.persistence.DummyProcessor;
 import de.fhg.iais.roberta.persistence.LikeProcessor;
-import de.fhg.iais.roberta.persistence.ProcessorStatus;
 import de.fhg.iais.roberta.persistence.ProgramProcessor;
 import de.fhg.iais.roberta.persistence.UserProcessor;
 import de.fhg.iais.roberta.persistence.bo.Program;
@@ -129,57 +126,8 @@ public class ClientProgram {
             } else {
                 ICompilerWorkflow compilerWorkflow = robotFactory.getRobotCompilerWorkflow();
                 if ( cmd.equals("showSourceP") ) {
-                    final String token = httpSessionState.getToken();
-                    final String programName = request.getString("name");
-                    final String programText = request.getString("programText");
-                    final String configName = request.optString("configuration", null);
-                    String configurationText = request.optString("configurationText", null);
-                    final String SSID = request.optString("SSID", null);
-                    final String password = request.optString("password", null);
-                    final ILanguage language = Language.findByAbbr(request.optString("language"));
-                    // configuration must always be given by frontend to remove the following:
-                    if ( configName != null ) {
-                        configurationText = configurationProcessor.getConfigurationText(configName, userId, robot);
-                    } else if ( configurationText == null ) {
-                        configurationText = robotFactory.getConfigurationDefault();
-                    }
-
-                    final AbstractProcessor forMessages = new DummyProcessor();
-                    final Project project = Project.setupWithExportXML(robotFactory, programText, configurationText);
-                    project.setProgramName(programName);
-                    project.getConfigurationAst().setRobotName(httpSessionState.getRobotName());
-                    String sourceCode = null;
-                    if ( !project.getErrorMessages().isEmpty() ) {
-                        forMessages.setStatus(ProcessorStatus.FAILED, project.getErrorMessages().get(0), responseParameters);
-                    } else {
-                        if ( !robotFactory.getWorkerNames().isEmpty() ) {
-                            robotFactory.execute(project, robotFactory.getWorkerNames());
-                        }
-                        compilerWorkflow.generateSourceCode(token, programName, project, SSID, password, language);
-                        for ( Map<String, String> value : project.getValidationResults().values() ) {
-                            responseParameters.putAll(value);
-                        }
-                        sourceCode = compilerWorkflow.getGeneratedSourceCode();
-                        ProcessorStatus status;
-                        Key result;
-                        if ( sourceCode == null ) {
-                            status = ProcessorStatus.FAILED;
-                            result = compilerWorkflow.getWorkflowResult();
-                        } else if ( !project.getValidationResults().keySet().isEmpty() ) {
-                            status = ProcessorStatus.FAILED;
-                            result = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
-                        } else {
-                            status = ProcessorStatus.SUCCEEDED;
-                            result = compilerWorkflow.getWorkflowResult();
-                        }
-                        forMessages.setStatus(status, result, responseParameters);
-                    }
-                    response.put("sourceCode", sourceCode);
-                    response.put("fileExtension", robotFactory.getFileExtension());
-                    response.put("data", ClientProgram.jaxbToXml(ClientProgram.astToJaxb(project.getProgramAst())));
-                    response.put("configuration", ClientProgram.jaxbToXml(project.getConfigurationAst().generateBlockSet()));
-                    Util.addResultInfo(response, forMessages);
-                    Statistics.info("ProgramSource", "success", forMessages.succeeded());
+                    // this was moved to ProjectRestController -> getSourceCode
+                    return Response.serverError().build();
                 } else if ( cmd.equals("loadP") ) {
                     if ( !httpSessionState.isUserLoggedIn()
                         && !request.getString("owner").equals("Roberta")
@@ -421,64 +369,8 @@ public class ClientProgram {
                     }
 
                 } else if ( cmd.equals("runP") ) {
-                    httpSessionState.setProcessing(true);
-                    boolean wasRobotWaiting = false;
-                    final String token = httpSessionState.getToken();
-                    final String programName = request.getString("name");
-                    final String programText = request.optString("programText");
-                    final String configName = request.optString("configuration", null);
-                    String configurationText = request.optString("configurationText", null);
-                    final ILanguage language = Language.findByAbbr(request.optString("language"));
-                    if ( configName != null ) {
-                        configurationText = configurationProcessor.getConfigurationText(configName, userId, robot);
-                    } else if ( configurationText == null ) {
-                        configurationText = robotFactory.getConfigurationDefault();
-                    }
-                    final Project programAndConfigTransformer = Project.setupWithExportXML(robotFactory, programText, configurationText);
-                    programAndConfigTransformer.getConfigurationAst().setRobotName(httpSessionState.getRobotName());
-                    List<Key> messageKeys = programAndConfigTransformer.getErrorMessages();
-                    Key messageKey = null;
-
-                    if ( messageKeys.isEmpty() ) {
-                        final AbstractProgramValidatorVisitor programChecker =
-                            robotFactory.getRobotProgramCheckVisitor(programAndConfigTransformer.getConfigurationAst());
-                        messageKey = programConfigurationCompatibilityCheck(response, programAndConfigTransformer, programChecker);
-                        if ( messageKey == null ) {
-                            ClientProgram.LOG.info("compiler workflow started for program {}", programName);
-                            compilerWorkflow.generateSourceAndCompile(token, programName, programAndConfigTransformer, language);
-                            messageKey = compilerWorkflow.getWorkflowResult();
-                            if ( messageKey == Key.COMPILERWORKFLOW_SUCCESS && token != null && !token.equals(ClientAdmin.NO_CONNECT) ) {
-                                this.brickCommunicator.setSubtype(httpSessionState.getRobotName());
-                                wasRobotWaiting = this.brickCommunicator.theRunButtonWasPressed(token, programName);
-
-                                Statistics
-                                    .info(
-                                        "ProgramRun",
-                                        "LoggedIn",
-                                        httpSessionState.isUserLoggedIn(),
-                                        "success",
-                                        true,
-                                        "programLength",
-                                        StringUtils.countMatches(programText, "<block "));
-                            } else {
-                                if ( messageKey != null ) {
-                                    LOG.info(messageKey.toString());
-                                }
-                                LOG.info("download command skipped, keep going with push requests");
-                                Statistics
-                                    .info(
-                                        "ProgramRun",
-                                        "LoggedIn",
-                                        httpSessionState.isUserLoggedIn(),
-                                        "success",
-                                        false,
-                                        "programLength",
-                                        StringUtils.countMatches(programText, "<block "));
-                            }
-                        }
-                    }
-                    handleRunProgramError(response, messageKey, token, wasRobotWaiting, compilerWorkflow.getCrosscompilerResponse());
-                    httpSessionState.setProcessing(false);
+                    // this was moved to ProjectRestController -> runProgram
+                    return Response.serverError().build();
                 } else if ( cmd.equals("compileN") ) {
                     final String programName = request.getString("name");
                     final String programText = request.optString("programText");
@@ -523,8 +415,8 @@ public class ClientProgram {
                             final String token = httpSessionState.getToken();
                             final Project programAndConfigTransformer = Project.setupWithExportXML(robotFactory, programText, configText);
                             programAndConfigTransformer.getConfigurationAst().setRobotName(httpSessionState.getRobotName());
-                            messageKey = programAndConfigTransformer.getErrorMessages().get(0);
-                            if ( messageKey == null ) {
+                            List<Key> messageKeys = programAndConfigTransformer.getErrorMessages();
+                            if ( messageKeys.isEmpty() ) {
                                 final AbstractProgramValidatorVisitor programChecker =
                                     robotFactory.getRobotProgramCheckVisitor(programAndConfigTransformer.getConfigurationAst());
                                 messageKey = programConfigurationCompatibilityCheck(response, programAndConfigTransformer, programChecker);

@@ -95,7 +95,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
-    private Ev3PythonVisitor(
+    Ev3PythonVisitor(
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,

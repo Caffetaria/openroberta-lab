@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import de.fhg.iais.roberta.blockly.generated.BlockSet;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiCommunicator;
-import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiConfiguration;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.transformer.Project;
@@ -38,13 +37,7 @@ public class RaspberryPiCompilerWorkflow extends AbstractCompilerWorkflow {
         } else {
             try {
                 this.generatedSourceCode =
-                    RaspberryPiPythonVisitor
-                        .generate(
-                            (RaspberryPiConfiguration) data.getConfigurationAst(),
-                            data.getProgramAst().getTree(),
-                            true,
-                            language,
-                            this.helperMethodGenerator);
+                    RaspberryPiPythonVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true, language, this.helperMethodGenerator);
                 LOG.info("RaspberryPi code generated");
                 this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
             } catch ( Exception e ) {

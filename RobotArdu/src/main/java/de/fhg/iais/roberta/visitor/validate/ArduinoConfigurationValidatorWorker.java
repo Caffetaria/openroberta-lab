@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import de.fhg.iais.roberta.components.ConfigurationComponent;
+import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.util.Key;
 
-public class ArduinoConfigurationValidatorVisitor extends AbstractConfigurationValidatorVisitor {
+public class ArduinoConfigurationValidatorWorker extends AbstractConfigurationValidatorVisitor {
 
     private List<String> freePins;
     private String incorrectPin;
@@ -31,6 +32,24 @@ public class ArduinoConfigurationValidatorVisitor extends AbstractConfigurationV
         project.getConfigurationAst().getConfigurationComponents().forEach((k, v) -> {
             checkConfigurationBlock(v);
         });
+
+        Map<String, String> result = new HashMap<>();
+        if ( this.incorrectPin != null && this.failingBlock != null ) {
+            result.put(this.failingBlock, this.incorrectPin);
+        }
+        Map<Key, Map<String, String>> validationResults = new HashMap<>();
+        if ( this.resultKey != null ) {
+            validationResults.put(this.resultKey, result);
+        }
+        project.setValidationResults(validationResults);
+
+        ArduinoBrickValidatorVisitor visitor = new ArduinoBrickValidatorVisitor(project.getConfigurationAst());
+        ArrayList<ArrayList<Phrase<Void>>> tree = project.getProgramAst().getTree();
+        for ( ArrayList<Phrase<Void>> phrases : tree ) {
+            for ( Phrase<Void> phrase : phrases ) {
+                phrase.visit(visitor); // TODO: REALLY REALLY BAD NAME !!!
+            }
+        }
     }
 
     @Override
@@ -52,41 +71,25 @@ public class ArduinoConfigurationValidatorVisitor extends AbstractConfigurationV
 
     public void checkConfigurationBlock(ConfigurationComponent configurationComponent) {
         Map<String, String> componentProperties = configurationComponent.getComponentProperties();
-        /*Map<String, List<String>> inputToPinsMapping,*/
         String blockType = configurationComponent.getComponentType();
         List<String> blockPins = new ArrayList<>();
-        componentProperties
-            .forEach(
-                (k, v) -> {
-                    //if ( inputToPinsMapping.containsKey(k) ) {
-                    //List<String> allowedPins = inputToPinsMapping.get(k);
-                    if ( /*!(allowedPins.contains(v) &&*/ !this.freePins.contains(v) ) {
-                        //System.err.println("Pin " + v + " is not allowed for " + k + " input/output");
-                        //block.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
-                        this.errorCount++;
-                        this.incorrectPin = v;
-                        this.failingBlock = blockType;
-                        this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
-                        configurationComponent.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
-                        //throw new DbcException("Pin " + v + " is not allowed for " + k + " input/output");
-                    } else {
-                        blockPins.add(v);
-                        this.freePins.removeIf(s -> s.equals(v));
-                    }
-                    /*} else {
-                        System.err.println("Input not allowed " + k);
-                        block.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
-                        errorCount++;
-                    }*/
-                });
+        componentProperties.forEach((k, v) -> {
+            if ( !this.freePins.contains(v) ) {
+                this.errorCount++;
+                this.incorrectPin = v;
+                this.failingBlock = blockType;
+                this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
+                configurationComponent.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
+            } else {
+                blockPins.add(v);
+                this.freePins.removeIf(s -> s.equals(v));
+            }
+        });
         if ( blockPins.stream().distinct().count() != blockPins.size() ) {
-            //System.err.println("Pins must be unique");
-            //block.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
             this.errorCount++;
             this.incorrectPin = "NON_UNIQUE";
             this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
             configurationComponent.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
-            //throw new DbcException("Pins must be unique");
         }
     }
 }

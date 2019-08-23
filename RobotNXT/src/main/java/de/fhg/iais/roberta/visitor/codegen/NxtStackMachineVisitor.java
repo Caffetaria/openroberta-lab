@@ -71,7 +71,7 @@ public class NxtStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> im
         NxtStackMachineVisitor<Void> astVisitor = new NxtStackMachineVisitor<>(brickConfiguration, phrasesSet, language);
         astVisitor.generateCodeFromPhrases(phrasesSet);
         JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.opArray).put(C.FUNCTION_DECLARATION, astVisitor.fctDecls);
+        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
         return generatedCode.toString(2);
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import de.fhg.iais.roberta.codegen.EdisonCompilerWorkflow;
 import de.fhg.iais.roberta.codegen.ICompilerWorkflow;
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.visitor.collect.EdisonMethods;
@@ -62,7 +62,7 @@ public class EdisonFactory extends AbstractRobotFactory {
      * @return null, currently
      */
     @Override
-    public AbstractSimValidatorVisitor getSimProgramCheckVisitor(Configuration brickConfiguration) {
+    public AbstractSimValidatorVisitor getSimProgramCheckVisitor(ConfigurationAst brickConfiguration) {
         return null;
     }
 
@@ -73,7 +73,7 @@ public class EdisonFactory extends AbstractRobotFactory {
      * @return the visitor
      */
     @Override
-    public AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(Configuration brickConfiguration) {
+    public AbstractProgramValidatorVisitor getRobotProgramCheckVisitor(ConfigurationAst brickConfiguration) {
         return new EdisonBrickValidatorVisitor(brickConfiguration);
     }
 
@@ -86,7 +86,7 @@ public class EdisonFactory extends AbstractRobotFactory {
      * @return null, just like every other robot
      */
     @Override
-    public String generateCode(Configuration brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping) {
+    public String generateCode(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping) {
         return null;
     }
 }

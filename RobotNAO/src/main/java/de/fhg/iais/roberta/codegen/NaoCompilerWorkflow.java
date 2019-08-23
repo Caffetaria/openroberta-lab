@@ -31,6 +31,7 @@ public class NaoCompilerWorkflow extends AbstractCompilerWorkflow {
         try {
             this.generatedSourceCode = generateProgram(programName, data, language);
             LOG.info("nao code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("nao code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;
@@ -53,8 +54,7 @@ public class NaoCompilerWorkflow extends AbstractCompilerWorkflow {
     }
 
     private String generateProgram(String programName, Project data, ILanguage language) {
-        String sourceCode =
-            NaoPythonVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true, language, this.helperMethodGenerator);
+        String sourceCode = NaoPythonVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true, language, this.helperMethodGenerator);
         LOG.info("generating {} code", toString().toLowerCase());
         return sourceCode;
     }

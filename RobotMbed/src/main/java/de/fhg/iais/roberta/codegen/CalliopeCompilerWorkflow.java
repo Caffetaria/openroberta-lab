@@ -50,6 +50,7 @@ public class CalliopeCompilerWorkflow extends AbstractCompilerWorkflow {
         try {
             this.generatedSourceCode = CalliopeCppVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true);
             LOG.info("Calliope c++ code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("Calliope c++ code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

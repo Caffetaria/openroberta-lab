@@ -45,11 +45,11 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
     protected LinkedList<Integer> currenLoop = new LinkedList<>();
     protected Map<Integer, Boolean> loopsLabels;
 
-    protected final StringBuilder sb = new StringBuilder();
+    protected StringBuilder sb = new StringBuilder();
     protected final List<Phrase<Void>> programPhrases;
 
     private int indentation;
-    private final StringBuilder indent = new StringBuilder();
+    private StringBuilder indent = new StringBuilder();
 
     /**
      * initialize the common language code generator visitor.
@@ -59,15 +59,20 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
     public AbstractLanguageVisitor(ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
         Assert.isTrue(!programPhrases.isEmpty());
         this.indentation = indentation;
-        for ( int i = 0; i < indentation; i++ ) {
-            this.indent.append(this.INDENT);
-        }
         this.programPhrases =
             programPhrases
                 .stream()
                 .flatMap(e -> e.subList(1, e.size()).stream())
                 .filter(p -> p.getProperty().isInTask() == null ? true : p.getProperty().isInTask() && !p.getProperty().isDisabled()) //TODO check if we can avoid null value for inTask
                 .collect(Collectors.toList());
+    }
+
+    public void setStringBuilders(StringBuilder sourceCode, StringBuilder indentation) {
+        this.sb = sourceCode;
+        this.indent = indentation;
+        for ( int i = 0; i < this.indentation; i++ ) {
+            this.indent.append(this.INDENT);
+        }
     }
 
     /**
@@ -88,7 +93,7 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
         return this.sb;
     }
 
-    protected void generateCode(boolean withWrapping) {
+    public void generateCode(boolean withWrapping) {
         generateProgramPrefix(withWrapping);
         generateProgramMainBody();
         generateProgramSuffix(withWrapping);

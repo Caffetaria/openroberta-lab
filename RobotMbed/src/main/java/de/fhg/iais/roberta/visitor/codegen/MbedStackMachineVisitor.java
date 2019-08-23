@@ -13,7 +13,22 @@ import de.fhg.iais.roberta.syntax.action.display.ClearDisplayAction;
 import de.fhg.iais.roberta.syntax.action.generic.PinWriteValueAction;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
 import de.fhg.iais.roberta.syntax.action.light.LightStatusAction;
-import de.fhg.iais.roberta.syntax.action.mbed.*;
+import de.fhg.iais.roberta.syntax.action.mbed.BothMotorsOnAction;
+import de.fhg.iais.roberta.syntax.action.mbed.BothMotorsStopAction;
+import de.fhg.iais.roberta.syntax.action.mbed.DisplayGetBrightnessAction;
+import de.fhg.iais.roberta.syntax.action.mbed.DisplayGetPixelAction;
+import de.fhg.iais.roberta.syntax.action.mbed.DisplayImageAction;
+import de.fhg.iais.roberta.syntax.action.mbed.DisplaySetBrightnessAction;
+import de.fhg.iais.roberta.syntax.action.mbed.DisplaySetPixelAction;
+import de.fhg.iais.roberta.syntax.action.mbed.DisplayTextAction;
+import de.fhg.iais.roberta.syntax.action.mbed.LedOnAction;
+import de.fhg.iais.roberta.syntax.action.mbed.PinSetPullAction;
+import de.fhg.iais.roberta.syntax.action.mbed.RadioReceiveAction;
+import de.fhg.iais.roberta.syntax.action.mbed.RadioSendAction;
+import de.fhg.iais.roberta.syntax.action.mbed.RadioSetChannelAction;
+import de.fhg.iais.roberta.syntax.action.mbed.SingleMotorOnAction;
+import de.fhg.iais.roberta.syntax.action.mbed.SingleMotorStopAction;
+import de.fhg.iais.roberta.syntax.action.mbed.SwitchLedMatrixAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorGetPowerAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorSetPowerAction;
@@ -26,9 +41,20 @@ import de.fhg.iais.roberta.syntax.expr.mbed.PredefinedImage;
 import de.fhg.iais.roberta.syntax.functions.mbed.ImageInvertFunction;
 import de.fhg.iais.roberta.syntax.functions.mbed.ImageShiftFunction;
 import de.fhg.iais.roberta.syntax.lang.expr.ColorConst;
-import de.fhg.iais.roberta.syntax.lang.stmt.AssertStmt;
-import de.fhg.iais.roberta.syntax.lang.stmt.DebugAction;
-import de.fhg.iais.roberta.syntax.sensor.generic.*;
+import de.fhg.iais.roberta.syntax.sensor.generic.AccelerometerSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.CompassSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.GestureSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.GyroSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.HumiditySensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.InfraredSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.KeysSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.PinGetValueSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.visitor.C;
@@ -37,7 +63,7 @@ import de.fhg.iais.roberta.visitor.lang.codegen.AbstractStackMachineVisitor;
 
 public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> implements IMbedVisitor<V> {
 
-    private MbedStackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases) {
+    MbedStackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases) {
         super(configuration);
         Assert.isTrue(!phrases.isEmpty());
 
@@ -50,7 +76,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
         MbedStackMachineVisitor<Void> astVisitor = new MbedStackMachineVisitor<>(brickConfiguration, phrasesSet);
         astVisitor.generateCodeFromPhrases(phrasesSet);
         JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.opArray).put(C.FUNCTION_DECLARATION, astVisitor.fctDecls);
+        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
         return generatedCode.toString(2);
     }
 
@@ -83,7 +109,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
     public V visitImage(Image<V> image) {
         JSONArray jsonImage = new JSONArray();
         for ( int i = 0; i < 5; i++ ) {
-            ArrayList<Integer> a = new ArrayList<Integer>();
+            ArrayList<Integer> a = new ArrayList<>();
             for ( int j = 0; j < 5; j++ ) {
                 String pixel = image.getImage()[i][j].trim();
                 if ( pixel.equals("#") ) {
@@ -352,7 +378,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
     }
 
     private int map(int x, int in_min, int in_max, int out_min, int out_max) {
-        return (((x - in_min) * (out_max - out_min)) / (in_max - in_min)) + out_min;
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
     @Override

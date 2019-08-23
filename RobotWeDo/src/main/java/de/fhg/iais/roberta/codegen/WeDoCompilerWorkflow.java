@@ -32,6 +32,7 @@ public class WeDoCompilerWorkflow extends AbstractCompilerWorkflow {
         try {
             this.generatedSourceCode = WeDoStackMachineVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree());
             LOG.info("wedo stack machine code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("wedo stack machine code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

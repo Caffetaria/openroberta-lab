@@ -10,7 +10,6 @@ import de.fhg.iais.roberta.blockly.generated.BlockSet;
 import de.fhg.iais.roberta.blockly.generated.Field;
 import de.fhg.iais.roberta.blockly.generated.Instance;
 import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.components.raspberrypi.RaspberryPiConfiguration;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 
@@ -39,7 +38,7 @@ public class Jaxb2RaspberryPiConfigurationTransformer {
                 String userName = extractField(fields, "USERNAME", 2);
                 String password = extractField(fields, "PASSWORD", 3);
 
-                return new RaspberryPiConfiguration.Builder().setIpAddres(ipAddress).setPassword(password).setPortNumber(portNumber).setUserName(userName).build();
+                return new ConfigurationAst.Builder().setIpAddress(ipAddress).setPassword(password).setPortNumber(portNumber).setUserName(userName).build();
             default:
                 throw new DbcException("There was no correct configuration block found!");
         }

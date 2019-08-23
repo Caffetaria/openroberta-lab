@@ -42,14 +42,9 @@ public class VorwerkCompilerWorkflow extends AbstractCompilerWorkflow {
             VorwerkConfiguration configuration = (VorwerkConfiguration) data.getConfigurationAst();
             this.vorwerkCommunicator.setCredentials(configuration.getIpAddress(), configuration.getUserName(), configuration.getPassword());
             this.generatedSourceCode =
-                VorwerkPythonVisitor
-                    .generate(
-                        (VorwerkConfiguration) data.getConfigurationAst(),
-                        data.getProgramAst().getTree(),
-                        true,
-                        language,
-                        this.helperMethodGenerator);
+                VorwerkPythonVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true, language, this.helperMethodGenerator);
             LOG.info("vorwerk code generated");
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("vorwerk code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;

@@ -8,11 +8,10 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.components.Configuration;
-import de.fhg.iais.roberta.components.EdisonConfiguration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
-import de.fhg.iais.roberta.transformer.BlocklyProgramAndConfigTransformer;
+import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.visitor.codegen.EdisonPythonVisitor;
@@ -50,18 +49,16 @@ public class EdisonCompilerWorkflow extends AbstractCompilerWorkflow {
      * @param language locale to be used for messages
      */
     @Override
-    public void generateSourceCode(String token, String programName, BlocklyProgramAndConfigTransformer transformer, ILanguage language) {
-        if ( transformer.getErrorMessage() != null ) {
+    public void generateSourceCode(String token, String programName, Project transformer, ILanguage language) {
+        if ( !transformer.getErrorMessages().isEmpty() ) {
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
         }
 
         try {
             this.generatedSourceCode =
-                EdisonPythonVisitor
-                    .generate(transformer.getRobotConfiguration(), transformer.getProgramTransformer().getTree(), true, this.helperMethodGenerator);
-
+                EdisonPythonVisitor.generate(transformer.getConfigurationAst(), transformer.getProgramAst().getTree(), true, this.helperMethodGenerator);
             LOG.info("Edison code generated.");
-
+            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
             LOG.error("Edison code generation failed", e);
             this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
@@ -98,8 +95,8 @@ public class EdisonCompilerWorkflow extends AbstractCompilerWorkflow {
      * @throws Exception if the Builder fails for whatever reason
      */
     @Override
-    public Configuration generateConfiguration(IRobotFactory factory, String blocklyXml) {
-        return new EdisonConfiguration.Builder().build();
+    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) {
+        return new ConfigurationAst.Builder().build();
     }
 
     /**
@@ -129,14 +126,15 @@ public class EdisonCompilerWorkflow extends AbstractCompilerWorkflow {
         String targetFilePath = this.pluginProperties.getTempDir() + "/" + token + "/" + pyFile + "/target/";
 
         //build and start the Python process
-        String[] executableWithParameters = new String[] {
-            "python2",
-            compilerDir + "EdPy.py",
-            compilerDir + "en_lang.json",
-            sourceFilePath + pyFile + ".py",
-            "-t",
-            targetFilePath + pyFile + ".wav"
-        };
+        String[] executableWithParameters =
+            new String[] {
+                "python2",
+                compilerDir + "EdPy.py",
+                compilerDir + "en_lang.json",
+                sourceFilePath + pyFile + ".py",
+                "-t",
+                targetFilePath + pyFile + ".wav"
+            };
 
         boolean success = runCrossCompiler(executableWithParameters);
         if ( success ) {

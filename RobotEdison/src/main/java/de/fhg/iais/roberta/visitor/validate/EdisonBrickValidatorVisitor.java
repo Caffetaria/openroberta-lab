@@ -1,6 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorSetPowerAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorStopAction;
@@ -19,7 +19,7 @@ import de.fhg.iais.roberta.visitor.hardware.IEdisonVisitor;
 
 public class EdisonBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IEdisonVisitor<Void> {
 
-    public EdisonBrickValidatorVisitor(Configuration brickConfiguration) {
+    public EdisonBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
         super(brickConfiguration);
     }
 

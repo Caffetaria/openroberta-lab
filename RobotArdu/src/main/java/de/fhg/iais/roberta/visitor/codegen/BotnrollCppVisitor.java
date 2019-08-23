@@ -53,7 +53,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    private BotnrollCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
+    BotnrollCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
         super(brickConfiguration, phrases, indentation);
         BotnrollUsedHardwareCollectorVisitor codePreprocessVisitor = new BotnrollUsedHardwareCollectorVisitor(phrases, brickConfiguration);
         this.usedVars = codePreprocessVisitor.getVisitedVars();
@@ -100,8 +100,8 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
 
         this.sb.append("(");
 
-        if ( (isVar && (varType.equals("STRING")))
-            || ((mode != null) && !mode.toString().equals("RED") && !mode.toString().equals("RGB") && !mode.toString().equals("COLOUR")) ) {
+        if ( isVar && varType.equals("STRING")
+            || mode != null && !mode.toString().equals("RED") && !mode.toString().equals("RGB") && !mode.toString().equals("COLOUR") ) {
             toChar = ".c_str()";
         }
 
@@ -160,7 +160,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
         String methodName;
         String port = null;
         final boolean isDuration = motorOnAction.getParam().getDuration() != null;
-        final boolean isServo = (motorOnAction.getUserDefinedPort().equals("A")) || (motorOnAction.getUserDefinedPort().toString().equals("D"));
+        final boolean isServo = motorOnAction.getUserDefinedPort().equals("A") || motorOnAction.getUserDefinedPort().toString().equals("D");
         if ( isServo ) {
             methodName = motorOnAction.getUserDefinedPort().equals("A") ? "one.servo1(" : "one.servo2(";
         } else {
@@ -218,7 +218,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
         }
         methodName = methodName + "(";
         this.sb.append(methodName);
-        if ( (!reverse && localReverse) || (reverse && !localReverse) ) {
+        if ( !reverse && localReverse || reverse && !localReverse ) {
             sign = "-";
         }
         this.sb.append(sign);
@@ -255,7 +255,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
         }
         methodName = methodName + "(";
         this.sb.append(methodName);
-        if ( (!reverse && localReverse) || (reverse && !localReverse) ) {
+        if ( !reverse && localReverse || reverse && !localReverse ) {
             sign = "-";
         }
         this.sb.append(sign);

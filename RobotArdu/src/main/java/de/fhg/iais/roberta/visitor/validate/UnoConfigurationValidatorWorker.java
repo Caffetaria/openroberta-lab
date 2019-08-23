@@ -5,9 +5,9 @@ import java.util.stream.Stream;
 
 import de.fhg.iais.roberta.transformer.Project;
 
-public class UnoConfigurationValidatorVisitor extends ArduinoConfigurationValidatorVisitor {
+public class UnoConfigurationValidatorWorker extends ArduinoConfigurationValidatorWorker {
 
-    public UnoConfigurationValidatorVisitor() {
+    public UnoConfigurationValidatorWorker() {
         super();
     }
 

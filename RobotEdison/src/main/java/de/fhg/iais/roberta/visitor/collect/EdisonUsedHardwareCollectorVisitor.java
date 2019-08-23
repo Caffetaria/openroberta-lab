@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import de.fhg.iais.roberta.components.Configuration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorStopAction;
@@ -31,7 +31,7 @@ import static de.fhg.iais.roberta.visitor.collect.EdisonMethods.*;
 public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IEdisonVisitor<Void> {
     private final Set<EdisonMethods> usedMethods = EnumSet.noneOf(EdisonMethods.class); //All needed helper methods as a Set
 
-    public EdisonUsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> programPhrases, Configuration robotConfiguration) {
+    public EdisonUsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> programPhrases, ConfigurationAst robotConfiguration) {
         super(robotConfiguration);
         check(programPhrases);
     }

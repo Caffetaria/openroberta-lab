@@ -3,7 +3,7 @@ package de.fhg.iais.roberta.visitor.codegen;
 import java.util.ArrayList;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
-import de.fhg.iais.roberta.components.vorwerk.VorwerkConfiguration;
+import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.SC;
@@ -44,7 +44,7 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
  * StringBuilder. <b>This representation is correct Python code.</b> <br>
  */
 public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements IVorwerkVisitor<Void> {
-    protected final VorwerkConfiguration brickConfiguration;
+    protected final ConfigurationAst brickConfiguration;
 
     /**
      * initialize the Python code generator visitor.
@@ -53,8 +53,8 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
-    private VorwerkPythonVisitor(
-        VorwerkConfiguration brickConfiguration,
+    VorwerkPythonVisitor(
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
         ILanguage language,
@@ -77,7 +77,7 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
      * @param programPhrases to generate the code from
      */
     public static String generate(
-        VorwerkConfiguration brickConfiguration,
+        ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
         ILanguage language,

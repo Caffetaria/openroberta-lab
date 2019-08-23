@@ -47,7 +47,7 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    private Bob3CppVisitor(ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
+    Bob3CppVisitor(ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
         super(new ConfigurationAst.Builder().build(), phrases, indentation);
         Bob3UsedHardwareCollectorVisitor codePreprocessVisitor = new Bob3UsedHardwareCollectorVisitor(phrases);
         this.usedVars = codePreprocessVisitor.getVisitedVars();
