@@ -145,7 +145,12 @@ public class ProjectRestController {
             response.put("cmd", "runPBack");
             response.put("data", project.getAnnotatedProgramAsXml());
             response.put("errorCounter", 0);
-            response.put("compiledCode", project.getCompiledHex());
+            if ( this.brickCommunicator.getState(project.getToken()) != null ) {
+                this.brickCommunicator.setSubtype(httpSessionState.getRobotName());
+                this.brickCommunicator.theRunButtonWasPressed(project.getToken(), project.getProgramName());
+            } else {
+                response.put("compiledCode", project.getCompiledHex());
+            }
             response.put("rc", "ok");
             return Response.ok(response).build();
         } catch ( JSONException | JAXBException e ) {

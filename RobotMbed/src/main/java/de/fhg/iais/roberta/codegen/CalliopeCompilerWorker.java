@@ -91,7 +91,7 @@ public class CalliopeCompilerWorker implements IWorker {
 
     protected final void storeGeneratedProgram(String token, String programName, String ext, String generatedSourceCode) {
         try {
-            String tempDir = "/tmp/openRobertaTmp";
+            String tempDir = "/tmp/";
             Assert.isTrue(token != null && programName != null && generatedSourceCode != null);
             File sourceFile = new File(tempDir + token + "/" + programName + "/source/" + programName + ext);
             Path path = Paths.get(tempDir + token + "/" + programName + "/target/");
@@ -111,7 +111,7 @@ public class CalliopeCompilerWorker implements IWorker {
 
     private Key runBuild(String token, String mainFile, String mainPackage, boolean radioUsed) {
         final String compilerResourcesDir = System.getenv("robot_crosscompiler_resourcebase") + "RobotMbed/libs2017/";
-        String tempDir = "/tmp/openRobertaTmp";
+        String tempDir = "/tmp/";
 
         String scriptName = compilerResourcesDir + "../compile." + (SystemUtils.IS_OS_WINDOWS ? "bat" : "sh");
         String bluetooth = radioUsed ? "" : "-b";
