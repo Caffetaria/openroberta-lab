@@ -32,10 +32,11 @@ import de.fhg.iais.roberta.syntax.sensor.generic.KeysSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.BotnrollUsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IBotnrollVisitor;
 
 /**
@@ -44,8 +45,6 @@ import de.fhg.iais.roberta.visitor.hardware.IBotnrollVisitor;
  */
 public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor implements IBotnrollVisitor<Void> {
 
-    private final boolean isTimerSensorUsed;
-
     /**
      * Initialize the C++ code generator visitor.
      *
@@ -53,14 +52,13 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    BotnrollCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
-        super(brickConfiguration, phrases, indentation);
-        BotnrollUsedHardwareCollectorVisitor codePreprocessVisitor = new BotnrollUsedHardwareCollectorVisitor(phrases, brickConfiguration);
-        this.usedVars = codePreprocessVisitor.getVisitedVars();
-        this.usedSensors = codePreprocessVisitor.getUsedSensors();
-        this.usedActors = codePreprocessVisitor.getUsedActors();
-        this.isTimerSensorUsed = codePreprocessVisitor.isTimerSensorUsed();
-        this.loopsLabels = codePreprocessVisitor.getloopsLabelContainer();
+    BotnrollCppVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> phrases,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases, indentation);
     }
 
     /**
@@ -70,9 +68,15 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
      * @param programPhrases to generate the code from
      * @param withWrapping if false the generated code will be without the surrounding configuration code
      */
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
+    public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        boolean withWrapping) {
         Assert.notNull(brickConfiguration);
-        BotnrollCppVisitor astVisitor = new BotnrollCppVisitor(brickConfiguration, programPhrases, withWrapping ? 1 : 0);
+        BotnrollCppVisitor astVisitor =
+            new BotnrollCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, withWrapping ? 1 : 0);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -434,7 +438,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
         decrIndentation();
         mainTask.getVariables().visit(this);
         nlIndent();
-        if ( this.isTimerSensorUsed ) {
+        if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             nlIndent();
             this.sb.append("unsigned long __time = millis();");
         }
@@ -512,7 +516,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
     }
 
     private void generateSensors() {
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             switch ( usedSensor.getType() ) {
                 case SC.COLOR:
                     nlIndent();

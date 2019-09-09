@@ -21,11 +21,12 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.DropOffSensor;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.WallSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IVorwerkVisitor;
 
 public final class VorwerkBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IVorwerkVisitor<Void> {
-    public VorwerkBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public VorwerkBrickValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

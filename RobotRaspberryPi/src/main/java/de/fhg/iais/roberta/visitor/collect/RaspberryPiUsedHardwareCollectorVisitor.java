@@ -9,6 +9,7 @@ import de.fhg.iais.roberta.syntax.action.raspberrypi.LedDimAction;
 import de.fhg.iais.roberta.syntax.action.raspberrypi.LedGetAction;
 import de.fhg.iais.roberta.syntax.action.raspberrypi.LedSetAction;
 import de.fhg.iais.roberta.syntax.lang.expr.ColorHexString;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IRaspberryPiVisitor;
 
 /**
@@ -18,8 +19,8 @@ import de.fhg.iais.roberta.visitor.hardware.IRaspberryPiVisitor;
  */
 public final class RaspberryPiUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IRaspberryPiVisitor<Void> {
 
-    public RaspberryPiUsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public RaspberryPiUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
         check(phrasesSet);
     }
 

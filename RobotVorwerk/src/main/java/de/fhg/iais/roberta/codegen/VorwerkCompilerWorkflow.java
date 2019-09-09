@@ -5,21 +5,16 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.blockly.generated.BlockSet;
-import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.vorwerk.VorwerkCommunicator;
-import de.fhg.iais.roberta.components.vorwerk.VorwerkConfiguration;
-import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
+import de.fhg.iais.roberta.transformer.CompilerSetupBean;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.vorwerk.Jaxb2VorwerkConfigurationTransformer;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.PluginProperties;
-import de.fhg.iais.roberta.util.dbc.DbcException;
-import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
-import de.fhg.iais.roberta.visitor.codegen.VorwerkPythonVisitor;
+import de.fhg.iais.roberta.util.Util1;
+import de.fhg.iais.roberta.visitor.validate.IWorker;
 
-public class VorwerkCompilerWorkflow extends AbstractCompilerWorkflow {
+public class VorwerkCompilerWorkflow implements IWorker {
     private static final Logger LOG = LoggerFactory.getLogger(VorwerkCompilerWorkflow.class);
 
     private final VorwerkCommunicator vorwerkCommunicator;
@@ -27,55 +22,27 @@ public class VorwerkCompilerWorkflow extends AbstractCompilerWorkflow {
     private final HelperMethodGenerator helperMethodGenerator; // TODO pull up to abstract compiler workflow once implemented for all robots
 
     public VorwerkCompilerWorkflow(PluginProperties pluginProperties, HelperMethodGenerator helperMethodGenerator) {
-        super(pluginProperties);
         this.vorwerkCommunicator = new VorwerkCommunicator(pluginProperties.getCompilerResourceDir());
         this.helperMethodGenerator = helperMethodGenerator;
     }
 
     @Override
-    public void generateSourceCode(String token, String programName, Project data, ILanguage language) {
-        if ( !data.getErrorMessages().isEmpty() ) {
-            this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
-            return;
-        }
+    public void execute(Project project) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public Key compileSourceCode(Project project, String sourceCode, String token, String programName, ILanguage language, Object flagProvider) {
+        Util1.storeGeneratedProgram(sourceCode, token, programName, ".py");
+        CompilerSetupBean compilerWorkflowBean = (CompilerSetupBean) project.getWorkerResult("CompilerSetup");
+        final String tempDir = compilerWorkflowBean.getTempDir();
         try {
-            VorwerkConfiguration configuration = (VorwerkConfiguration) data.getConfigurationAst();
-            this.vorwerkCommunicator.setCredentials(configuration.getIpAddress(), configuration.getUserName(), configuration.getPassword());
-            this.generatedSourceCode =
-                VorwerkPythonVisitor.generate(data.getConfigurationAst(), data.getProgramAst().getTree(), true, language, this.helperMethodGenerator);
-            LOG.info("vorwerk code generated");
-            this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
+            String programLocation = tempDir + token + File.separator + programName + File.separator + "source";
+            this.vorwerkCommunicator.uploadFile(programLocation, programName + ".py");
+            return Key.COMPILERWORKFLOW_SUCCESS;
         } catch ( Exception e ) {
-            LOG.error("vorwerk code generation failed", e);
-            this.workflowResult = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED;
+            LOG.error("Uploading the generated program to " + this.vorwerkCommunicator.getIp() + " failed", e.getCause());
+            return Key.VORWERK_PROGRAM_UPLOAD_ERROR;
         }
-    }
-
-    @Override
-    public void compileSourceCode(String token, String programName, ILanguage language, Object flagProvider) {
-        storeGeneratedProgram(token, programName, ".py");
-        if ( this.workflowResult == Key.COMPILERWORKFLOW_SUCCESS ) {
-            try {
-                final String tempDir = this.pluginProperties.getTempDir();
-                String programLocation = tempDir + token + File.separator + programName + File.separator + "source";
-                this.vorwerkCommunicator.uploadFile(programLocation, programName + ".py");
-                this.workflowResult = Key.COMPILERWORKFLOW_SUCCESS;
-            } catch ( Exception e ) {
-                LOG.error("Uploading the generated program to " + this.vorwerkCommunicator.getIp() + " failed", e.getCause());
-                this.workflowResult = Key.VORWERK_PROGRAM_UPLOAD_ERROR;
-            }
-        }
-    }
-
-    @Override
-    public ConfigurationAst generateConfiguration(IRobotFactory factory, String blocklyXml) throws Exception {
-        BlockSet project = JaxbHelper.xml2BlockSet(blocklyXml);
-        Jaxb2VorwerkConfigurationTransformer transformer = new Jaxb2VorwerkConfigurationTransformer(factory);
-        return transformer.transform(project);
-    }
-
-    @Override
-    public String getCompiledCode() {
-        throw new DbcException("Operation not supported");
     }
 }

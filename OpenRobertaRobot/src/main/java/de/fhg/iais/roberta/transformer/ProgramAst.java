@@ -3,13 +3,14 @@ package de.fhg.iais.roberta.transformer;
 import java.util.ArrayList;
 
 import de.fhg.iais.roberta.syntax.Phrase;
+import de.fhg.iais.roberta.visitor.IVisitor;
 
 public class ProgramAst<V> {
     private String robotType = "";
     private String xmlVersion = "";
     private String description = "";
     private String tags = "";
-    private ArrayList<ArrayList<Phrase<V>>> tree = new ArrayList<>();
+    private ArrayList<ArrayList<Phrase<V>>> forests = new ArrayList<>();
 
     public String getRobotType() {
         return this.robotType;
@@ -44,10 +45,18 @@ public class ProgramAst<V> {
     }
 
     public ArrayList<ArrayList<Phrase<V>>> getTree() {
-        return this.tree;
+        return this.forests;
     }
 
     public void setTree(ArrayList<ArrayList<Phrase<V>>> tree) {
-        this.tree = tree;
+        this.forests = tree;
+    }
+
+    public void accept(IVisitor<V> visitor) {
+        for ( ArrayList<Phrase<V>> forest : this.forests ) {
+            for ( Phrase<V> tree : forest ) {
+                tree.visit(visitor);
+            }
+        }
     }
 }

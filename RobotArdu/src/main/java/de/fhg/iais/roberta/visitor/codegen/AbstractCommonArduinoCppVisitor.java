@@ -1,11 +1,8 @@
 package de.fhg.iais.roberta.visitor.codegen;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.components.UsedActor;
-import de.fhg.iais.roberta.components.UsedSensor;
 import de.fhg.iais.roberta.mode.general.IndexLocation;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.SC;
@@ -32,23 +29,27 @@ import de.fhg.iais.roberta.syntax.lang.stmt.RepeatStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitTimeStmt;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
 
 public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor {
 
-    protected Set<UsedSensor> usedSensors;
     protected ConfigurationAst configuration;
-    protected Set<UsedActor> usedActors;
-    protected ArrayList<VarDeclaration<Void>> usedVars;
 
-    protected AbstractCommonArduinoCppVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
-        super(programPhrases, indentation);
+    protected AbstractCommonArduinoCppVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst configuration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
         this.configuration = configuration;
     }
 
     protected void generateUsedVars() {
-        for ( VarDeclaration<Void> var : this.usedVars ) {
+        for ( VarDeclaration<Void> var : this.usedHardwareBean.getVisitedVars() ) {
             this.sb.append("___" + var.getName());
             this.sb.append(" = ");
             var.getValue().visit(this);

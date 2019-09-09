@@ -7,12 +7,13 @@ import de.fhg.iais.roberta.syntax.action.raspberrypi.LedGetAction;
 import de.fhg.iais.roberta.syntax.action.raspberrypi.LedSetAction;
 import de.fhg.iais.roberta.syntax.lang.expr.ColorHexString;
 import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IRaspberryPiVisitor;
 
 public final class RaspberryPiBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IRaspberryPiVisitor<Void> {
 
-    public RaspberryPiBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public RaspberryPiBrickValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

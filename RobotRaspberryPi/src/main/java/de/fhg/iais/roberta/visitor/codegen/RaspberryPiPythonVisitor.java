@@ -2,7 +2,6 @@ package de.fhg.iais.roberta.visitor.codegen;
 
 import java.util.ArrayList;
 
-import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -21,11 +20,11 @@ import de.fhg.iais.roberta.syntax.lang.stmt.WaitStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitTimeStmt;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.RaspberryPiUsedHardwareCollectorVisitor;
-import de.fhg.iais.roberta.visitor.collect.RaspberryPiUsedMethodCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IRaspberryPiVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
 
@@ -44,20 +43,14 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
     RaspberryPiPythonVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
-        ILanguage language,
-        HelperMethodGenerator helperMethodGenerator) {
-        super(programPhrases, indentation, helperMethodGenerator, new RaspberryPiUsedMethodCollectorVisitor(programPhrases));
-
-        RaspberryPiUsedHardwareCollectorVisitor checkVisitor = new RaspberryPiUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
-
+        ILanguage language) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
         this.brickConfiguration = brickConfiguration;
-
-        this.usedGlobalVarInFunctions = checkVisitor.getMarkedVariablesAsGlobal();
-        this.isProgramEmpty = checkVisitor.isProgramEmpty();
-        this.loopsLabels = checkVisitor.getloopsLabelContainer();
     }
 
     /**
@@ -67,14 +60,16 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
      * @param programPhrases to generate the code from
      */
     public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
-        ILanguage language,
-        HelperMethodGenerator helperMethodGenerator) {
+        ILanguage language) {
         Assert.notNull(brickConfiguration);
 
-        RaspberryPiPythonVisitor astVisitor = new RaspberryPiPythonVisitor(brickConfiguration, programPhrases, 0, language, helperMethodGenerator);
+        RaspberryPiPythonVisitor astVisitor =
+            new RaspberryPiPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, 0, language);
         astVisitor.generateCode(withWrapping);
 
         return astVisitor.sb.toString();

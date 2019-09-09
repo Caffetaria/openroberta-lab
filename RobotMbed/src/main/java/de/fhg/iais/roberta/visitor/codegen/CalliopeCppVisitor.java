@@ -92,11 +92,12 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.MbedUsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
 
@@ -105,37 +106,25 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
  * StringBuilder. <b>This representation is correct C++ code for Calliope systems.</b> <br>
  */
 public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbedVisitor<Void> {
-    private final MbedUsedHardwareCollectorVisitor codePreprocess;
-    private final ConfigurationAst configuration;
-    ArrayList<VarDeclaration<Void>> usedVars;
 
-    /**
-     * initialize the C++ code generator visitor for tests. <b>Will be removed in the future, if tests with textual representations of Nepo (instead of
-     * blockly-based graphical representation have been finished.</b>
-     *
-     * @param programPhrases
-     */
-    public CalliopeCppVisitor(ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
-        super(programPhrases, 0);
-        this.codePreprocess = null;
-        this.configuration = null;
-    }
+    private final ConfigurationAst robotConfiguration;
 
     /**
      * initialize the C++ code generator visitor.
      *
-     * @param brickConfiguration hardware configuration of the brick
+     * @param robotConfiguration hardware configuration of the brick
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    CalliopeCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
-        super(programPhrases, indentation);
-        this.configuration = brickConfiguration;
-        this.codePreprocess = new MbedUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
+    CalliopeCppVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst robotConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        this.robotConfiguration = robotConfiguration;
 
-        this.loopsLabels = this.codePreprocess.getloopsLabelContainer();
-        this.userDefinedMethods = this.codePreprocess.getUserDefinedMethods();
-        this.usedVars = this.codePreprocess.getVisitedVars();
     }
 
     /**
@@ -145,10 +134,15 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
+    public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        boolean withWrapping) {
         Assert.notNull(brickConfiguration);
 
-        final CalliopeCppVisitor astVisitor = new CalliopeCppVisitor(brickConfiguration, programPhrases, 0);
+        final CalliopeCppVisitor astVisitor = new CalliopeCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, 0);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -199,7 +193,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     }
 
     protected Void generateUsedVars() {
-        for ( final VarDeclaration<Void> var : this.usedVars ) {
+        for ( final VarDeclaration<Void> var : this.usedHardwareBean.getVisitedVars() ) {
             nlIndent();
             if ( !var.getValue().getKind().hasName("EMPTY_EXPR") ) {
                 this.sb.append("___" + var.getName());
@@ -524,7 +518,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     @Override
     public Void visitKeysSensor(KeysSensor<Void> keysSensor) {
         String userDefined = keysSensor.getPort();
-        String port = this.configuration.getConfigurationComponent(userDefined).getPortName();
+        String port = this.robotConfiguration.getConfigurationComponent(userDefined).getPortName();
         this.sb.append("_uBit.button").append(port).append(".isPressed()");
         return null;
     }
@@ -588,7 +582,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     @Override
     public Void visitGyroSensor(GyroSensor<Void> gyroSensor) {
         String userDefined = gyroSensor.getPort();
-        String port = this.configuration.getConfigurationComponent(userDefined).getPortName();
+        String port = this.robotConfiguration.getConfigurationComponent(userDefined).getPortName();
         this.sb.append("_uBit.accelerometer.get").append(port).append("()");
         return null;
     }
@@ -612,7 +606,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     @Override
     public Void visitPinTouchSensor(PinTouchSensor<Void> pinTouchSensor) {
         String userDefinedName = pinTouchSensor.getPort();
-        String port = this.configuration.getConfigurationComponent(userDefinedName).getPortName();
+        String port = this.robotConfiguration.getConfigurationComponent(userDefinedName).getPortName();
         this.sb.append("_uBit.io." + port + ".isTouched()");
         return null;
     }
@@ -620,7 +614,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     @Override
     public Void visitPinGetValueSensor(PinGetValueSensor<Void> pinValueSensor) {
         String userDefinedName = pinValueSensor.getPort();
-        String port = this.configuration.getConfigurationComponent(userDefinedName).getPortName();
+        String port = this.robotConfiguration.getConfigurationComponent(userDefinedName).getPortName();
         String mode = pinValueSensor.getMode();
         this.sb.append("_uBit.io." + port);
         switch ( mode ) {
@@ -645,7 +639,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     @Override
     public Void visitPinWriteValueAction(PinWriteValueAction<Void> pinWriteValueSensor) {
         String userDefinedName = pinWriteValueSensor.getPort();
-        String port = this.configuration.getConfigurationComponent(userDefinedName).getPortName();
+        String port = this.robotConfiguration.getConfigurationComponent(userDefinedName).getPortName();
         String valueType = pinWriteValueSensor.getMode().equals(SC.DIGITAL) ? "DigitalValue(" : "AnalogValue(";
         this.sb.append("_uBit.io.").append(port).append(".set").append(valueType);
         pinWriteValueSensor.getValue().visit(this);
@@ -656,7 +650,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     @Override
     public Void visitPinSetPullAction(PinSetPullAction<Void> pinSetPullAction) {
         String userDefinedName = pinSetPullAction.getPort();
-        String port = this.configuration.getConfigurationComponent(userDefinedName).getPortName();
+        String port = this.robotConfiguration.getConfigurationComponent(userDefinedName).getPortName();
         String mode = pinSetPullAction.getMode();
         this.sb.append("_uBit.io." + port + ".setPull(Pull").append(WordUtils.capitalizeFully(mode)).append(");");
         return null;
@@ -664,7 +658,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
 
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
-        if ( this.codePreprocess.isTimerSensorUsed() ) {
+        if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             this.sb.append("int _initTime = _uBit.systemTime();");
         }
         mainTask.getVariables().visit(this);
@@ -677,20 +671,20 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
         nlIndent();
         // Initialise the micro:bit runtime.
         this.sb.append("_uBit.init();");
-        if ( this.codePreprocess.isCalliBotUsed() ) {
+        if ( this.usedHardwareBean.isCalliBotUsed() ) {
             nlIndent();
             this.sb.append("_cbInit(_buf, &_i2c, &_uBit);");
         }
         generateUsedVars();
         nlIndent();
-        if ( this.codePreprocess.isGreyScale() ) {
+        if ( this.usedHardwareBean.isGreyScale() ) {
             this.sb.append("_uBit.display.setDisplayMode(DISPLAY_MODE_GREYSCALE);");
         }
-        if ( this.codePreprocess.isRadioUsed() ) {
+        if ( this.usedHardwareBean.isRadioUsed() ) {
             nlIndent();
             this.sb.append("_uBit.radio.enable();");
         }
-        if ( this.codePreprocess.isAccelerometerUsed() ) {
+        if ( this.usedHardwareBean.isAccelerometerUsed() ) {
             nlIndent();
             this.sb.append("_uBit.accelerometer.updateSample();");
         }
@@ -1127,7 +1121,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
     @Override
     protected void generateProgramSuffix(boolean withWrapping) {
         if ( withWrapping ) {
-            if ( this.codePreprocess.isCalliBotUsed() ) {
+            if ( this.usedHardwareBean.isCalliBotUsed() ) {
                 nlIndent();
                 this.sb.append("_cbStop(_buf, &_i2c);");
             }
@@ -1220,29 +1214,29 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
         this.sb.append("#include \"MicroBit.h\"\n");
         this.sb.append("#include \"NEPODefs.h\"\n");
 
-        if ( this.codePreprocess.isFourDigitDisplayUsed() ) {
+        if ( this.usedHardwareBean.isFourDigitDisplayUsed() ) {
             this.sb.append("#include \"FourDigitDisplay.h\"\n");
         }
-        if ( this.codePreprocess.isLedBarUsed() ) {
+        if ( this.usedHardwareBean.isLedBarUsed() ) {
             this.sb.append("#include \"Grove_LED_Bar.h\"\n");
         }
-        if ( this.codePreprocess.isHumidityUsed() ) {
+        if ( this.usedHardwareBean.isHumidityUsed() ) {
             this.sb.append("#include \"Sht31.h\"\n");
         }
         this.sb.append("#include <list>\n");
         this.sb.append("#include <array>\n");
         this.sb.append("#include <stdlib.h>\n");
         this.sb.append("MicroBit _uBit;\n");
-        if ( this.codePreprocess.isFourDigitDisplayUsed() ) {
+        if ( this.usedHardwareBean.isFourDigitDisplayUsed() ) {
             this.sb.append("FourDigitDisplay _fdd(MICROBIT_PIN_P2, MICROBIT_PIN_P8);\n"); // Only works on the right UART Grove connector
         }
-        if ( this.codePreprocess.isLedBarUsed() ) {
+        if ( this.usedHardwareBean.isLedBarUsed() ) {
             this.sb.append("Grove_LED_Bar _ledBar(MICROBIT_PIN_P8, MICROBIT_PIN_P2);\n"); // Only works on the right UART Grove connector; Clock/Data pins are swapped compared to 4DigitDisplay
         }
-        if ( this.codePreprocess.isHumidityUsed() ) {
+        if ( this.usedHardwareBean.isHumidityUsed() ) {
             this.sb.append("Sht31 _sht31 = Sht31(MICROBIT_PIN_P8, MICROBIT_PIN_P2);\n");
         }
-        if ( this.codePreprocess.isCalliBotUsed() ) {
+        if ( this.usedHardwareBean.isCalliBotUsed() ) {
             this.sb.append("MicroBitI2C _i2c(MICROBIT_PIN_P20, MICROBIT_PIN_P19);");
             nlIndent();
             this.sb.append("char _buf[5] = { 0, 0, 0, 0, 0 };");

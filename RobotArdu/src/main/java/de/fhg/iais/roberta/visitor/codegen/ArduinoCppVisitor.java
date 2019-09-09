@@ -39,9 +39,10 @@ import de.fhg.iais.roberta.syntax.sensor.generic.RfidSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.ArduinoUsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IArduinoVisitor;
 
 /**
@@ -49,8 +50,6 @@ import de.fhg.iais.roberta.visitor.hardware.IArduinoVisitor;
  * <b>This representation is correct C code for Arduino.</b> <br>
  */
 public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor implements IArduinoVisitor<Void> {
-    private final boolean isTimerSensorUsed;
-    private final boolean isListsUsed;
 
     /**
      * Initialize the C++ code generator visitor.
@@ -58,15 +57,14 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    ArduinoCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
-        super(brickConfiguration, phrases, indentation);
-        ArduinoUsedHardwareCollectorVisitor codePreprocessVisitor = new ArduinoUsedHardwareCollectorVisitor(phrases, brickConfiguration);
-        this.usedSensors = codePreprocessVisitor.getUsedSensors();
-        this.usedVars = codePreprocessVisitor.getVisitedVars();
-        //TODO: fix how the timer is detected for all robots
-        this.isTimerSensorUsed = codePreprocessVisitor.isTimerSensorUsed();
-        this.loopsLabels = codePreprocessVisitor.getloopsLabelContainer();
-        this.isListsUsed = codePreprocessVisitor.isListsUsed();
+    ArduinoCppVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> phrases,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases, indentation);
+
     }
 
     /**
@@ -76,8 +74,14 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
      * @param programPhrases to generate the code from
      * @param withWrapping if false the generated code will be without the surrounding configuration code
      */
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
-        ArduinoCppVisitor astVisitor = new ArduinoCppVisitor(brickConfiguration, programPhrases, withWrapping ? 1 : 0);
+    public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        boolean withWrapping) {
+        ArduinoCppVisitor astVisitor =
+            new ArduinoCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, withWrapping ? 1 : 0);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -424,7 +428,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
         mainTask.getVariables().visit(this);
         nlIndent();
         generateConfigurationVariables();
-        if ( this.isTimerSensorUsed ) {
+        if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             this.sb.append("unsigned long __time = millis();");
             nlIndent();
         }
@@ -433,14 +437,14 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
                 .stream()
                 .filter(phrase -> phrase.getKind().getCategory() == Category.METHOD && !phrase.getKind().hasName("METHOD_CALL"))
                 .count();
-        if ( (this.configuration.getConfigurationComponents().isEmpty() || this.isTimerSensorUsed) && numberConf == 0 ) {
+        if ( (this.configuration.getConfigurationComponents().isEmpty() || this.usedHardwareBean.isTimerSensorUsed()) && numberConf == 0 ) {
             nlIndent();
         }
         generateUserDefinedMethods();
         if ( numberConf != 0 ) {
             nlIndent();
         }
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             if ( usedSensor.getType().equals(SC.INFRARED) ) {
                 measureIRValue(usedSensor);
                 nlIndent();
@@ -544,7 +548,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
         }
         this.sb.append("#include <RobertaFunctions.h>   // Open Roberta library");
         nlIndent();
-        if ( this.isListsUsed ) {
+        if ( this.usedHardwareBean.isListsUsed() ) {
             this.sb.append("#include <ArduinoSTL.h>");
             nlIndent();
             this.sb.append("#include <list>");

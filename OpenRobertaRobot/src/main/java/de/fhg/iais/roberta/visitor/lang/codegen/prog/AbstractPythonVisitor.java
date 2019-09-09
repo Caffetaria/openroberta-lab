@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
 import de.fhg.iais.roberta.inter.mode.general.IMode;
 import de.fhg.iais.roberta.mode.general.IndexLocation;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -60,10 +59,11 @@ import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon.Flow;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtList;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.AbstractUsedMethodCollectorVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.AbstractLanguageVisitor;
 
 /**
@@ -76,9 +76,6 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
     protected Set<String> usedGlobalVarInFunctions;
     protected boolean isProgramEmpty = false;
 
-    protected final HelperMethodGenerator helperMethodGenerator; // TODO pull up to general robot
-    protected final AbstractUsedMethodCollectorVisitor languageCollectorVisitor; // TODO implement in new structure, not as member of other visitor
-
     /**
      * initialize the Python code generator visitor.
      *
@@ -87,14 +84,11 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
      * @param helperMethodGenerator TODO
      */
     protected AbstractPythonVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation,
-        HelperMethodGenerator helperMethodGenerator,
-        AbstractUsedMethodCollectorVisitor collectorVisitor) {
-        super(programPhrases, indentation);
-
-        this.helperMethodGenerator = helperMethodGenerator;
-        this.languageCollectorVisitor = collectorVisitor;
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
     }
 
     @Override
@@ -362,7 +356,7 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
                 this.sb.append(" % 2) == 1");
                 break;
             case PRIME:
-                String methodName = this.helperMethodGenerator.getHelperMethodName(FunctionNames.PRIME);
+                String methodName = this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodName(FunctionNames.PRIME);
                 this.sb.append(methodName).append("(");
                 mathNumPropFunct.getParam().get(0).visit(this);
                 this.sb.append(")");
@@ -435,12 +429,12 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
                 this.sb.append(")");
                 break;
             case MEDIAN:
-                this.sb.append(this.helperMethodGenerator.getHelperMethodName(FunctionNames.MEDIAN)).append("(");
+                this.sb.append(this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodName(FunctionNames.MEDIAN)).append("(");
                 mathOnListFunct.getParam().get(0).visit(this);
                 this.sb.append(")");
                 break;
             case STD_DEV:
-                this.sb.append(this.helperMethodGenerator.getHelperMethodName(FunctionNames.STD_DEV)).append("(");
+                this.sb.append(this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodName(FunctionNames.STD_DEV)).append("(");
                 mathOnListFunct.getParam().get(0).visit(this);
                 this.sb.append(")");
                 break;
@@ -949,8 +943,9 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
 
     @Override
     protected void generateProgramSuffix(boolean withWrapping) {
-        if ( !this.languageCollectorVisitor.getUsedFunctions().isEmpty() ) {
-            String helperMethodImpls = this.helperMethodGenerator.getHelperMethodDefinitions(this.languageCollectorVisitor.getUsedFunctions());
+        if ( !this.codeGeneratorSetupBean.getUsedFunctions().isEmpty() ) {
+            String helperMethodImpls =
+                this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodDefinitions(this.codeGeneratorSetupBean.getUsedFunctions());
             this.sb.append(helperMethodImpls);
         }
 

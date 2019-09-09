@@ -41,13 +41,14 @@ import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 
 public final class CalliopeSimValidatorVisitor extends AbstractSimValidatorVisitor implements IMbedVisitor<Void> {
 
-    public CalliopeSimValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public CalliopeSimValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

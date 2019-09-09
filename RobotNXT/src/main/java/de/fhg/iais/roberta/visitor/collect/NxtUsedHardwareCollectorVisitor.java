@@ -10,6 +10,7 @@ import de.fhg.iais.roberta.syntax.action.light.LightAction;
 import de.fhg.iais.roberta.syntax.action.sound.PlayNoteAction;
 import de.fhg.iais.roberta.syntax.action.sound.ToneAction;
 import de.fhg.iais.roberta.syntax.action.sound.VolumeAction;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.IVisitor;
 
 /**
@@ -20,8 +21,8 @@ public final class NxtUsedHardwareCollectorVisitor extends AbstractUsedHardwareC
 
     private boolean isVolumeVariableNeeded = false;
 
-    public NxtUsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
-        super(configuration);
+    public NxtUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
+        super(builder, configuration);
         check(phrasesSet);
     }
 
@@ -35,7 +36,7 @@ public final class NxtUsedHardwareCollectorVisitor extends AbstractUsedHardwareC
 
     @Override
     public Void visitLightAction(LightAction<Void> lightAction) {
-        this.usedSensors.add(new UsedSensor(lightAction.getPort(), SC.HT_COLOR, "COLOR"));
+        this.builder.addUsedSensor(new UsedSensor(lightAction.getPort(), SC.HT_COLOR, "COLOR"));
         return null;
     }
 

@@ -23,9 +23,9 @@ import de.fhg.iais.roberta.syntax.action.mbed.PinSetPullAction;
 import de.fhg.iais.roberta.syntax.action.mbed.RadioReceiveAction;
 import de.fhg.iais.roberta.syntax.action.mbed.RadioSendAction;
 import de.fhg.iais.roberta.syntax.action.mbed.RadioSetChannelAction;
-import de.fhg.iais.roberta.syntax.action.mbed.SwitchLedMatrixAction;
 import de.fhg.iais.roberta.syntax.action.mbed.SingleMotorOnAction;
 import de.fhg.iais.roberta.syntax.action.mbed.SingleMotorStopAction;
+import de.fhg.iais.roberta.syntax.action.mbed.SwitchLedMatrixAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorSetPowerAction;
 import de.fhg.iais.roberta.syntax.action.motor.MotorStopAction;
@@ -46,6 +46,7 @@ import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 
 /**
@@ -55,45 +56,9 @@ import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
  */
 public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IMbedVisitor<Void> {
 
-    private boolean radioUsed;
-    private boolean accelerometerUsed;
-    private boolean greyScale;
-    private boolean fourDigitDisplayUsed;
-    private boolean ledBarUsed;
-    private boolean humidityUsed;
-    private boolean calliBotUsed;
-
-    public MbedUsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
-        super(configuration);
+    public MbedUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst robotConfiguration) {
+        super(builder, robotConfiguration);
         check(phrasesSet);
-    }
-
-    public boolean isRadioUsed() {
-        return this.radioUsed;
-    }
-
-    public boolean isAccelerometerUsed() {
-        return this.accelerometerUsed;
-    }
-
-    public boolean isGreyScale() {
-        return this.greyScale;
-    }
-
-    public boolean isFourDigitDisplayUsed() {
-        return this.fourDigitDisplayUsed;
-    }
-
-    public boolean isLedBarUsed() {
-        return this.ledBarUsed;
-    }
-
-    public boolean isHumidityUsed() {
-        return this.humidityUsed;
-    }
-
-    public boolean isCalliBotUsed() {
-        return this.calliBotUsed;
     }
 
     @Override
@@ -111,38 +76,38 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
     @Override
     public Void visitRadioSendAction(RadioSendAction<Void> radioSendAction) {
         radioSendAction.getMsg().visit(this);
-        this.radioUsed = true;
+        this.builder.setRadioUsed(true);
         return null;
     }
 
     @Override
     public Void visitRadioReceiveAction(RadioReceiveAction<Void> radioReceiveAction) {
-        this.radioUsed = true;
+        this.builder.setRadioUsed(true);
         return null;
     }
 
     @Override
     public Void visitRadioSetChannelAction(RadioSetChannelAction<Void> radioSetChannelAction) {
         radioSetChannelAction.getChannel().visit(this);
-        this.radioUsed = true;
+        this.builder.setRadioUsed(true);
         return null;
     }
 
     @Override
     public Void visitGestureSensor(GestureSensor<Void> gestureSensor) {
-        this.accelerometerUsed = true;
+        this.builder.setAccelerometerUsed(true);
         return null;
     }
 
     @Override
     public Void visitCompassSensor(CompassSensor<Void> compassSensor) {
-        this.accelerometerUsed = true;
+        this.builder.setAccelerometerUsed(true);
         return null;
     }
 
     @Override
     public Void visitImage(Image<Void> image) {
-        this.greyScale = true;
+        this.builder.setGreyScale(true);
         return null;
     }
 
@@ -172,19 +137,19 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitDisplaySetBrightnessAction(DisplaySetBrightnessAction<Void> displaySetBrightnessAction) {
-        this.greyScale = true;
+        this.builder.setGreyScale(true);
         return null;
     }
 
     @Override
     public Void visitDisplayGetBrightnessAction(DisplayGetBrightnessAction<Void> displayGetBrightnessAction) {
-        this.greyScale = true;
+        this.builder.setGreyScale(true);
         return null;
     }
 
     @Override
     public Void visitDisplaySetPixelAction(DisplaySetPixelAction<Void> displaySetPixelAction) {
-        this.greyScale = true;
+        this.builder.setGreyScale(true);
         return null;
     }
 
@@ -195,7 +160,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitAccelerometer(AccelerometerSensor<Void> accelerometerSensor) {
-        this.accelerometerUsed = true;
+        this.builder.setAccelerometerUsed(true);
         return null;
     }
 
@@ -221,6 +186,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
         return null;
     }
 
+    @Override
     public Void visitColorConst(ColorConst<Void> colorConst) {
         return null;
     }
@@ -229,21 +195,21 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
     public Void visitLedOnAction(LedOnAction<Void> ledOnAction) {
         ledOnAction.getLedColor().visit(this);
         if ( !ledOnAction.getPort().equals("0") ) {
-            this.calliBotUsed = true;
+            this.builder.setCalliBotUsed(true);
         }
         return null;
     }
 
     @Override
     public Void visitLightAction(LightAction<Void> lightAction) {
-        this.calliBotUsed = true;
+        this.builder.setCalliBotUsed(true);
         return null;
     }
 
     @Override
     public Void visitLightStatusAction(LightStatusAction<Void> lightStatusAction) {
         if ( !lightStatusAction.getPort().equals("0") ) {
-            this.calliBotUsed = true;
+            this.builder.setCalliBotUsed(true);
         }
         return null;
     }
@@ -254,7 +220,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
         if ( motorOnAction.getUserDefinedPort().equals("0")
             || motorOnAction.getUserDefinedPort().equals("2")
             || motorOnAction.getUserDefinedPort().equals("3") ) {
-            this.calliBotUsed = true;
+            this.builder.setCalliBotUsed(true);
         }
         return null;
     }
@@ -275,7 +241,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
         if ( motorStopAction.getUserDefinedPort().equals("0")
             || motorStopAction.getUserDefinedPort().equals("2")
             || motorStopAction.getUserDefinedPort().equals("3") ) {
-            this.calliBotUsed = true;
+            this.builder.setCalliBotUsed(true);
         }
         return null;
     }
@@ -287,13 +253,13 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitRadioRssiSensor(RadioRssiSensor<Void> radioRssiSensor) {
-        this.radioUsed = true;
+        this.builder.setRadioUsed(true);
         return null;
     }
 
     @Override
     public Void visitGyroSensor(GyroSensor<Void> gyroSensor) {
-        this.accelerometerUsed = true;
+        this.builder.setAccelerometerUsed(true);
         return null;
     }
 
@@ -302,13 +268,13 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
         fourDigitDisplayShowAction.getValue().visit(this);
         fourDigitDisplayShowAction.getPosition().visit(this);
         fourDigitDisplayShowAction.getColon().visit(this);
-        this.fourDigitDisplayUsed = true;
+        this.builder.setFourDigitDisplayUsed(true);
         return null;
     }
 
     @Override
     public Void visitFourDigitDisplayClearAction(FourDigitDisplayClearAction<Void> fourDigitDisplayClearAction) {
-        this.fourDigitDisplayUsed = true;
+        this.builder.setFourDigitDisplayUsed(true);
         return null;
     }
 
@@ -316,7 +282,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
     public Void visitLedBarSetAction(LedBarSetAction<Void> ledBarSetAction) {
         ledBarSetAction.getX().visit(this);
         ledBarSetAction.getBrightness().visit(this);
-        this.ledBarUsed = true;
+        this.builder.setLedBarUsed(true);
         return null;
     }
 
@@ -324,14 +290,14 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
     public Void visitUltrasonicSensor(UltrasonicSensor<Void> ultrasonicSensor) {
         String port = ultrasonicSensor.getPort();
         if ( port.equals("2") ) {
-            this.calliBotUsed = true;
+            this.builder.setCalliBotUsed(true);
         }
         return null;
     }
 
     @Override
     public Void visitInfraredSensor(InfraredSensor<Void> infraredSensor) {
-        this.calliBotUsed = true;
+        this.builder.setCalliBotUsed(true);
         return null;
     }
 
@@ -345,7 +311,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
         bothMotorsOnAction.getSpeedA().visit(this);
         bothMotorsOnAction.getSpeedB().visit(this);
         if ( bothMotorsOnAction.getPortA().equals("LEFT") ) {
-            this.calliBotUsed = true;
+            this.builder.setCalliBotUsed(true);
         }
         return null;
     }
@@ -357,7 +323,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitHumiditySensor(HumiditySensor<Void> humiditySensor) {
-        this.humidityUsed = true;
+        this.builder.setHumidityUsed(true);
         return null;
     }
 

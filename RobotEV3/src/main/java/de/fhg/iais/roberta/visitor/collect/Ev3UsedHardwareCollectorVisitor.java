@@ -13,6 +13,7 @@ import de.fhg.iais.roberta.syntax.action.speech.SayTextAction;
 import de.fhg.iais.roberta.syntax.sensor.generic.GyroSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.InfraredSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 
 /**
@@ -25,8 +26,8 @@ public final class Ev3UsedHardwareCollectorVisitor extends AbstractUsedHardwareC
 
     private boolean isSayTextUsed = false;
 
-    public Ev3UsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public Ev3UsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
         check(phrasesSet);
     }
 
@@ -70,7 +71,7 @@ public final class Ev3UsedHardwareCollectorVisitor extends AbstractUsedHardwareC
         if ( infraredSensor.getMode().equals(SC.PRESENCE) ) {
             mode = SC.SEEK;
         }
-        this.usedSensors.add(new UsedSensor(infraredSensor.getPort(), SC.INFRARED, mode));
+        this.builder.addUsedSensor(new UsedSensor(infraredSensor.getPort(), SC.INFRARED, mode));
         return null;
     }
 

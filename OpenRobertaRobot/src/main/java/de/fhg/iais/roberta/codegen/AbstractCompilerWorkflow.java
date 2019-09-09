@@ -71,7 +71,7 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
      * @param executableWithParameters
      * @return true, when the crosscompiler succeeds; false, otherwise
      */
-    protected final boolean runCrossCompiler(String[] executableWithParameters) {
+    public final boolean runCrossCompiler(String[] executableWithParameters) {
         int ecode = -1;
         try {
             ProcessBuilder procBuilder = new ProcessBuilder(executableWithParameters);
@@ -95,6 +95,29 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
             return true;
         } else {
             LOG.error("compilation of program failed with message: \n" + this.crosscompilerResponse);
+            return false;
+        }
+    }
+
+    public static final boolean runCrossCompilerNoResponse(String[] executableWithParameters) {
+        int ecode = -1;
+        try {
+            ProcessBuilder procBuilder = new ProcessBuilder(executableWithParameters);
+            procBuilder.redirectErrorStream(true);
+            procBuilder.redirectInput(Redirect.INHERIT);
+            procBuilder.redirectOutput(Redirect.PIPE);
+            Process p = procBuilder.start();
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            StringJoiner sj = new StringJoiner(System.getProperty("line.separator"));
+            reader.lines().iterator().forEachRemaining(sj::add);
+            ecode = p.waitFor();
+            p.destroy();
+        } catch ( Exception e ) {
+            ecode = -1;
+        }
+        if ( ecode == 0 ) {
+            return true;
+        } else {
             return false;
         }
     }
@@ -145,7 +168,7 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
         }
     }
 
-    protected final String getBase64EncodedHex(String path) {
+    protected static final String getBase64EncodedHex(String path) {
         try {
             String compiledHex = FileUtils.readFileToString(new File(path), "UTF-8");
             final Base64.Encoder urec = Base64.getEncoder();
@@ -157,7 +180,7 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
         }
     }
 
-    protected final String getBase64EncodedBinary(String path) {
+    protected static final String getBase64EncodedBinary(String path) {
         try {
             byte[] compiledBin = FileUtils.readFileToByteArray(new File(path));
             final Base64.Encoder urec = Base64.getEncoder();

@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor.lang.codegen;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,8 @@ import de.fhg.iais.roberta.syntax.lang.stmt.IfStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.MethodStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtList;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.visitor.lang.ILanguageVisitor;
@@ -43,7 +46,7 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
     protected final String INDENT = "    ";
     protected int loopCounter = 0;
     protected LinkedList<Integer> currenLoop = new LinkedList<>();
-    protected Map<Integer, Boolean> loopsLabels;
+    protected Map<Integer, Boolean> loopsLabels = new HashMap<>();
 
     protected StringBuilder sb = new StringBuilder();
     protected final List<Phrase<Void>> programPhrases;
@@ -51,13 +54,22 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
     private int indentation;
     private StringBuilder indent = new StringBuilder();
 
+    protected UsedHardwareBean usedHardwareBean;
+    protected CodeGeneratorSetupBean codeGeneratorSetupBean;
+
     /**
      * initialize the common language code generator visitor.
      *
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
-    public AbstractLanguageVisitor(ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
+    public AbstractLanguageVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        int indentation) {
         Assert.isTrue(!programPhrases.isEmpty());
+        this.usedHardwareBean = usedHardwareBean;
+        this.codeGeneratorSetupBean = codeGeneratorSetupBean;
         this.indentation = indentation;
         this.programPhrases =
             programPhrases

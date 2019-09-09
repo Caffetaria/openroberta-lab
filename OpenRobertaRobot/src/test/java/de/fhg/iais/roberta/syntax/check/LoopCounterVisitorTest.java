@@ -17,7 +17,7 @@ public class LoopCounterVisitorTest {
     private class TestUsedHardware extends AbstractUsedHardwareCollectorVisitor {
         //TODO create fake for this class
         public TestUsedHardware(ArrayList<ArrayList<Phrase<Void>>> phrases) {
-            super(null);
+            super(null, null);
             check(phrases);
         }
 

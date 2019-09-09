@@ -3,11 +3,12 @@ package de.fhg.iais.roberta.visitor.validate;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.action.MoveAction;
 import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 
 public abstract class AbstractBoardValidatorVisitor extends AbstractProgramValidatorVisitor {
 
-    public AbstractBoardValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public AbstractBoardValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

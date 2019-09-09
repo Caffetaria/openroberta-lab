@@ -1,6 +1,7 @@
 package de.fhg.iais.roberta.components.ev3c4ev3;
 
-import org.apache.commons.io.FileUtils;
+import static de.fhg.iais.roberta.components.ev3c4ev3.ByteUtils.setBytes;
+import static de.fhg.iais.roberta.components.ev3c4ev3.ByteUtils.setWord;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import static de.fhg.iais.roberta.components.ev3c4ev3.ByteUtils.setBytes;
-import static de.fhg.iais.roberta.components.ev3c4ev3.ByteUtils.setWord;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Represent a UF2 file in 'file container' mode.

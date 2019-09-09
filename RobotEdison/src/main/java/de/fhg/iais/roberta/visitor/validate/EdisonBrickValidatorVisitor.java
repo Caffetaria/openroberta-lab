@@ -15,12 +15,13 @@ import de.fhg.iais.roberta.syntax.sensor.generic.GetSampleSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.IRSeekerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.InfraredSensor;
 import de.fhg.iais.roberta.syntax.sensors.edison.ResetSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IEdisonVisitor;
 
 public class EdisonBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IEdisonVisitor<Void> {
 
-    public EdisonBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public EdisonBrickValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

@@ -10,12 +10,13 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.FlameSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.Joystick;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IMbotVisitor;
 
 public final class MbotBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IMbotVisitor<Void> {
 
-    public MbotBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public MbotBrickValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

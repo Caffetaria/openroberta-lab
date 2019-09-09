@@ -3,7 +3,6 @@ package de.fhg.iais.roberta.codegen;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
-import de.fhg.iais.roberta.syntax.lang.functions.Function;
 import de.fhg.iais.roberta.syntax.lang.functions.FunctionNames;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 

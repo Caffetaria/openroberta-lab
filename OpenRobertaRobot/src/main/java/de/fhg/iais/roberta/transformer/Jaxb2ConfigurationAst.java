@@ -13,28 +13,28 @@ import de.fhg.iais.roberta.blockly.generated.Value;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.factory.BlocklyDropdownFactory;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 
-public class Jaxb2ConfigurationAstHelper {
-    public static List<Value> extractValues(Block block, int numOfValues) {
+public class Jaxb2ConfigurationAst {
+    public static List<Value> extractValues(Block block) {
         List<Value> values;
         values = block.getValue();
-        Assert.isTrue(values.size() <= numOfValues, "Values size is not less or equal to " + numOfValues + "!");
         return values;
     }
 
-    public static List<Field> extractFields(Block block, int numOfFields) {
+    public static List<Field> extractFields(Block block) {
         List<Field> fields;
         fields = block.getField();
-        Assert.isTrue(fields.size() <= numOfFields, "Fields size is not less or equal to " + numOfFields + "!");
         return fields;
     }
 
-    public static String extractField(List<Field> fields, String name, int fieldLocation) {
-        Field field = fields.get(fieldLocation);
-        Assert.isTrue(field.getName().equals(name), "Field name is not equal to " + name + "!");
-        return field.getValue();
+    public static String extractOptionalField(List<Field> fields, String name) {
+        for ( Field field : fields ) {
+            if ( field.getName().equals(name) ) {
+                return field.getValue();
+            }
+        }
+        return null;
     }
 
     public static Block getTopBlock(BlockSet blockSet, String topBlockName) {
@@ -56,22 +56,35 @@ public class Jaxb2ConfigurationAstHelper {
     }
 
     public static ConfigurationAst block2OldConfiguration(Block topBlock, BlocklyDropdownFactory factory, String sensorsPrefix) {
-        List<Field> fields = extractFields(topBlock, (short) 2);
-        float wheelDiameter = Float.valueOf(extractField(fields, "WHEEL_DIAMETER", (short) 0)).floatValue();
-        float trackWidth = Float.valueOf(extractField(fields, "TRACK_WIDTH", (short) 1)).floatValue();
-        //TODO: should 8 here be a parameter of this method?
-        List<Value> values = extractValues(topBlock, (short) 8);
+        final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
+        List<Field> fields = extractFields(topBlock);
+        addOptionalField(fields, "WHEEL_DIAMETER", wd -> builder.setWheelDiameter(Float.valueOf(wd).floatValue()));
+        addOptionalField(fields, "TRACK_WIDTH", wd -> builder.setTrackWidth(Float.valueOf(wd).floatValue()));
+        addOptionalField(fields, "IP_ADDRESS", wd -> builder.setIpAddress(wd));
+        addOptionalField(fields, "PORT", wd -> builder.setPortNumber(wd));
+        addOptionalField(fields, "USERNAME", wd -> builder.setUserName(wd));
+        addOptionalField(fields, "PASSWORD", wd -> builder.setPassword(wd));
+
+        List<Value> values = extractValues(topBlock);
         List<ConfigurationComponent> allComponents = extractOldConfigurationComponent(values, factory, sensorsPrefix);
 
-        return new ConfigurationAst.Builder().setTrackWidth(trackWidth).setWheelDiameter(wheelDiameter).addComponents(allComponents).build();
+        return builder.addComponents(allComponents).build();
     }
 
-    public static ConfigurationAst block2OldConfigurationWithFixedBase(
-        Block topBlock,
-        BlocklyDropdownFactory factory,
-        String sensorsPrefix,
-        int configurationBlockQuantity) {
-        List<Value> values = extractValues(topBlock, (short) configurationBlockQuantity);
+    @FunctionalInterface
+    public interface BuilderSetter {
+        void add(String val);
+    }
+
+    private static void addOptionalField(List<Field> fields, String name, BuilderSetter builderSetter) {
+        final String val = extractOptionalField(fields, name);
+        if ( val != null ) {
+            builderSetter.add(val);
+        }
+    }
+
+    public static ConfigurationAst block2OldConfigurationWithFixedBase(Block topBlock, BlocklyDropdownFactory factory, String sensorsPrefix) {
+        List<Value> values = extractValues(topBlock);
         List<ConfigurationComponent> allComponents = extractOldConfigurationComponent(values, factory, sensorsPrefix);
         return new ConfigurationAst.Builder().setTrackWidth(-1).setWheelDiameter(-1).addComponents(allComponents).build();
     }
@@ -83,7 +96,7 @@ public class Jaxb2ConfigurationAstHelper {
             String userDefinedName = portName.substring(1);
             boolean isActor = !portName.startsWith(sensorsPrefix);
             String blocklyName = value.getBlock().getType();
-            List<Field> fields = extractFields(value.getBlock(), (short) 3);
+            List<Field> fields = extractFields(value.getBlock());
             Map<String, String> properties = new HashMap<>();
             for ( Field field : fields ) {
                 String fKey = field.getName();
@@ -91,12 +104,7 @@ public class Jaxb2ConfigurationAstHelper {
                 properties.put(fKey, fValue);
             }
             ConfigurationComponent cc =
-                new ConfigurationComponent(
-                    factory.getConfigurationComponentTypeByBlocklyName(blocklyName),
-                    isActor,
-                    portName,
-                    userDefinedName,
-                    properties);
+                new ConfigurationComponent(factory.getConfigurationComponentTypeByBlocklyName(blocklyName), isActor, portName, userDefinedName, properties);
             allComponents.add(cc);
         }
         return allComponents;

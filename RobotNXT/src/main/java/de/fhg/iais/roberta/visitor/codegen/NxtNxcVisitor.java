@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
@@ -71,12 +70,13 @@ import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.util.dbc.VisitorException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.NxtUsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.INxtVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
 
@@ -87,14 +87,8 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
  * @param <V>
  */
 public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisitor<Void> {
+
     private final ConfigurationAst brickConfiguration;
-
-    private final boolean timeSensorUsed;
-    private final boolean isVolumeVariableNeeded;
-
-    private final Set<UsedActor> usedActors;
-    private final Set<UsedSensor> usedSensors;
-    private final ArrayList<VarDeclaration<Void>> usedVars;
 
     /**
      * initialize the Nxc code generator visitor.
@@ -103,18 +97,14 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    NxtNxcVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
-        super(programPhrases, indentation);
+    NxtNxcVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
         this.brickConfiguration = brickConfiguration;
-        NxtUsedHardwareCollectorVisitor codePreprocessVisitor = new NxtUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
-        this.usedVars = codePreprocessVisitor.getVisitedVars();
-        this.usedActors = codePreprocessVisitor.getUsedActors();
-        this.usedSensors = codePreprocessVisitor.getUsedSensors();
-        this.timeSensorUsed = codePreprocessVisitor.isTimerSensorUsed();
-        this.isVolumeVariableNeeded = codePreprocessVisitor.isVolumeVariableNeeded();
-        this.loopsLabels = codePreprocessVisitor.getloopsLabelContainer();
-        this.userDefinedMethods = codePreprocessVisitor.getUserDefinedMethods();
-        //this.tmpArr = codePreprocessVisitor.getTmpArrVar();
     }
 
     /**
@@ -124,11 +114,16 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
      * @param programPhrases to generate the code from
      * @param withWrapping if false the generated code will be without the surrounding configuration code
      */
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) //
+    public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        boolean withWrapping) //
     {
         Assert.notNull(brickConfiguration);
 
-        NxtNxcVisitor astVisitor = new NxtNxcVisitor(brickConfiguration, programPhrases, withWrapping ? 1 : 0);
+        NxtNxcVisitor astVisitor = new NxtNxcVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, withWrapping ? 1 : 0);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -218,7 +213,7 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
     }
 
     protected Void generateUsedVars() {
-        for ( VarDeclaration<Void> var : this.usedVars ) {
+        for ( VarDeclaration<Void> var : this.usedHardwareBean.getVisitedVars() ) {
             nlIndent();
             if ( !var.getValue().getKind().hasName("EMPTY_EXPR") ) {
                 if ( var.getTypeVar().isArray() ) {
@@ -503,7 +498,7 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
 
     private boolean isActorOnPort(String port) {
         if ( port != null ) {
-            for ( UsedActor actor : this.usedActors ) {
+            for ( UsedActor actor : this.usedHardwareBean.getUsedActors() ) {
                 if ( actor.getPort().equals(port) ) {
                     return true;
                 }
@@ -848,10 +843,10 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
 
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
-        if ( this.isVolumeVariableNeeded ) {
+        if ( this.usedHardwareBean.isVolumeVariableNeeded() ) {
             this.sb.append("byte volume = 0x02;");
         }
-        if ( this.timeSensorUsed ) {
+        if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             nlIndent();
             this.sb.append("long timer1;");
         }
@@ -1337,7 +1332,7 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
 
     private void generateSensors() {
         Map<String, UsedSensor> usedSensorMap = new HashMap<>();
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             nlIndent();
             this.sb.append("SetSensor(");
             ConfigurationComponent configurationComponent = this.brickConfiguration.getConfigurationComponent(usedSensor.getPort());
@@ -1367,7 +1362,7 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
                     break;
             }
         }
-        if ( this.timeSensorUsed ) {
+        if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             nlIndent();
             this.sb.append("SetTimerValue(timer1);");
         }

@@ -9,7 +9,11 @@ import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.action.Action;
 import de.fhg.iais.roberta.syntax.action.MoveAction;
-import de.fhg.iais.roberta.syntax.action.communication.*;
+import de.fhg.iais.roberta.syntax.action.communication.BluetoothCheckConnectAction;
+import de.fhg.iais.roberta.syntax.action.communication.BluetoothConnectAction;
+import de.fhg.iais.roberta.syntax.action.communication.BluetoothReceiveAction;
+import de.fhg.iais.roberta.syntax.action.communication.BluetoothSendAction;
+import de.fhg.iais.roberta.syntax.action.communication.BluetoothWaitForConnectionAction;
 import de.fhg.iais.roberta.syntax.action.display.ClearDisplayAction;
 import de.fhg.iais.roberta.syntax.action.display.ShowTextAction;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
@@ -29,15 +33,40 @@ import de.fhg.iais.roberta.syntax.action.sound.ToneAction;
 import de.fhg.iais.roberta.syntax.action.sound.VolumeAction;
 import de.fhg.iais.roberta.syntax.action.speech.SayTextAction;
 import de.fhg.iais.roberta.syntax.action.speech.SetLanguageAction;
-import de.fhg.iais.roberta.syntax.lang.expr.*;
-import de.fhg.iais.roberta.syntax.lang.functions.*;
+import de.fhg.iais.roberta.syntax.lang.expr.Binary;
+import de.fhg.iais.roberta.syntax.lang.expr.EmptyExpr;
+import de.fhg.iais.roberta.syntax.lang.expr.Expr;
+import de.fhg.iais.roberta.syntax.lang.expr.NumConst;
+import de.fhg.iais.roberta.syntax.lang.expr.Unary;
+import de.fhg.iais.roberta.syntax.lang.expr.Var;
+import de.fhg.iais.roberta.syntax.lang.functions.GetSubFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.IndexOfFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.LengthOfIsEmptyFunct;
+import de.fhg.iais.roberta.syntax.lang.functions.ListGetIndex;
+import de.fhg.iais.roberta.syntax.lang.functions.ListRepeat;
+import de.fhg.iais.roberta.syntax.lang.functions.ListSetIndex;
+import de.fhg.iais.roberta.syntax.lang.functions.MathOnListFunct;
 import de.fhg.iais.roberta.syntax.lang.methods.MethodCall;
 import de.fhg.iais.roberta.syntax.lang.methods.MethodReturn;
 import de.fhg.iais.roberta.syntax.lang.stmt.RepeatStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.Stmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitStmt;
 import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
-import de.fhg.iais.roberta.syntax.sensor.generic.*;
+import de.fhg.iais.roberta.syntax.sensor.generic.AccelerometerSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.ColorSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.CompassSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.EncoderSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.GyroSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.IRSeekerSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.InfraredSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.KeysSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
+import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.visitor.hardware.actor.IAllActorsVisitor;
@@ -50,7 +79,8 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     protected int warningCount = 0;
     protected ConfigurationAst robotConfiguration;
 
-    public AbstractProgramValidatorVisitor(ConfigurationAst robotConfiguration) {
+    public AbstractProgramValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst robotConfiguration) {
+        super(builder);
         this.robotConfiguration = robotConfiguration;
     }
 
@@ -92,7 +122,7 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     @Override
     public Void visitVar(Var<Void> var) {
         String name = var.getValue();
-        if ( !this.declaredVariables.contains(name) ) {
+        if ( !this.builder.containsDeclaredVariable(name) ) {
             var.addInfo(NepoInfo.error("VARIABLE_USED_BEFORE_DECLARATION"));
             this.errorCount++;
         }

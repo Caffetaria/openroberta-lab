@@ -26,14 +26,15 @@ import de.fhg.iais.roberta.syntax.sensor.generic.PulseSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.RfidSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.visitor.hardware.IArduinoVisitor;
 import de.fhg.iais.roberta.visitor.hardware.sensor.ISensorVisitor;
 
 public final class ArduinoBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements ISensorVisitor<Void>, IArduinoVisitor<Void> {
 
-    public ArduinoBrickValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public ArduinoBrickValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

@@ -31,11 +31,11 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.DropOffSensor;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.WallSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.VorwerkUsedHardwareCollectorVisitor;
-import de.fhg.iais.roberta.visitor.collect.VorwerkUsedMethodCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IVorwerkVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
 
@@ -54,20 +54,15 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
     VorwerkPythonVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
-        ILanguage language,
-        HelperMethodGenerator helperMethodGenerator) {
-        super(programPhrases, indentation, helperMethodGenerator, new VorwerkUsedMethodCollectorVisitor(programPhrases));
-
-        VorwerkUsedHardwareCollectorVisitor checkVisitor = new VorwerkUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
+        ILanguage language) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
 
         this.brickConfiguration = brickConfiguration;
-
-        this.usedGlobalVarInFunctions = checkVisitor.getMarkedVariablesAsGlobal();
-        this.isProgramEmpty = checkVisitor.isProgramEmpty();
-        this.loopsLabels = checkVisitor.getloopsLabelContainer();
     }
 
     /**
@@ -77,6 +72,8 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
      * @param programPhrases to generate the code from
      */
     public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
@@ -84,7 +81,7 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
         HelperMethodGenerator helperMethodGenerator) {
         Assert.notNull(brickConfiguration);
 
-        VorwerkPythonVisitor astVisitor = new VorwerkPythonVisitor(brickConfiguration, programPhrases, 0, language, helperMethodGenerator);
+        VorwerkPythonVisitor astVisitor = new VorwerkPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, 0, language);
         astVisitor.generateCode(withWrapping);
 
         return astVisitor.sb.toString();

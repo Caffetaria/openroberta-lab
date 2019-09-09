@@ -1,9 +1,9 @@
 package de.fhg.iais.roberta.syntax.codegen.edison;
 
-import de.fhg.iais.roberta.util.test.edison.HelperEdisonForXmlTest;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import de.fhg.iais.roberta.util.test.edison.HelperEdisonForXmlTest;
 
 public class PythonVisitorTest {
     private final HelperEdisonForXmlTest h = new HelperEdisonForXmlTest();

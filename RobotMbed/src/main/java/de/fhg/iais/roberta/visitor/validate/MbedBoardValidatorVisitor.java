@@ -35,13 +35,14 @@ import de.fhg.iais.roberta.syntax.sensor.generic.HumiditySensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.PinGetValueSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 
 public final class MbedBoardValidatorVisitor extends AbstractBoardValidatorVisitor implements IMbedVisitor<Void> {
 
-    public MbedBoardValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public MbedBoardValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

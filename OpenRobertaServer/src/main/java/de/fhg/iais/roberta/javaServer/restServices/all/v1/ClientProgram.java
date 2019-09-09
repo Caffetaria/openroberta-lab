@@ -1,7 +1,6 @@
 package de.fhg.iais.roberta.javaServer.restServices.all.v1;
 
 import java.io.StringWriter;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,27 +101,7 @@ public class ClientProgram {
             final IRobotFactory robotFactory = httpSessionState.getRobotFactory();
 
             if ( cmd.equals("saveP") || cmd.equals("saveAsP") ) {
-                final String programName = request.getString("programName");
-                final String programText = request.getString("programText");
-                final String configName = request.optString("configName", null);
-                final String configText = request.optString("configText", null);
-                Program program;
-                if ( cmd.equals("saveP") ) {
-                    // update an already existing program
-                    final Long timestamp = request.getLong("timestamp");
-                    final Timestamp programTimestamp = new Timestamp(timestamp);
-                    final boolean isShared = request.optBoolean("shared", false);
-                    program = pp.persistProgramText(programName, programText, configName, configText, userId, robot, userId, programTimestamp, !isShared);
-                } else {
-                    program = pp.persistProgramText(programName, programText, configName, configText, userId, robot, userId, null, true);
-                }
-                if ( pp.succeeded() && program != null ) {
-                    response.put("lastChanged", program.getLastChanged().getTime());
-                } else {
-                    ClientProgram.LOG.error("TODO: check potential error: the saved program should never be null");
-                }
-                Util.addResultInfo(response, pp);
-                Statistics.info("ProgramSave", "success", pp.succeeded());
+                // this was moved to ProjectRestController -> saveProject/updateProject and split into 2 methods
             } else {
                 ICompilerWorkflow compilerWorkflow = robotFactory.getRobotCompilerWorkflow();
                 if ( cmd.equals("showSourceP") ) {

@@ -4,19 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.fhg.iais.roberta.transformer.Project;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.util.Key;
 
 public class Ev3ProgramValidatorWorker implements IWorker {
 
     @Override
-    public String getName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void execute(Project project) {
-        AbstractProgramValidatorVisitor visitor = new Ev3BrickValidatorVisitor(project.getConfigurationAst());
+        UsedHardwareBean.Builder builder = new Builder();
+        AbstractProgramValidatorVisitor visitor = new Ev3BrickValidatorVisitor(builder, project.getConfigurationAst());
         visitor.check(project.getProgramAst().getTree());
         final int errorCounter = visitor.getErrorCount();
         Map<Key, Map<String, String>> validationResults = new HashMap<>();
@@ -25,19 +22,6 @@ public class Ev3ProgramValidatorWorker implements IWorker {
             detailedInfo.put("EV3", Key.PROGRAM_INVALID_STATEMETNS.toString());
             validationResults.put(Key.PROGRAM_INVALID_STATEMETNS, detailedInfo);
         }
-        project.setValidationResults(validationResults);
+        project.addWorkerResult("ProgramValidator", builder.build());
     }
-
-    @Override
-    public Map<String, String> getResult() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Key getResultKey() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

@@ -8,6 +8,8 @@ import java.util.Map;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.transformer.Project;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.util.Key;
 
@@ -18,11 +20,6 @@ public class ArduinoConfigurationValidatorWorker extends AbstractConfigurationVa
     private String failingBlock;
     private Key resultKey;
     int errorCount;
-
-    @Override
-    public String getName() {
-        return "arduinoConfigValidator";
-    }
 
     @Override
     public void execute(Project project) {
@@ -41,28 +38,17 @@ public class ArduinoConfigurationValidatorWorker extends AbstractConfigurationVa
         if ( this.resultKey != null ) {
             validationResults.put(this.resultKey, result);
         }
-        project.setValidationResults(validationResults);
+        //TODO: set the results somewhere
+        //project.setVisitorResults(validationResults);
 
-        ArduinoBrickValidatorVisitor visitor = new ArduinoBrickValidatorVisitor(project.getConfigurationAst());
+        UsedHardwareBean.Builder builder = new Builder();
+        ArduinoBrickValidatorVisitor visitor = new ArduinoBrickValidatorVisitor(builder, project.getConfigurationAst());
         ArrayList<ArrayList<Phrase<Void>>> tree = project.getProgramAst().getTree();
         for ( ArrayList<Phrase<Void>> phrases : tree ) {
             for ( Phrase<Void> phrase : phrases ) {
                 phrase.visit(visitor); // TODO: REALLY REALLY BAD NAME !!!
             }
         }
-    }
-
-    @Override
-    public Map<String, String> getResult() {
-        Map<String, String> result = new HashMap<>();
-        result.put("BLOCK", this.failingBlock);
-        result.put("PIN", this.incorrectPin);
-        return result;
-    }
-
-    @Override
-    public Key getResultKey() {
-        return this.resultKey;
     }
 
     public void setFreePins(List<String> freePins) {

@@ -2,11 +2,9 @@ package de.fhg.iais.roberta.visitor.codegen;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.UsedSensor;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
@@ -70,11 +68,11 @@ import de.fhg.iais.roberta.syntax.sensor.nao.ElectricCurrentSensor;
 import de.fhg.iais.roberta.syntax.sensor.nao.FsrSensor;
 import de.fhg.iais.roberta.syntax.sensor.nao.NaoMarkInformation;
 import de.fhg.iais.roberta.syntax.sensor.nao.RecognizeWord;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.NaoUsedHardwareCollectorVisitor;
-import de.fhg.iais.roberta.visitor.collect.NaoUsedMethodCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.INaoVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
 
@@ -83,8 +81,6 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
  * StringBuilder. <b>This representation is correct Python code.</b> <br>
  */
 public final class NaoPythonVisitor extends AbstractPythonVisitor implements INaoVisitor<Void> {
-
-    protected Set<UsedSensor> usedSensors;
 
     protected ILanguage language;
 
@@ -97,18 +93,13 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
      * @param helperMethodGenerator
      */
     NaoPythonVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
-        ILanguage language,
-        HelperMethodGenerator helperMethodGenerator) {
-        super(programPhrases, indentation, helperMethodGenerator, new NaoUsedMethodCollectorVisitor(programPhrases));
-
-        NaoUsedHardwareCollectorVisitor checker = new NaoUsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
-        this.usedSensors = checker.getUsedSensors();
-        this.usedGlobalVarInFunctions = checker.getMarkedVariablesAsGlobal();
-        this.isProgramEmpty = checker.isProgramEmpty();
-        this.loopsLabels = checker.getloopsLabelContainer();
+        ILanguage language) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
 
         this.language = language;
     }
@@ -121,21 +112,26 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
      * @param phrases to generate the code from
      */
     public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
         boolean withWrapping,
-        ILanguage language,
-        HelperMethodGenerator helperMethodGenerator) {
+        ILanguage language) {
         Assert.notNull(brickConfiguration);
 
-        NaoPythonVisitor astVisitor = new NaoPythonVisitor(brickConfiguration, phrasesSet, 0, language, helperMethodGenerator);
+        NaoPythonVisitor astVisitor = new NaoPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrasesSet, 0, language);
         astVisitor.generateCode(withWrapping);
 
         return astVisitor.sb.toString();
     }
 
-    public static String generate(ArrayList<ArrayList<Phrase<Void>>> phrasesSet, boolean withWrapping, HelperMethodGenerator helperMethodGenerator) {
-        NaoPythonVisitor astVisitor = new NaoPythonVisitor(null, phrasesSet, 0, null, helperMethodGenerator);
+    public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
+        boolean withWrapping) {
+        NaoPythonVisitor astVisitor = new NaoPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, null, phrasesSet, 0, null);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -1071,7 +1067,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     }
 
     private void generateSensors() {
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             switch ( usedSensor.getType() ) {
                 case SC.ULTRASONIC:
                     this.sb.append("h.sonar.subscribe(\"OpenRobertaApp\")");
@@ -1114,7 +1110,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     }
 
     private void removeSensors() {
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             String sensorType = usedSensor.getType();
             switch ( sensorType ) {
                 case BlocklyConstants.COLOR:

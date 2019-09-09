@@ -55,10 +55,11 @@ import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.FlameSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.Joystick;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
-import de.fhg.iais.roberta.visitor.collect.MbotUsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IMbotVisitor;
 
 /**
@@ -66,7 +67,6 @@ import de.fhg.iais.roberta.visitor.hardware.IMbotVisitor;
  * representation is correct C code for Arduino.</b> <br>
  */
 public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implements IMbotVisitor<Void> {
-    private final boolean isTimerSensorUsed;
 
     /**
      * Initialize the C++ code generator visitor.
@@ -75,14 +75,13 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
      * @param programPhrases to generate the code from
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
-    MbotCppVisitor(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrases, int indentation) {
-        super(brickConfiguration, phrases, indentation);
-        final MbotUsedHardwareCollectorVisitor codePreprocessVisitor = new MbotUsedHardwareCollectorVisitor(phrases, brickConfiguration);
-        this.usedSensors = codePreprocessVisitor.getUsedSensors();
-        this.usedActors = codePreprocessVisitor.getUsedActors();
-        this.isTimerSensorUsed = codePreprocessVisitor.isTimerSensorUsed();
-        this.usedVars = codePreprocessVisitor.getVisitedVars();
-        this.loopsLabels = codePreprocessVisitor.getloopsLabelContainer();
+    MbotCppVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> phrases,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases, indentation);
     }
 
     /**
@@ -92,10 +91,16 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
      * @param programPhrases to generate the code from
      * @param withWrapping if false the generated code will be without the surrounding configuration code
      */
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> programPhrases, boolean withWrapping) {
+    public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ConfigurationAst brickConfiguration,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        boolean withWrapping) {
         Assert.notNull(brickConfiguration);
 
-        final MbotCppVisitor astVisitor = new MbotCppVisitor(brickConfiguration, programPhrases, withWrapping ? 1 : 0);
+        final MbotCppVisitor astVisitor =
+            new MbotCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, withWrapping ? 1 : 0);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -287,7 +292,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
 
     @Override
     public Void visitMotorDriveStopAction(MotorDriveStopAction<Void> stopAction) {
-        for ( final UsedActor actor : this.usedActors ) {
+        for ( final UsedActor actor : this.usedHardwareBean.getUsedActors() ) {
             if ( actor.getType().equals(SC.DIFFERENTIAL_DRIVE) ) {
                 this.sb.append("_meDrive.stop();");
                 break;
@@ -392,7 +397,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
         }
         nlIndent();
         //generateConfigurationVariables();
-        if ( this.isTimerSensorUsed ) {
+        if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             this.sb.append("unsigned long __time = millis();");
             nlIndent();
         }
@@ -401,7 +406,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
                 .stream()
                 .filter(phrase -> phrase.getKind().getCategory() == Category.METHOD && !phrase.getKind().hasName("METHOD_CALL"))
                 .count();
-        if ( (this.configuration.getConfigurationComponents().isEmpty() || this.isTimerSensorUsed) && numberConf == 0 ) {
+        if ( (this.configuration.getConfigurationComponents().isEmpty() || this.usedHardwareBean.isTimerSensorUsed()) && numberConf == 0 ) {
             nlIndent();
         }
         generateUserDefinedMethods();
@@ -496,7 +501,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
 
     private void generateSensors() {
         LinkedHashSet<Integer> usedInfraredPort = new LinkedHashSet<>();
-        for ( final UsedSensor usedSensor : this.usedSensors ) {
+        for ( final UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             switch ( usedSensor.getType() ) {
                 case SC.BUTTON:
                     nlIndent();
@@ -564,7 +569,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
     }
 
     private void generateActors() {
-        for ( final UsedActor usedActor : this.usedActors ) {
+        for ( final UsedActor usedActor : this.usedHardwareBean.getUsedActors() ) {
             switch ( usedActor.getType() ) {
                 case SC.LED_ON_BOARD:
                     nlIndent();

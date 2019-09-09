@@ -1,8 +1,9 @@
 package de.fhg.iais.roberta.syntax.sensor;
 
-import de.fhg.iais.roberta.util.test.mbed.HelperCalliopeForXmlTest;
 import org.junit.Assert;
 import org.junit.Test;
+
+import de.fhg.iais.roberta.util.test.mbed.HelperCalliopeForXmlTest;
 
 public class HumiditySensorTest {
     private final HelperCalliopeForXmlTest h = new HelperCalliopeForXmlTest();

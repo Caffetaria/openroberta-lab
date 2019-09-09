@@ -44,6 +44,7 @@ import de.fhg.iais.roberta.syntax.sensor.nao.ElectricCurrentSensor;
 import de.fhg.iais.roberta.syntax.sensor.nao.FsrSensor;
 import de.fhg.iais.roberta.syntax.sensor.nao.NaoMarkInformation;
 import de.fhg.iais.roberta.syntax.sensor.nao.RecognizeWord;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.INaoVisitor;
 
 /**
@@ -53,8 +54,8 @@ import de.fhg.iais.roberta.visitor.hardware.INaoVisitor;
  */
 public final class NaoUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements INaoVisitor<Void> {
 
-    public NaoUsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
-        super(configuration);
+    public NaoUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
+        super(builder, configuration);
         check(phrasesSet);
     }
 
@@ -193,7 +194,7 @@ public final class NaoUsedHardwareCollectorVisitor extends AbstractUsedHardwareC
 
     @Override
     public Void visitNaoMark(DetectMarkSensor<Void> naoMark) {
-        this.usedSensors.add(new UsedSensor(null, SC.DETECT_MARK, null));
+        this.builder.addUsedSensor(new UsedSensor(null, SC.DETECT_MARK, null));
         return null;
     }
 
@@ -213,20 +214,20 @@ public final class NaoUsedHardwareCollectorVisitor extends AbstractUsedHardwareC
     @Override
     public Void visitLearnFace(LearnFace<Void> learnFace) {
         learnFace.getFaceName().visit(this);
-        this.usedSensors.add(new UsedSensor(null, SC.NAO_FACE, null));
+        this.builder.addUsedSensor(new UsedSensor(null, SC.NAO_FACE, null));
         return null;
     }
 
     @Override
     public Void visitForgetFace(ForgetFace<Void> forgetFace) {
         forgetFace.getFaceName().visit(this);
-        this.usedSensors.add(new UsedSensor(null, SC.NAO_FACE, null));
+        this.builder.addUsedSensor(new UsedSensor(null, SC.NAO_FACE, null));
         return null;
     }
 
     @Override
     public Void visitDetectFace(DetectFaceSensor<Void> detectFace) {
-        this.usedSensors.add(new UsedSensor(null, SC.NAO_FACE, null));
+        this.builder.addUsedSensor(new UsedSensor(null, SC.NAO_FACE, null));
         return null;
     }
 
@@ -268,21 +269,21 @@ public final class NaoUsedHardwareCollectorVisitor extends AbstractUsedHardwareC
     @Override
     public Void visitRecognizeWord(RecognizeWord<Void> recognizeWord) {
         recognizeWord.getVocabulary().visit(this);
-        this.usedSensors.add(new UsedSensor(null, SC.NAO_SPEECH, null));
+        this.builder.addUsedSensor(new UsedSensor(null, SC.NAO_SPEECH, null));
         return null;
     }
 
     @Override
     public Void visitNaoMarkInformation(NaoMarkInformation<Void> naoMarkInformation) {
         naoMarkInformation.getNaoMarkId().visit(this);
-        this.usedSensors.add(new UsedSensor(null, SC.DETECT_MARK, null));
+        this.builder.addUsedSensor(new UsedSensor(null, SC.DETECT_MARK, null));
         return null;
     }
 
     @Override
     public Void visitDetecedFaceInformation(DetectedFaceInformation<Void> detectedFaceInformation) {
         detectedFaceInformation.getFaceName().visit(this);
-        this.usedSensors.add(new UsedSensor(null, SC.NAO_FACE, null));
+        this.builder.addUsedSensor(new UsedSensor(null, SC.NAO_FACE, null));
         return null;
     }
 }

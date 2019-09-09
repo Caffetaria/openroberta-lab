@@ -40,13 +40,14 @@ import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 
 public final class MicrobitSimValidatorVisitor extends AbstractSimValidatorVisitor implements IMbedVisitor<Void> {
 
-    public MicrobitSimValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public MicrobitSimValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

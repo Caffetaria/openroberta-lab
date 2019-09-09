@@ -6,9 +6,7 @@ import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isH
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
@@ -63,12 +61,12 @@ import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.codegen.utilities.TTSLanguageMapper;
-import de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorVisitor;
-import de.fhg.iais.roberta.visitor.collect.Ev3UsedMethodCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
 
@@ -77,16 +75,10 @@ import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractPythonVisitor;
  * StringBuilder. <b>This representation is correct Python code.</b> <br>
  */
 public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv3Visitor<Void> {
+
     protected final ConfigurationAst brickConfiguration;
-
     protected final Map<String, String> predefinedImage = new HashMap<>();
-
-    protected final Set<UsedSensor> usedSensors;
-    protected final Set<UsedActor> usedActors;
-    protected final Set<String> usedImages;
-
     protected ILanguage language;
-    private final boolean isSayTextUsed;
 
     /**
      * initialize the Python code generator visitor.
@@ -96,26 +88,14 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
     Ev3PythonVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
-        ILanguage language,
-        HelperMethodGenerator helperMethodGenerator) {
-        super(programPhrases, indentation, helperMethodGenerator, new Ev3UsedMethodCollectorVisitor(programPhrases));
-
-        Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
-
+        ILanguage language) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
         this.brickConfiguration = brickConfiguration;
-
-        this.usedActors = checkVisitor.getUsedActors();
-        this.usedSensors = checkVisitor.getUsedSensors();
-        this.usedImages = checkVisitor.getUsedImages();
-        this.isSayTextUsed = checkVisitor.isSayTextUsed();
-
-        this.usedGlobalVarInFunctions = checkVisitor.getMarkedVariablesAsGlobal();
-        this.isProgramEmpty = checkVisitor.isProgramEmpty();
-        this.loopsLabels = checkVisitor.getloopsLabelContainer();
-
         this.language = language;
 
         initPredefinedImages();
@@ -128,14 +108,15 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
      * @param programPhrases to generate the code from
      */
     public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping,
-        ILanguage language,
-        HelperMethodGenerator helperMethodGenerator) {
+        ILanguage language) {
         Assert.notNull(brickConfiguration);
 
-        Ev3PythonVisitor astVisitor = new Ev3PythonVisitor(brickConfiguration, programPhrases, 0, language, helperMethodGenerator);
+        Ev3PythonVisitor astVisitor = new Ev3PythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, 0, language);
         astVisitor.generateCode(withWrapping);
 
         return astVisitor.sb.toString();
@@ -289,7 +270,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
 
     private boolean isActorOnPort(String port) {
         boolean isActorOnPort = false;
-        for ( UsedActor actor : this.usedActors ) {
+        for ( UsedActor actor : this.usedHardwareBean.getUsedActors() ) {
             isActorOnPort = isActorOnPort ? isActorOnPort : actor.getPort().equals(port);
         }
         return isActorOnPort;
@@ -679,13 +660,13 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
 
     @Override
     public Void visitMathRandomFloatFunct(MathRandomFloatFunct<Void> mathRandomFloatFunct) {
-        this.sb.append(this.helperMethodGenerator.getHelperMethodName(FunctionNames.RANDOM_DOUBLE)).append("()");
+        this.sb.append(this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodName(FunctionNames.RANDOM_DOUBLE)).append("()");
         return null;
     }
 
     @Override
     public Void visitMathRandomIntFunct(MathRandomIntFunct<Void> mathRandomIntFunct) {
-        this.sb.append(this.helperMethodGenerator.getHelperMethodName(FunctionNames.RANDOM)).append("(");
+        this.sb.append(this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodName(FunctionNames.RANDOM)).append("(");
         mathRandomIntFunct.getParam().get(0).visit(this);
         this.sb.append(", ");
         mathRandomIntFunct.getParam().get(1).visit(this);
@@ -723,7 +704,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
         nlIndent();
         this.sb.append("hal = Hal(_brickConfiguration)");
 
-        if ( this.isSayTextUsed ) {
+        if ( this.usedHardwareBean.isSayTextUsed() ) {
             nlIndent();
             this.sb.append("hal.setLanguage(\"");
             this.sb.append(TTSLanguageMapper.getLanguageString(this.language));
@@ -771,11 +752,11 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     }
 
     private String generateUsedImages() {
-        if ( this.usedImages.size() != 0 ) {
+        if ( this.usedHardwareBean.getUsedImages().size() != 0 ) {
             StringBuilder sb = new StringBuilder();
 
             sb.append("predefinedImages = {\n");
-            for ( String image : this.usedImages ) {
+            for ( String image : this.usedHardwareBean.getUsedImages() ) {
                 sb.append("    '" + image + "': u'" + this.predefinedImage.get(image) + "',\n");
             }
             sb.append("}\n");
@@ -798,7 +779,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     }
 
     private boolean isActorUsed(ConfigurationComponent actor, String port) {
-        for ( UsedActor usedActor : this.usedActors ) {
+        for ( UsedActor usedActor : this.usedHardwareBean.getUsedActors() ) {
             String usedActorComponentType = this.brickConfiguration.getConfigurationComponent(usedActor.getPort()).getComponentType();
             if ( port.equals(usedActor.getPort()) && actor.getComponentType().equals(usedActorComponentType) ) {
                 return true;
@@ -821,7 +802,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     }
 
     private boolean isSensorUsed(ConfigurationComponent sensor, String port) {
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             String usedSctorComponentType = this.brickConfiguration.getConfigurationComponent(usedSensor.getPort()).getComponentType();
             if ( port.equals(usedSensor.getPort()) && sensor.getComponentType().equals(usedSctorComponentType) ) {
                 return true;

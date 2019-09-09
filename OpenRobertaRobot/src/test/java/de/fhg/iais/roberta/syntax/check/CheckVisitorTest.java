@@ -20,6 +20,7 @@ import de.fhg.iais.roberta.syntax.action.speech.SetLanguageAction;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
 import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.test.AbstractHelperForXmlTest;
 import de.fhg.iais.roberta.util.test.GenericHelperForXmlTest;
 import de.fhg.iais.roberta.visitor.validate.AbstractProgramValidatorVisitor;
@@ -29,8 +30,8 @@ public class CheckVisitorTest {
 
     class TestProgramCheckVisitor extends AbstractProgramValidatorVisitor {
 
-        public TestProgramCheckVisitor(ConfigurationAst brickConfiguration) {
-            super(brickConfiguration);
+        public TestProgramCheckVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+            super(builder, brickConfiguration);
         }
 
         @Override
@@ -104,7 +105,7 @@ public class CheckVisitorTest {
     public void check_noLoops_returnsEmptyMap() throws Exception {
         ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/invalide_use_of_variable.xml");
 
-        TestProgramCheckVisitor checkVisitor = new TestProgramCheckVisitor(null);
+        TestProgramCheckVisitor checkVisitor = new TestProgramCheckVisitor(null, null);
         checkVisitor.check(phrases);
 
         Assert.assertEquals(1, checkVisitor.getErrorCount());

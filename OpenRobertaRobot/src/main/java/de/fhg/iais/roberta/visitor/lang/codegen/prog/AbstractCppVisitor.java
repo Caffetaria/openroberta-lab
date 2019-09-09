@@ -44,6 +44,8 @@ import de.fhg.iais.roberta.syntax.lang.stmt.FunctionStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.IfStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.MethodStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.VisitorException;
 import de.fhg.iais.roberta.visitor.IVisitor;
@@ -61,8 +63,12 @@ public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
      *
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
-    protected AbstractCppVisitor(ArrayList<ArrayList<Phrase<Void>>> programPhrases, int indentation) {
-        super(programPhrases, indentation);
+    protected AbstractCppVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
     }
 
     @Override
@@ -142,8 +148,8 @@ public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
 
     @Override
     public Void visitStmtFlowCon(StmtFlowCon<Void> stmtFlowCon) {
-        if ( this.loopsLabels.get(this.currenLoop.getLast()) != null ) {
-            if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+        if ( this.usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) != null ) {
+            if ( this.usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) ) {
                 this.sb.append("goto " + stmtFlowCon.getFlow().toString().toLowerCase() + "_loop" + this.currenLoop.getLast() + ";");
                 return null;
             }
@@ -549,7 +555,8 @@ public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
     }
 
     protected void addContinueLabelToLoop() {
-        if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+        Integer lastLoop = this.currenLoop.getLast();
+        if ( this.usedHardwareBean.getLoopsLabelContainer().get(lastLoop) ) {
             nlIndent();
             this.sb.append("continue_loop" + this.currenLoop.getLast() + ":");
         }
@@ -557,7 +564,7 @@ public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
 
     protected void addBreakLabelToLoop(boolean isWaitStmt) {
         if ( !isWaitStmt ) {
-            if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+            if ( this.usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) ) {
                 nlIndent();
                 this.sb.append("break_loop" + this.currenLoop.getLast() + ":");
                 nlIndent();

@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
@@ -94,11 +93,12 @@ import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.codegen.utilities.TTSLanguageMapper;
-import de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
 
@@ -109,12 +109,9 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
     private static final String PREFIX_OUTPUT_PORT = "OUT_";
     private static final String PREFIX_IN_PORT = "IN_";
 
+    private final ConfigurationAst brickConfiguration;
     private final String programName;
     private final ILanguage language;
-    private final boolean isSayTextUsed;
-    private final ConfigurationAst brickConfiguration;
-    private final Set<UsedActor> usedActors;
-    private final Set<UsedSensor> usedSensors;
 
     /**
      * initialize the EV3 c4ev3 code generator visitor.
@@ -123,20 +120,17 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
      * @param indentation to start with. Will be incr/decr depending on block structure
      */
     Ev3C4ev3Visitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         String programName,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         int indentation,
         ILanguage language) {
-        super(programPhrases, indentation);
-        this.programName = programName;
-        Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
         this.brickConfiguration = brickConfiguration;
+        this.programName = programName;
         this.language = language;
-        this.usedActors = checkVisitor.getUsedActors();
-        this.usedSensors = checkVisitor.getUsedSensors();
-        this.loopsLabels = checkVisitor.getloopsLabelContainer();
-        this.isSayTextUsed = checkVisitor.isSayTextUsed();
     }
 
     private static String getPrefixedOutputPort(String port) {
@@ -158,6 +152,8 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
      * @return
      */
     public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         String programName,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
@@ -166,7 +162,7 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
         Assert.notNull(programName);
         Assert.notNull(brickConfiguration);
 
-        Ev3C4ev3Visitor astVisitor = new Ev3C4ev3Visitor(programName, brickConfiguration, phrasesSet, 0, language);
+        Ev3C4ev3Visitor astVisitor = new Ev3C4ev3Visitor(usedHardwareBean, codeGeneratorSetupBean, programName, brickConfiguration, phrasesSet, 0, language);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -241,7 +237,7 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
 
     private String getSensorsInitializationArguments() {
         Map<String, ConfigurationComponent> usedSensorMap = new HashMap<>(4);
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             String port = usedSensor.getPort();
             usedSensorMap.put(port, this.brickConfiguration.optConfigurationComponent(port));
         }
@@ -296,13 +292,13 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
     }
 
     private void generateTTSInitialization() {
-        if ( this.isSayTextUsed ) {
+        if ( this.usedHardwareBean.isSayTextUsed() ) {
             this.sb.append("SetLanguage(\"" + TTSLanguageMapper.getLanguageString(this.language) + "\");");
         }
     }
 
     private void generateGyroInitialization() {
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             if ( usedSensor.getType().equals(SC.GYRO) ) {
                 this.generateResetGyroSensor(usedSensor.getPort());
                 this.nlIndent();
@@ -1033,7 +1029,7 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
 
     private boolean isActorOnPort(String port) {
         if ( port != null ) {
-            for ( UsedActor actor : this.usedActors ) {
+            for ( UsedActor actor : this.usedHardwareBean.getUsedActors() ) {
                 if ( actor.getPort().equals(port) ) {
                     return true;
                 }

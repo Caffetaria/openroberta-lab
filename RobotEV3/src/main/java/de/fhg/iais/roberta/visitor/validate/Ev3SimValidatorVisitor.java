@@ -4,13 +4,14 @@ import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.action.ev3.ShowPictureAction;
 import de.fhg.iais.roberta.syntax.sensor.generic.CompassSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.IRSeekerSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 
 public final class Ev3SimValidatorVisitor extends AbstractSimValidatorVisitor implements IEv3Visitor<Void> {
 
-    public Ev3SimValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public Ev3SimValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

@@ -11,6 +11,7 @@ import de.fhg.iais.roberta.syntax.action.vorwerk.VacuumOff;
 import de.fhg.iais.roberta.syntax.action.vorwerk.VacuumOn;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.DropOffSensor;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.WallSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IVorwerkVisitor;
 
 /**
@@ -20,8 +21,8 @@ import de.fhg.iais.roberta.visitor.hardware.IVorwerkVisitor;
  */
 public final class VorwerkUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IVorwerkVisitor<Void> {
 
-    public VorwerkUsedHardwareCollectorVisitor(ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public VorwerkUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
         check(phrasesSet);
     }
 

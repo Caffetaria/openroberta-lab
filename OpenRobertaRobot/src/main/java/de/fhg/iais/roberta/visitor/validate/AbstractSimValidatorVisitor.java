@@ -13,12 +13,13 @@ import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.ColorSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 
 public abstract class AbstractSimValidatorVisitor extends AbstractProgramValidatorVisitor {
 
-    public AbstractSimValidatorVisitor(ConfigurationAst brickConfiguration) {
-        super(brickConfiguration);
+    public AbstractSimValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst brickConfiguration) {
+        super(builder, brickConfiguration);
     }
 
     @Override

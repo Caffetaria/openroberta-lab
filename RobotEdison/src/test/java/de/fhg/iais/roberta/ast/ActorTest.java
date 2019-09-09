@@ -1,8 +1,9 @@
 package de.fhg.iais.roberta.ast;
 
-import de.fhg.iais.roberta.util.test.edison.HelperEdisonForXmlTest;
 import org.junit.Assert;
 import org.junit.Test;
+
+import de.fhg.iais.roberta.util.test.edison.HelperEdisonForXmlTest;
 
 public class ActorTest {
 

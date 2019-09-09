@@ -41,6 +41,8 @@ import de.fhg.iais.roberta.syntax.lang.stmt.IfStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.MethodStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.RepeatStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.AbstractLanguageVisitor;
@@ -61,8 +63,13 @@ public abstract class AbstractJavaVisitor extends AbstractLanguageVisitor {
      * @param usedSensors in the current program
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
-    protected AbstractJavaVisitor(ArrayList<ArrayList<Phrase<Void>>> programPhrases, String programName, int indentation) {
-        super(programPhrases, indentation);
+    protected AbstractJavaVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
+        String programName,
+        int indentation) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
         this.programName = programName;
     }
 

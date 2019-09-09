@@ -1,17 +1,12 @@
 package de.fhg.iais.roberta.codegen;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.ProcessBuilder.Redirect;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumSet;
-import java.util.Map;
-import java.util.StringJoiner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -20,10 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.transformer.Project;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
-import de.fhg.iais.roberta.visitor.collect.MbedUsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public class CalliopeCompilerWorker implements IWorker {
@@ -32,22 +27,14 @@ public class CalliopeCompilerWorker implements IWorker {
 
     protected String crosscompilerResponse = "";
 
-    private String compiledHex;
-
-    @Override
-    public String getName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     @Override
     public void execute(Project project) {
         Key workflowResult = null;
-        MbedUsedHardwareCollectorVisitor usedHardwareVisitor =
-            new MbedUsedHardwareCollectorVisitor(project.getProgramAst().getTree(), project.getConfigurationAst());
+        UsedHardwareBean usedHardwareBean = (UsedHardwareBean) project.getWorkerResult("CollectedHardware");
         EnumSet<CalliopeCompilerFlag> compilerFlags =
-            usedHardwareVisitor.isRadioUsed() ? EnumSet.of(CalliopeCompilerFlag.RADIO_USED) : EnumSet.noneOf(CalliopeCompilerFlag.class);
+            usedHardwareBean.isRadioUsed() ? EnumSet.of(CalliopeCompilerFlag.RADIO_USED) : EnumSet.noneOf(CalliopeCompilerFlag.class);
         compileSourceCode(
+            project,
             workflowResult,
             project.getToken(),
             project.getProgramName(),
@@ -55,22 +42,16 @@ public class CalliopeCompilerWorker implements IWorker {
             compilerFlags,
             project.getSourceCode().toString());
         project.getErrorMessages().add(workflowResult);
-        project.setCompiledHex(this.compiledHex);
     }
 
-    @Override
-    public Map<String, String> getResult() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Key getResultKey() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public void compileSourceCode(Key workflowResult, String token, String programName, ILanguage language, Object flagProvider, String generatedSourceCode) {
+    public void compileSourceCode(
+        Project project,
+        Key workflowResult,
+        String token,
+        String programName,
+        ILanguage language,
+        Object flagProvider,
+        String generatedSourceCode) {
         storeGeneratedProgram(token, programName, ".cpp", generatedSourceCode);
         boolean isRadioUsed;
         if ( flagProvider == null ) {
@@ -81,7 +62,7 @@ public class CalliopeCompilerWorker implements IWorker {
         } else {
             isRadioUsed = false;
         }
-        workflowResult = runBuild(token, programName, "generated.main", isRadioUsed);
+        workflowResult = runBuild(project, token, programName, "generated.main", isRadioUsed);
         if ( workflowResult == Key.COMPILERWORKFLOW_SUCCESS ) {
             LOG.info("compile calliope program {} successful", programName);
         } else {
@@ -109,7 +90,7 @@ public class CalliopeCompilerWorker implements IWorker {
         }
     }
 
-    private Key runBuild(String token, String mainFile, String mainPackage, boolean radioUsed) {
+    private Key runBuild(Project project, String token, String mainFile, String mainPackage, boolean radioUsed) {
         final String compilerResourcesDir = System.getenv("robot_crosscompiler_resourcebase") + "RobotMbed/libs2017/";
         String tempDir = "/tmp/";
 
@@ -127,46 +108,16 @@ public class CalliopeCompilerWorker implements IWorker {
                 compilerResourcesDir,
                 bluetooth
             };
-        boolean success = runCrossCompiler(executableWithParameters);
+        boolean success = AbstractCompilerWorkflow.runCrossCompilerNoResponse(executableWithParameters);
         if ( success ) {
-            try {
-                this.compiledHex = FileUtils.readFileToString(new File(pathToSrcFile + "/target/" + mainFile + ".hex"), "UTF-8");
+            project.setCompiledHex(AbstractCompilerWorkflow.getBase64EncodedHex(pathToSrcFile + "/target/" + project.getProgramName() + ".ino.hex"));
+            if ( project.getCompiledHex() != null ) {
                 return Key.COMPILERWORKFLOW_SUCCESS;
-            } catch ( IOException e ) {
-                LOG.error("compilation of Calliope program successful, but reading the binary failed", e);
+            } else {
                 return Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
             }
         } else {
             return Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
         }
     }
-
-    protected final boolean runCrossCompiler(String[] executableWithParameters) {
-        int ecode = -1;
-        try {
-            ProcessBuilder procBuilder = new ProcessBuilder(executableWithParameters);
-            procBuilder.redirectErrorStream(true);
-            procBuilder.redirectInput(Redirect.INHERIT);
-            procBuilder.redirectOutput(Redirect.PIPE);
-            Process p = procBuilder.start();
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            StringJoiner sj = new StringJoiner(System.getProperty("line.separator"));
-            reader.lines().iterator().forEachRemaining(sj::add);
-            this.crosscompilerResponse = sj.toString();
-            ecode = p.waitFor();
-            p.destroy();
-        } catch ( Exception e ) {
-            this.crosscompilerResponse = "exception when calling the cross compiler";
-            LOG.error(this.crosscompilerResponse, e);
-            ecode = -1;
-        }
-        LOG.error("DEBUG INFO: " + this.crosscompilerResponse);
-        if ( ecode == 0 ) {
-            return true;
-        } else {
-            LOG.error("compilation of program failed with message: \n" + this.crosscompilerResponse);
-            return false;
-        }
-    }
-
 }

@@ -12,6 +12,7 @@ import de.fhg.iais.roberta.blockly.generated.Instance;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
+import de.fhg.iais.roberta.visitor.IVisitor;
 
 /**
  * This class represents model of the hardware configuration of a robot (assume we have "left" and "right" motor). It is used in the code generation. <br>
@@ -38,6 +39,12 @@ public class ConfigurationAst {
         this.componentTypes = new ArrayList<>();
         for ( ConfigurationComponent configurationComponent : this.configurationComponents.values() ) {
             this.componentTypes.add(configurationComponent.getComponentType());
+        }
+    }
+
+    public void accept(IVisitor<Void> visitor) {
+        for ( ConfigurationComponent configurationComponent : this.configurationComponents.values() ) {
+            configurationComponent.accept(visitor);
         }
     }
 

@@ -7,14 +7,13 @@ import static de.fhg.iais.roberta.mode.general.ListElementOperations.GET_REMOVE;
 import static de.fhg.iais.roberta.mode.general.ListElementOperations.INSERT;
 import static de.fhg.iais.roberta.mode.general.ListElementOperations.REMOVE;
 import static de.fhg.iais.roberta.mode.general.ListElementOperations.SET;
-import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isHiTecColorSensor;
 import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isEV3ColorSensor;
+import static de.fhg.iais.roberta.visitor.codegen.utilities.ColorSensorUtils.isHiTecColorSensor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,12 +85,13 @@ import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
+import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.codegen.utilities.TTSLanguageMapper;
-import de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractJavaVisitor;
 
@@ -106,12 +106,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
     protected final ConfigurationAst brickConfiguration;
 
     protected Map<String, String> predefinedImage = new HashMap<>();
-    protected final Set<UsedSensor> usedSensors;
-    protected final Set<UsedActor> usedActors;
-    protected final Set<String> usedImages;
-
     protected ILanguage language;
-    private final boolean isSayTextUsed;
 
     /**
      * initialize the Java code generator visitor.
@@ -122,23 +117,16 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
      * @param indentation to start with. Will be ince/decr depending on block structure
      */
     public Ev3JavaVisitor(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         String programName,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         ConfigurationAst brickConfiguration,
         int indentation,
         ILanguage language) {
-        super(programPhrases, programName, indentation);
-
-        Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(programPhrases, brickConfiguration);
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, programName, indentation);
 
         this.brickConfiguration = brickConfiguration;
-        this.usedSensors = checkVisitor.getUsedSensors();
-        this.usedActors = checkVisitor.getUsedActors();
-        this.usedImages = checkVisitor.getUsedImages();
-        this.isSayTextUsed = checkVisitor.isSayTextUsed();
-
-        this.loopsLabels = checkVisitor.getloopsLabelContainer();
-
         this.language = language;
         // Picture strings are UTF-16 encoded with extra \0 padding bytes
         initPredefinedImages();
@@ -153,6 +141,8 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
      * @param phrases to generate the code from
      */
     public static String generate(
+        UsedHardwareBean usedHardwareBean,
+        CodeGeneratorSetupBean codeGeneratorSetupBean,
         String programName,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
@@ -161,7 +151,8 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         Assert.notNull(programName);
         Assert.notNull(brickConfiguration);
 
-        Ev3JavaVisitor astVisitor = new Ev3JavaVisitor(programName, phrasesSet, brickConfiguration, withWrapping ? 1 : 0, language);
+        Ev3JavaVisitor astVisitor =
+            new Ev3JavaVisitor(usedHardwareBean, codeGeneratorSetupBean, programName, phrasesSet, brickConfiguration, withWrapping ? 1 : 0, language);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -176,7 +167,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         this.sb.append("public class " + this.programName + " {\n");
         this.sb.append(this.INDENT).append("private static Configuration brickConfiguration;").append("\n\n");
         this.sb.append(this.INDENT).append(generateRegenerateUsedSensors()).append("\n");
-        if ( this.usedImages.size() != 0 ) {
+        if ( this.usedHardwareBean.getUsedImages().size() != 0 ) {
             this.sb.append(this.INDENT).append("private static Map<String, String> predefinedImages = new HashMap<String, String>();\n\n");
         }
 
@@ -370,7 +361,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
 
     private boolean isActorOnPort(String port) {
         boolean isActorOnPort = false;
-        for ( UsedActor actor : this.usedActors ) {
+        for ( UsedActor actor : this.usedHardwareBean.getUsedActors() ) {
             isActorOnPort = isActorOnPort ? isActorOnPort : actor.getPort().equals(port);
         }
         return isActorOnPort;
@@ -693,7 +684,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
             //this.sb.append(INDENT).append(INDENT).append(INDENT).append("\nhal.startScreenLoggingThread();");
             this.isInDebugMode = true;
         }
-        if ( this.isSayTextUsed && !this.brickConfiguration.getRobotName().equals("ev3lejosv0") ) {
+        if ( this.usedHardwareBean.isSayTextUsed() && !this.brickConfiguration.getRobotName().equals("ev3lejosv0") ) {
             nlIndent();
             this.sb.append("hal.setLanguage(\"");
             this.sb.append(TTSLanguageMapper.getLanguageString(this.language));
@@ -1138,7 +1129,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
 
     private String generateUsedImages() {
         StringBuilder sb = new StringBuilder();
-        for ( String image : this.usedImages ) {
+        for ( String image : this.usedHardwareBean.getUsedImages() ) {
             sb
                 .append(this.INDENT)
                 .append(this.INDENT)
@@ -1197,13 +1188,13 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
     private String generateRegenerateUsedSensors() {
         StringBuilder sb = new StringBuilder();
         String arrayOfSensors = "";
-        for ( UsedSensor usedSensor : this.usedSensors ) {
+        for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
             arrayOfSensors += generateRegenerateUsedSensor(usedSensor);
             arrayOfSensors += ", ";
         }
 
         sb.append("private Set<UsedSensor> usedSensors = " + "new LinkedHashSet<UsedSensor>(");
-        if ( !this.usedSensors.isEmpty() ) {
+        if ( !this.usedHardwareBean.getUsedSensors().isEmpty() ) {
             sb.append("Arrays.asList(" + arrayOfSensors.substring(0, arrayOfSensors.length() - 2) + ")");
         }
         sb.append(");");

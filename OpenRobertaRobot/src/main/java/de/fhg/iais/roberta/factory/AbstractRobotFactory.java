@@ -1,19 +1,16 @@
 package de.fhg.iais.roberta.factory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.iais.roberta.codegen.HelperMethodGenerator;
-import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.util.dbc.Assert;
@@ -23,8 +20,6 @@ import de.fhg.iais.roberta.visitor.validate.IWorker;
 public abstract class AbstractRobotFactory implements IRobotFactory {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractRobotFactory.class);
 
-    private static final String DEFAULT_HELPER_FILE = "classpath:/helperMethodsCommon.yml"; // TODO is this nice?
-
     protected final PluginProperties pluginProperties;
     protected final BlocklyDropdownFactory blocklyDropdown2EnumFactory;
     protected final String beginnerToolbox;
@@ -32,26 +27,17 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
     protected final String programDefault;
     protected final String configurationToolbox;
     protected final String configurationDefault;
-    protected final HelperMethodGenerator helperMethodGenerator;
     protected Map<String, IWorker> workers = new HashMap<>(); //worker type to impllementing class(es) collect->de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorWorker
     protected Map<String, List<String>> workflows = new HashMap<>(); //workflow name to a list of types of applicable workers: showsource->collect,generate
 
     public AbstractRobotFactory(PluginProperties pluginProperties) {
         this.pluginProperties = pluginProperties;
         this.blocklyDropdown2EnumFactory = new BlocklyDropdownFactory(this.pluginProperties);
-
         this.beginnerToolbox = Util1.readResourceContent(this.pluginProperties.getStringProperty("robot.program.toolbox.beginner"));
         this.expertToolbox = Util1.readResourceContent(this.pluginProperties.getStringProperty("robot.program.toolbox.expert"));
         this.programDefault = Util1.readResourceContent(this.pluginProperties.getStringProperty("robot.program.default"));
         this.configurationToolbox = Util1.readResourceContent(this.pluginProperties.getStringProperty("robot.configuration.toolbox"));
         this.configurationDefault = Util1.readResourceContent(this.pluginProperties.getStringProperty("robot.configuration.default"));
-
-        JSONObject helperMethods = new JSONObject();
-        String helperMethodFile = this.pluginProperties.getStringProperty("robot.helperMethods");
-        helperMethodFile = helperMethodFile == null ? DEFAULT_HELPER_FILE : helperMethodFile;
-        Util1.loadYAMLRecursive("", helperMethods, helperMethodFile, true);
-        this.helperMethodGenerator = new HelperMethodGenerator(helperMethods, getLanguageFromFileExtension());
-
         loadWorkers();
     }
 
@@ -141,6 +127,42 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
     }
 
     @Override
+    public final String getConfigurationType() {
+        final String configurationType = this.pluginProperties.getStringProperty("robot.configuration.type");
+        if ( configurationType == null ) {
+            throw new DbcException("no property robot.configuration.type");
+        } else if ( configurationType.equals("new") ) {
+            return "new";
+        }
+        if ( configurationType.startsWith("old") ) {
+            return "old";
+        } else {
+            throw new DbcException("invalid property robot.configuration.type");
+        }
+    }
+
+    @Override
+    public final String getSensorPrefix() {
+        final String configurationType = this.pluginProperties.getStringProperty("robot.configuration.type");
+        if ( configurationType == null || configurationType.equals("new") || !configurationType.startsWith("old-") ) {
+            throw new DbcException("no or invalid property robot.configuration.type");
+        } else {
+            return configurationType.substring(4);
+        }
+    }
+
+    @Override
+    public final String getTopBlockOfOldConfiguration() {
+        final String topLevelBlock = this.pluginProperties.getStringProperty("robot.configuration.old.toplevelblock");
+        if ( topLevelBlock == null ) {
+            throw new DbcException("no property robot.configuration.old.toplevelblock");
+        } else {
+            return topLevelBlock;
+        }
+
+    }
+
+    @Override
     public final String getCommandline() {
         return this.pluginProperties.getStringProperty("robot.connection.commandLine");
     }
@@ -158,31 +180,6 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
     @Override
     public final Boolean hasWlanCredentials() {
         return this.pluginProperties.getStringProperty("robot.haswlan") != null;
-    }
-
-    @Override
-    public HelperMethodGenerator getHelperMethodGenerator() {
-        return this.helperMethodGenerator;
-    }
-
-    // TODO remove this in the future -> just add a method "getLanguage()" to IRobotFactory? this is less intrusive for now
-    private HelperMethodGenerator.Language getLanguageFromFileExtension() {
-        String ext = getFileExtension();
-
-        switch ( ext ) {
-            case "java":
-                return HelperMethodGenerator.Language.JAVA;
-            case "py":
-                return HelperMethodGenerator.Language.PYTHON;
-            case "cpp":
-            case "ino":
-            case "nxc":
-                return HelperMethodGenerator.Language.C;
-            case "json":
-                return HelperMethodGenerator.Language.JSON;
-            default:
-                throw new DbcException("File extension not implemented!");
-        }
     }
 
     private void loadWorkers() {
@@ -212,6 +209,23 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
 
     }
 
+    public static HelperMethodGenerator.Language getLanguageFromFileExtension(String ext) {
+        switch ( ext ) {
+            case "java":
+                return HelperMethodGenerator.Language.JAVA;
+            case "py":
+                return HelperMethodGenerator.Language.PYTHON;
+            case "cpp":
+            case "ino":
+            case "nxc":
+                return HelperMethodGenerator.Language.C;
+            case "json":
+                return HelperMethodGenerator.Language.JSON;
+            default:
+                throw new DbcException("File extension not implemented!");
+        }
+    }
+
     @Override
     public List<IWorker> getWorkerPipe(String workflow) {
         List<String> workerTypes = this.workflows.get(workflow);
@@ -220,25 +234,5 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
             workerPipe.add(this.workers.get(type));
         }
         return workerPipe;
-    }
-
-    @Override
-    public void execute(Project project, List<String> workerNames) {
-        for ( String workerName : workerNames ) {
-            IWorker worker = this.workers.get(workerName);
-            worker.execute(project);
-            if ( !project.getErrorMessages().isEmpty() ) {
-                return; // TODO: a better, not such drastic strategy
-            }
-        }
-    }
-
-    @Override
-    public List<String> getWorkerNames() {
-        if ( this.workers != null ) {
-            return new ArrayList<>(this.workers.keySet());
-        } else {
-            return Collections.emptyList();
-        }
     }
 }

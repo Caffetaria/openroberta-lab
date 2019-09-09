@@ -1,19 +1,13 @@
 package de.fhg.iais.roberta.visitor.collect;
 
-import java.util.Set;
-
 import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.components.UsedSensor;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 
 public class WedoUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor {
 
-    public WedoUsedHardwareCollectorVisitor(ConfigurationAst configuration) {
-        super(configuration);
-    }
-
-    public Set<UsedSensor> getTimer() {
-        return this.usedSensors;
+    public WedoUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst configuration) {
+        super(builder, configuration);
     }
 
     @Override

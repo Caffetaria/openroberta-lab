@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.codegen.ArduinoCompilerWorkflow;
-import de.fhg.iais.roberta.codegen.Bob3CompilerWorkflow;
-import de.fhg.iais.roberta.codegen.BotnrollCompilerWorkflow;
-import de.fhg.iais.roberta.codegen.MbotCompilerWorkflow;
-import de.fhg.iais.roberta.codegen.SenseboxCompilerWorkflow;
+import de.fhg.iais.roberta.codegen.ArduinoCompilerWorker;
+import de.fhg.iais.roberta.codegen.Bob3CompilerWorker;
+import de.fhg.iais.roberta.codegen.BotnrollCompilerWorker;
+import de.fhg.iais.roberta.codegen.MbotCompilerWorker;
+import de.fhg.iais.roberta.codegen.SenseboxCompilerWorker;
 import de.fhg.iais.roberta.factory.Bob3Factory;
 import de.fhg.iais.roberta.factory.BotnrollFactory;
 import de.fhg.iais.roberta.factory.MbotFactory;
@@ -35,11 +35,11 @@ public class ArduinoCompilerWorkflowTest {
     private BotnrollFactory botnrollFactory;
     private MbotFactory mbotFactory;
     private SenseboxFactory senseboxFactory;
-    private ArduinoCompilerWorkflow arduinoCompilerWorkflow;
-    private Bob3CompilerWorkflow bob3CompilerWorkflow;
-    private MbotCompilerWorkflow mbotCompilerWorkflow;
-    private BotnrollCompilerWorkflow botnrollCompilerWorkflow;
-    private SenseboxCompilerWorkflow senseboxCompilerWorkflow;
+    private ArduinoCompilerWorker arduinoCompilerWorkflow;
+    private Bob3CompilerWorker bob3CompilerWorkflow;
+    private MbotCompilerWorker mbotCompilerWorkflow;
+    private BotnrollCompilerWorker botnrollCompilerWorkflow;
+    private SenseboxCompilerWorker senseboxCompilerWorkflow;
 
     @Ignore
     @Before
@@ -50,20 +50,20 @@ public class ArduinoCompilerWorkflowTest {
         }
         PluginProperties properties = new PluginProperties("uno", System.getenv(ORA_CC_RSC_ENVVAR), "/tmp/", Util1.loadProperties("classpath:/uno.properties"));
         this.unoFactory = new UnoFactory(properties);
-        this.arduinoCompilerWorkflow = new ArduinoCompilerWorkflow(properties);
+        this.arduinoCompilerWorkflow = new ArduinoCompilerWorker(properties);
         properties = new PluginProperties("nano", System.getenv(ORA_CC_RSC_ENVVAR), "/tmp/", Util1.loadProperties("classpath:/nano.properties"));
         this.nanoFactory = new NanoFactory(properties);
         properties = new PluginProperties("mega", System.getenv(ORA_CC_RSC_ENVVAR), "/tmp/", Util1.loadProperties("classpath:/mega.properties"));
         this.megaFactory = new MegaFactory(properties);
         properties = new PluginProperties("bob3", System.getenv(ORA_CC_RSC_ENVVAR), "/tmp/", Util1.loadProperties("classpath:/bob3.properties"));
         this.bob3Factory = new Bob3Factory(properties);
-        this.bob3CompilerWorkflow = new Bob3CompilerWorkflow(properties);
+        this.bob3CompilerWorkflow = new Bob3CompilerWorker(properties);
         properties = new PluginProperties("botnroll", System.getenv(ORA_CC_RSC_ENVVAR), "/tmp/", Util1.loadProperties("classpath:/botnroll.properties"));
         this.botnrollFactory = new BotnrollFactory(properties);
-        this.botnrollCompilerWorkflow = new BotnrollCompilerWorkflow(properties);
+        this.botnrollCompilerWorkflow = new BotnrollCompilerWorker(properties);
         properties = new PluginProperties("mbot", System.getenv(ORA_CC_RSC_ENVVAR), "/tmp/", Util1.loadProperties("classpath:/mbot.properties"));
         this.mbotFactory = new MbotFactory(properties);
-        this.mbotCompilerWorkflow = new MbotCompilerWorkflow(properties);
+        this.mbotCompilerWorkflow = new MbotCompilerWorker(properties);
     }
 
     @Ignore
