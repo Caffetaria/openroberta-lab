@@ -165,11 +165,11 @@ public class Project {
     }
 
     public static Project.Builder setupWithExportXML(IRobotFactory factory, String exportXmlAsString) {
-        String[] parts = exportXmlAsString.split("\\\\s*</program>\\\\s*<config>\\\\s*");
+        String[] parts = exportXmlAsString.split("\\s*</program>\\s*<config>\\s*");
         String[] programParts = parts[0].split("<program>");
         String program = programParts[1];
         String[] configurationParts = parts[1].split("</config>");
-        String configuration = configurationParts[1];
+        String configuration = configurationParts[0];
         return setupWithExportXML(factory, program, configuration);
     }
 

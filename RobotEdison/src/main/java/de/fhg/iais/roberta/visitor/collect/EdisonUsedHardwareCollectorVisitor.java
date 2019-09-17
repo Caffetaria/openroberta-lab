@@ -32,7 +32,6 @@ public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareColl
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         ConfigurationAst robotConfiguration) {
         super(builder, robotConfiguration);
-        check(programPhrases);
     }
 
     @Override

@@ -18,12 +18,12 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      * 
      */
     function saveAsProgramToServer(programName, xmlProgramText, configName, xmlConfigText, timestamp, successFn) {
-        COMM.json("/program", {
-            "cmd" : "saveAsP",
+        COMM.json("/project/save", {
             "programName" : programName,
             "programText" : xmlProgramText,
             "configName" : configName,
             "configText" : xmlConfigText,
+            "shared" : false,
             "timestamp" : timestamp
         }, successFn, "save program to server with new name '" + programName + "'");
     }
@@ -45,13 +45,12 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      * 
      */
     function saveProgramToServer(programName, xmlProgramText, configName, xmlConfigText, programShared, timestamp, successFn) {
-        COMM.json("/program", {
-            "cmd" : "saveP",
+        COMM.json("/project/save", {
             "programName" : programName,
             "programText" : xmlProgramText,
             "configName" : configName,
             "configText" : xmlConfigText,
-            "shared" : programShared,
+            "shared" : true,
             "timestamp" : timestamp
         }, successFn, "save program '" + programName + "' to server");
     }
@@ -67,8 +66,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      *            {String} - that represents the program
      */
     function loadProgramFromXML(programName, xmlText, successFn) {
-        COMM.json("/program", {
-            "cmd" : "importXML",
+        COMM.json("/project/import", {
             "name" : programName,
             "program" : xmlText
         }, successFn, "open program '" + programName + "' from XML");
@@ -135,8 +133,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      * 
      */
     function deleteProgramFromListing(programName, author, successFn) {
-        COMM.json("/program", {
-            "cmd" : "deleteP",
+        COMM.json("/project/delete", {
             "name" : programName,
             "author" : author,
         }, function(result) {
@@ -156,8 +153,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      * 
      */
     function loadProgramFromListing(programName, ownerName, authorName, successFn) {
-        COMM.json("/program", {
-            "cmd" : "loadP",
+        COMM.json("/project/listing", {
             "name" : programName,
             "owner" : ownerName,
             "authorName" : authorName
@@ -176,8 +172,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      * 
      */
     function loadProgramEntity(programName, authorName, ownerName, successFn) {
-        COMM.json("/program", {
-            "cmd" : "loadProgramEntity",
+        COMM.json("/project/entity", {
             "name" : programName,
             "owner" : ownerName,
             "author" : authorName
@@ -190,8 +185,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      * Refresh program list
      */
     function refreshList(successFn) {
-        COMM.json("/program", {
-            "cmd" : "loadPN"
+        COMM.json("/project/listing/names", {
         }, successFn, "refresh program list");
     }
 
@@ -368,8 +362,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      * 
      */
     function likeProgram(like, programName, authorName, robotName, successFn) {
-        COMM.json("/program", {
-            "cmd" : "likeP",
+        COMM.json("/project/like", {
             "programName" : programName,
             "robotName" : robotName,
             "authorName" : authorName,

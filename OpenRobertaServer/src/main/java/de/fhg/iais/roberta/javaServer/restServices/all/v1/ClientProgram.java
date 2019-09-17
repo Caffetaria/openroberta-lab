@@ -3,22 +3,15 @@ package de.fhg.iais.roberta.javaServer.restServices.all.v1;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.UnmarshalException;
 
-import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
@@ -39,9 +32,6 @@ import de.fhg.iais.roberta.persistence.ConfigurationProcessor;
 import de.fhg.iais.roberta.persistence.LikeProcessor;
 import de.fhg.iais.roberta.persistence.ProgramProcessor;
 import de.fhg.iais.roberta.persistence.UserProcessor;
-import de.fhg.iais.roberta.persistence.bo.Program;
-import de.fhg.iais.roberta.persistence.bo.User;
-import de.fhg.iais.roberta.persistence.dao.ConfigurationDao;
 import de.fhg.iais.roberta.persistence.util.DbSession;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;
 import de.fhg.iais.roberta.persistence.util.SessionFactoryWrapper;
@@ -57,7 +47,6 @@ import de.fhg.iais.roberta.util.Util;
 import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
 import de.fhg.iais.roberta.visitor.validate.AbstractProgramValidatorVisitor;
-import de.fhg.iais.roberta.visitor.validate.AbstractSimValidatorVisitor;
 
 @Path("/program")
 public class ClientProgram {
@@ -74,9 +63,11 @@ public class ClientProgram {
         this.isPublicServer = serverProperties.getBooleanProperty("server.public");
     }
 
+    /*
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    */
     public Response command(@OraData HttpSessionState httpSessionState, JSONObject fullRequest) throws Exception {
         Util.handleRequestInit(httpSessionState, LOG, fullRequest);
         Map<String, String> responseParameters = new HashMap<>();
@@ -103,253 +94,35 @@ public class ClientProgram {
             if ( cmd.equals("saveP") || cmd.equals("saveAsP") ) {
                 // this was moved to ProjectRestController -> saveProject/updateProject and split into 2 methods
             } else {
-                ICompilerWorkflow compilerWorkflow = robotFactory.getRobotCompilerWorkflow();
+                ICompilerWorkflow compilerWorkflow = null;
                 if ( cmd.equals("showSourceP") ) {
                     // this was moved to ProjectRestController -> getSourceCode
-                    return Response.serverError().build();
                 } else if ( cmd.equals("loadP") ) {
-                    if ( !httpSessionState.isUserLoggedIn()
-                        && !request.getString("owner").equals("Roberta")
-                        && !request.getString("owner").equals("Gallery") ) {
-                        ClientProgram.LOG.info("Unauthorized load request");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                    } else {
-                        final String programName = request.getString("name");
-                        final String ownerName = request.getString("owner");
-                        final String authorName = request.getString("authorName");
-
-                        final Program program = pp.getProgram(programName, ownerName, robot, authorName);
-                        if ( program != null ) {
-                            response.put("programText", program.getProgramText());
-                            final String configText = pp.getProgramsConfig(program);
-                            response.put("configName", program.getConfigName()); // may be null, if an anonymous configuration is used
-                            response.put("configText", configText); // may be null, if the default configuration is used
-                            response.put("lastChanged", program.getLastChanged().getTime());
-                            // count the views if the program is from the gallery!
-                            if ( ownerName.equals("Gallery") ) {
-                                pp.addOneView(program);
-                            }
-                        }
-                        Util.addResultInfo(response, pp);
-                        Statistics.info("ProgramLoad", "success", pp.succeeded());
-                    }
+                    // this was moved to ProjectRestController -> getProgram
                 } else if ( cmd.equals("importXML") ) {
-                    String xmlText = request.getString("program");
-                    xmlText = Util.checkProgramTextForXSS(xmlText);
-                    if ( xmlText.contains("robottype=\"ardu\"") ) {
-                        xmlText = xmlText.replaceAll("robottype=\"ardu\"", "robottype=\"botnroll\"");
-                        LOG.warn("Ardu to botnroll renaming on import should be removed in future.");
-                    }
-                    String programName = request.getString("name");
-                    if ( !Util1.isValidJavaIdentifier(programName) ) {
-                        programName = "NEPOprog";
-                    }
-
-                    Export jaxbImportExport = null;
-                    try {
-                        jaxbImportExport = JaxbHelper.xml2Element(xmlText, Export.class);
-                    } catch ( final UnmarshalException | org.xml.sax.SAXException e ) {
-                        jaxbImportExport = null;
-                    }
-                    if ( jaxbImportExport != null ) {
-                        final String robotType1 = jaxbImportExport.getProgram().getBlockSet().getRobottype();
-                        final String robotType2 = jaxbImportExport.getConfig().getBlockSet().getRobottype();
-                        if ( robotType1.equals(robot) && robotType2.equals(robot) ) {
-                            response.put("programName", programName);
-                            response.put("programText", JaxbHelper.blockSet2xml(jaxbImportExport.getProgram().getBlockSet()));
-                            response.put("configText", JaxbHelper.blockSet2xml(jaxbImportExport.getConfig().getBlockSet()));
-                            Util.addSuccessInfo(response, Key.PROGRAM_IMPORT_SUCCESS);
-                            Statistics.info("ProgramImport", "success", true);
-                        } else {
-                            Util.addErrorInfo(response, Key.PROGRAM_IMPORT_ERROR_WRONG_ROBOT_TYPE);
-                            Statistics.info("ProgramImport", "success", false);
-                        }
-                    } else {
-                        Util.addErrorInfo(response, Key.PROGRAM_IMPORT_ERROR);
-                    }
+                    // this was moved to ProjectRestController -> importProgram
                 } else if ( cmd.equals("shareP") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                    } else {
-                        final User user = up.getUser(userId);
-                        if ( !this.isPublicServer || user != null && user.isActivated() ) {
-                            final String programName = request.getString("programName");
-                            final String userToShareName = request.getString("userToShare");
-                            final String right = request.getString("right");
-                            upp.shareToUser(userId, robot, programName, userId, userToShareName, right);
-                            Util.addResultInfo(response, upp);
-                            Statistics.info("ProgramShare", "success", upp.succeeded());
-                        } else {
-                            Util.addErrorInfo(response, Key.ACCOUNT_NOT_ACTIVATED_TO_SHARE);
-                        }
-                    }
-
+                    // this was moved to ProjectRestController -> shareProgram
                 } else if ( cmd.equals("shareWithGallery") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                    } else {
-                        final String programName = request.getString("programName");
-                        final int galleryId = up.getUser("Gallery").getId();
-                        // generating a unique name for the program owned by the gallery.
-                        final User user = up.getUser(userId);
-                        final String userAccount = user.getAccount();
-                        if ( !this.isPublicServer || user != null && user.isActivated() ) {
-                            // get the program from the origin user to share with the gallery
-                            final Program program = pp.getProgram(programName, userAccount, robot, userAccount);
-
-                            String confText;
-                            if ( program != null ) {
-                                if ( program.getConfigName() == null ) {
-                                    if ( program.getConfigHash() == null ) {
-                                        confText = null;
-                                    } else {
-                                        final ConfigurationDao confDao = new ConfigurationDao(dbSession);
-                                        confText = confDao.load(program.getConfigHash()).getConfigurationText();
-                                    }
-                                } else {
-                                    confText = configurationProcessor.getConfigurationText(program.getConfigName(), userId, robot);
-                                }
-                                // make a copy of the user program and store it as a gallery owned program
-                                final Program programCopy =
-                                    pp.persistProgramText(programName, program.getProgramText(), null, confText, galleryId, robot, userId, null, true);
-                                if ( pp.succeeded() ) {
-                                    if ( programCopy != null ) {
-                                        response.put("lastChanged", programCopy.getLastChanged().getTime());
-                                        // share the copy of the program with the origin user
-                                        upp.shareToUser(galleryId, robot, programName, userId, userAccount, "X_WRITE");
-                                    } else {
-                                        ClientProgram.LOG.error("TODO: check potential error: the saved program should never be null");
-                                    }
-                                    Util.addSuccessInfo(response, Key.GALLERY_UPLOAD_SUCCESS);
-                                    Statistics.info("GalleryShare", "success", true);
-                                } else {
-                                    Util.addErrorInfo(response, Key.GALLERY_UPLOAD_ERROR);
-                                    Statistics.info("GalleryShare", "success", false);
-                                }
-                            } else {
-                                Util.addErrorInfo(response, Key.GALLERY_UPLOAD_ERROR);
-                                Statistics.info("GalleryShare", "success", false);
-                            }
-                        } else {
-                            Util.addErrorInfo(response, Key.ACCOUNT_NOT_ACTIVATED_TO_SHARE);
-                            Statistics.info("GalleryShare", "success", false);
-                        }
-                    }
-
+                    // this was moved to ProjectRestController -> createProjectShare
                 } else if ( cmd.equals("likeP") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                        Statistics.info("GalleryLike", "success", false);
-                    } else {
-                        final String programName = request.getString("programName");
-                        final String robotName = request.getString("robotName");
-                        final boolean like = request.getBoolean("like");
-                        final String authorName = request.getString("authorName");
-
-                        if ( like ) {
-                            lp.createLike(programName, robotName, authorName);
-                            if ( lp.succeeded() ) {
-                                // nothing to do
-                                //argument: deleted tracks whether a like was set or taken away
-                                Statistics.info("GalleryLike", "success", true, "deleted", false);
-                            } else {
-                                Util.addErrorInfo(response, Key.LIKE_SAVE_ERROR_EXISTS);
-                                Statistics.info("GalleryLike", "success", false);
-                            }
-                        } else {
-                            lp.deleteLike(programName, robotName, authorName);
-                            Statistics.info("GalleryLike", "success", true, "deleted", true);
-                        }
-                        Util.addResultInfo(response, lp);
-                    }
-
+                    // this was moved to ProjectRestController -> likeProject
                 } else if ( cmd.equals("shareDelete") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Statistics.info("ProgramShareDelete", "success", false);
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                    } else {
-                        final String programName = request.getString("programName");
-                        final String owner = request.getString("owner");
-                        final String author = request.getString("author");
-                        upp.shareDelete(owner, robot, programName, author, userId);
-                        Util.addResultInfo(response, upp);
-                        // if this program was shared from the gallery we need to delete the copy of it as well
-                        if ( owner.equals("Gallery") ) {
-                            final int ownerId = up.getUser(owner).getId();
-                            pp.deleteByName(programName, ownerId, robot, userId);
-                            Statistics.info("ProgramShareDelete", "success", true);
-                            Util.addResultInfo(response, pp);
-                        }
-                    }
-
+                    // this was moved to ProjectRestController -> deleteProjectShare
                 } else if ( cmd.equals("deleteP") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                        Statistics.info("ProgramDelete", "success", false);
-                    } else {
-                        final String programName = request.getString("name");
-                        final String author = request.getString("author");
-                        pp.deleteByName(programName, userId, robot, author);
-                        Util.addResultInfo(response, pp);
-                        Statistics.info("ProgramDelete", "success", pp.succeeded());
-                    }
+                    // this was moved to ProjectRestController -> deleteProject
                 } else if ( cmd.equals("loadPN") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                    } else {
-                        final JSONArray programInfo = pp.getProgramInfo(userId, robot, userId);
-                        response.put("programNames", programInfo);
-                        Util.addResultInfo(response, pp);
-                    }
-
+                    // this was moved to ProjectRestController -> getProgramNames
                 } else if ( cmd.equals("loadGallery") ) {
-                    final JSONArray programInfo = pp.getProgramGallery(userId);
-                    response.put("programNames", programInfo);
-                    Util.addResultInfo(response, pp);
-                    Statistics.info("GalleryView", "success", pp.succeeded());
+                    // this was moved to ProjectRestController -> getGallery
                 } else if ( cmd.equals("loadProgramEntity") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                    } else {
-                        final String programName = request.getString("name");
-                        final String ownerName = request.getString("owner");
-                        final String authorName = request.getString("author");
-                        final User owner = up.getUser(ownerName);
-                        final int ownerID = owner.getId();
-                        final int authorId = up.getUser(authorName).getId();
-                        final JSONArray program = pp.getProgramEntity(programName, ownerID, robot, authorId);
-                        if ( program != null ) {
-                            response.put("program", program);
-                        }
-                        Util.addResultInfo(response, pp);
-                    }
-
+                    // this was moved to ProjectRestController -> getProgramEntity
                 } else if ( cmd.equals("loadEN") ) {
-                    final JSONArray programInfo = pp.getProgramInfo(1, robot, 1);
-                    response.put("programNames", programInfo);
-                    Util.addResultInfo(response, pp);
-
+                    // this was moved to ProjectRestController -> getProgramExampleNames
                 } else if ( cmd.equals("loadPR") ) {
-                    if ( !httpSessionState.isUserLoggedIn() ) {
-                        ClientProgram.LOG.error("Unauthorized");
-                        Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-                    } else {
-                        final String programName = request.getString("name");
-                        final JSONArray relations = pp.getProgramRelations(programName, userId, robot, userId);
-                        response.put("relations", relations);
-                        Util.addResultInfo(response, pp);
-                    }
-
+                    // this was moved to ProjectRestController -> loadProjectRelations
                 } else if ( cmd.equals("runP") ) {
                     // this was moved to ProjectRestController -> runProgram
-                    return Response.serverError().build();
                 } else if ( cmd.equals("compileN") ) {
                     final String programName = request.getString("name");
                     final String programText = request.optString("programText");
@@ -392,24 +165,12 @@ public class ClientProgram {
                             final String programText = JaxbHelper.blockSet2xml(jaxbImportExport.getProgram().getBlockSet());
                             final String configText = JaxbHelper.blockSet2xml(jaxbImportExport.getConfig().getBlockSet());
                             final String token = httpSessionState.getToken();
-                            final Project programAndConfigTransformer = Project.setupWithExportXML(robotFactory, programText, configText);
+                            final Project.Builder builder = Project.setupWithExportXML(robotFactory, programText, configText);
+                            final Project programAndConfigTransformer = builder.build();
                             programAndConfigTransformer.getConfigurationAst().setRobotName(httpSessionState.getRobotName());
-                            List<Key> messageKeys = programAndConfigTransformer.getErrorMessages();
-                            if ( messageKeys.isEmpty() ) {
-                                final AbstractProgramValidatorVisitor programChecker =
-                                    robotFactory.getRobotProgramCheckVisitor(programAndConfigTransformer.getConfigurationAst());
-                                messageKey = programConfigurationCompatibilityCheck(response, programAndConfigTransformer, programChecker);
-                                if ( messageKey == null ) {
-                                    ClientProgram.LOG.info("compiler workflow started for program {}", programName);
-                                    compilerWorkflow.generateSourceAndCompile(token, programName, programAndConfigTransformer, language);
-                                    messageKey = compilerWorkflow.getWorkflowResult();
-                                } else {
-                                    Statistics.info("ProgramCompile", "success", false);
-                                }
-                            } else {
-                                messageKey = Key.PROGRAM_IMPORT_ERROR;
-                                Statistics.info("ProgramCompile", "success", false);
-                            }
+                            ClientProgram.LOG.info("compiler workflow started for program {}", programName);
+                            compilerWorkflow.generateSourceAndCompile(token, programName, programAndConfigTransformer, language);
+                            messageKey = compilerWorkflow.getWorkflowResult();
                         } else {
                             messageKey = Key.PROGRAM_IMPORT_ERROR_WRONG_ROBOT_TYPE;
                             Statistics.info("ProgramCompile", "success", false);
@@ -429,98 +190,9 @@ public class ClientProgram {
                         Util.addErrorInfo(response, messageKey, compilerResponse);
                     }
                 } else if ( cmd.equals("runPBack") ) {
-                    Key messageKey = null;
-                    String compilerResponse = null;
-                    final String token = httpSessionState.getToken();
-                    final String programName = request.getString("name");
-                    final String programText = request.optString("programText");
-                    final String configName = request.optString("configuration", null);
-                    String configurationText = request.optString("configurationText", null);
-                    final ILanguage language = Language.findByAbbr(request.optString("language"));
-                    if ( configName != null ) {
-                        configurationText = configurationProcessor.getConfigurationText(configName, userId, robot);
-                    } else if ( configurationText == null ) {
-                        configurationText = robotFactory.getConfigurationDefault();
-                    }
-
-                    final Project programAndConfigTransformer = Project.setupWithExportXML(robotFactory, programText, configurationText);
-                    programAndConfigTransformer.getConfigurationAst().setRobotName(httpSessionState.getRobotName());
-                    List<Key> messageKeys = programAndConfigTransformer.getErrorMessages();
-                    if ( messageKeys.isEmpty() ) {
-                        final AbstractProgramValidatorVisitor programChecker =
-                            robotFactory.getRobotProgramCheckVisitor(programAndConfigTransformer.getConfigurationAst());
-                        messageKey = programConfigurationCompatibilityCheck(response, programAndConfigTransformer, programChecker);
-                        if ( messageKey == null ) {
-                            ClientProgram.LOG.info("compiler workflow started for program {}", programName);
-                            compilerWorkflow.generateSourceAndCompile(token, programName, programAndConfigTransformer, language);
-                            messageKey = compilerWorkflow.getWorkflowResult();
-                            if ( messageKey == Key.COMPILERWORKFLOW_SUCCESS ) {
-                                response.put("compiledCode", compilerWorkflow.getCompiledCode());
-                                response.put("rc", "ok");
-                                Statistics
-                                    .info(
-                                        "ProgramRunBack",
-                                        "LoggedIn",
-                                        httpSessionState.isUserLoggedIn(),
-                                        "success",
-                                        true,
-                                        "programLength",
-                                        StringUtils.countMatches(programText, "<block "));
-                            } else {
-                                LOG.error("Compiler workflow failed with key: " + messageKey);
-                                Statistics
-                                    .info(
-                                        "ProgramRunBack",
-                                        "LoggedIn",
-                                        httpSessionState.isUserLoggedIn(),
-                                        "success",
-                                        false,
-                                        "programLength",
-                                        StringUtils.countMatches(programText, "<block "));
-                                compilerResponse = compilerWorkflow.getCrosscompilerResponse();
-                            }
-                        }
-                    }
-                    handleRunProgramError(response, messageKey, token, true, compilerResponse);
+                    // this was moved to ProjectRestController -> runProgram
                 } else if ( cmd.equals("runPsim") ) {
-                    boolean wasRobotWaiting = false;
-
-                    final String token = httpSessionState.getToken();
-                    final String programName = request.getString("name");
-                    final String programText = request.optString("programText");
-                    final String configName = request.optString("configuration", null);
-                    String configurationText = request.optString("configurationText", null);
-                    final ILanguage language = Language.findByAbbr(request.optString("language"));
-                    if ( configName != null ) {
-                        configurationText = configurationProcessor.getConfigurationText(configName, userId, robot);
-                    } else if ( configurationText == null ) {
-                        configurationText = robotFactory.getConfigurationDefault();
-                    }
-
-                    final Project transformer = Project.setupWithExportXML(robotFactory, programText, configurationText);
-                    transformer.getConfigurationAst().setRobotName(httpSessionState.getRobotName());
-                    List<Key> messageKeys = transformer.getErrorMessages();
-                    Key messageKey = null;
-                    if ( messageKeys.isEmpty() ) {
-                        final AbstractSimValidatorVisitor programChecker = robotFactory.getSimProgramCheckVisitor(transformer.getConfigurationAst());
-                        messageKey = programConfigurationCompatibilityCheck(response, transformer, programChecker);
-                        //transformer.getProgramAst();
-                        if ( messageKey == null ) {
-                            ClientProgram.LOG.info("JavaScript code generation started for program {}", programName);
-                            ICompilerWorkflow simCompilerWorkflow = robotFactory.getSimCompilerWorkflow();
-                            simCompilerWorkflow.generateSourceCode(token, programName, transformer, language);
-                            final String javaScriptCode = simCompilerWorkflow.getGeneratedSourceCode();
-                            // extreme debugging: ClientProgram.LOG.debug("JavaScriptCode \n{}", javaScriptCode);
-                            response.put("javaScriptProgram", javaScriptCode);
-                            wasRobotWaiting = true;
-                            messageKey = Key.COMPILERWORKFLOW_SUCCESS;
-                            Statistics.info("SimulationRun", "LoggedIn", httpSessionState.isUserLoggedIn(), "success", true);
-                        } else {
-                            Statistics.info("SimulationRun", "LoggedIn", httpSessionState.isUserLoggedIn(), "success", false);
-                        }
-                    }
-                    //TODO program checks should be in compiler workflow and should be thoroughly revised
-                    handleRunProgramError(response, messageKey, token, wasRobotWaiting, null);
+                    // this was moved to ProjectRestController -> getSimulationVMCode
                 } else {
                     ClientProgram.LOG.error("Invalid command: " + cmd);
                     Util.addErrorInfo(response, Key.COMMAND_INVALID);

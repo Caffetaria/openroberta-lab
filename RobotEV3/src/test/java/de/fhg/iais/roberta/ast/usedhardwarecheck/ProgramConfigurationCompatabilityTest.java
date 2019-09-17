@@ -11,6 +11,7 @@ import org.junit.Test;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.Phrase;
+import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
 import de.fhg.iais.roberta.visitor.validate.AbstractBrickValidatorVisitor;
 import de.fhg.iais.roberta.visitor.validate.Ev3BrickValidatorVisitor;
@@ -28,16 +29,15 @@ public class ProgramConfigurationCompatabilityTest {
         ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "B", "B", motorBproperties);
 
         ConfigurationComponent touchSensor = new ConfigurationComponent("TOUCH", false, "S1", "1", createMap("TYPE", "TOUCH"));
-        ConfigurationComponent ultrasonicSensor =
-            new ConfigurationComponent("ULTRASONIC", false, "S2", "2", createMap("TYPE", "ULTRASONIC"));
+        ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S2", "2", createMap("TYPE", "ULTRASONIC"));
 
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, ultrasonicSensor));
 
         ConfigurationAst brickConfiguration = builder.build();
         ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/program_config_compatibility.xml");
-
-        AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(brickConfiguration);
+        UsedHardwareBean.Builder beanBuilder = new UsedHardwareBean.Builder();
+        AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(beanBuilder, brickConfiguration);
         programChecker.check(phrases);
 
         Assert.assertEquals(4, programChecker.getErrorCount());
@@ -65,15 +65,14 @@ public class ProgramConfigurationCompatabilityTest {
         ConfigurationComponent touchSensor = new ConfigurationComponent("TOUCH", false, "S1", "1", createMap("TYPE", "TOUCH"));
         ConfigurationComponent colorSensor = new ConfigurationComponent("COLOR", false, "S2", "2", createMap("TYPE", "COLOR"));
         ConfigurationComponent gyroSensor = new ConfigurationComponent("GYRO", false, "S3", "3", createMap("TYPE", "GYRO"));
-        ConfigurationComponent ultrasonicSensor =
-            new ConfigurationComponent("ULTRASONIC", false, "S4", "4", createMap("TYPE", "ULTRASONIC"));
+        ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", createMap("TYPE", "ULTRASONIC"));
 
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, colorSensor, gyroSensor, ultrasonicSensor));
 
         ConfigurationAst brickConfiguration = builder.build();
         ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/program_config_compatibility_gyro_touch_ultra_color.xml");
-
-        AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(brickConfiguration);
+        UsedHardwareBean.Builder beanBuilder = new UsedHardwareBean.Builder();
+        AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(beanBuilder, brickConfiguration);
         programChecker.check(phrases);
 
         Assert.assertEquals(0, programChecker.getErrorCount());
