@@ -2,6 +2,8 @@ package de.fhg.iais.roberta.visitor.codegen;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.mode.general.IndexLocation;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -29,8 +31,6 @@ import de.fhg.iais.roberta.syntax.lang.stmt.RepeatStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitTimeStmt;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.lang.codegen.prog.AbstractCppVisitor;
 
@@ -42,9 +42,8 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst configuration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
         this.configuration = configuration;
     }
 

@@ -2,6 +2,8 @@ package de.fhg.iais.roberta.visitor.codegen;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
@@ -24,8 +26,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.bob3.CodePadSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IBob3Visitor;
@@ -39,22 +39,18 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
     /**
      * Initialize the C++ code generator visitor.
      *
-     * @param brickConfiguration hardware configuration of the brick
-     * @param programPhrases to generate the code from
-     * @param indentation to start with. Will be incr/decr depending on block structure
+     * @param phrases to generate the code from
      */
     Bob3CppVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ArrayList<ArrayList<Phrase<Void>>> phrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, new ConfigurationAst.Builder().build(), phrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> phrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, new ConfigurationAst.Builder().build(), phrases);
     }
 
     /**
      * factory method to generate C++ code from an AST.<br>
      *
-     * @param brickConfiguration hardware configuration of the brick
      * @param programPhrases to generate the code from
      * @param withWrapping if false the generated code will be without the surrounding configuration code
      */
@@ -63,7 +59,7 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping) {
-        Bob3CppVisitor astVisitor = new Bob3CppVisitor(usedHardwareBean, codeGeneratorSetupBean, programPhrases, withWrapping ? 1 : 0);
+        Bob3CppVisitor astVisitor = new Bob3CppVisitor(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }

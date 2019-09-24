@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public final class MbedUsedHardwareCollectorWorker implements IWorker {

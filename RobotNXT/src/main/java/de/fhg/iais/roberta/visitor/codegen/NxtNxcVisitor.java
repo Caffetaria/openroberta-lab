@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
@@ -70,8 +72,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
@@ -95,15 +95,13 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
      *
      * @param brickConfiguration hardware configuration of the brick
      * @param programPhrases to generate the code from
-     * @param indentation to start with. Will be incr/decr depending on block structure
      */
     NxtNxcVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
         this.brickConfiguration = brickConfiguration;
     }
 
@@ -123,7 +121,7 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
     {
         Assert.notNull(brickConfiguration);
 
-        NxtNxcVisitor astVisitor = new NxtNxcVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, withWrapping ? 1 : 0);
+        NxtNxcVisitor astVisitor = new NxtNxcVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -852,8 +850,9 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
         }
         //this.sb.append(this.tmpArr);
         mainTask.getVariables().visit(this);
+        nlIndent();
+        this.sb.append("task main() {");
         incrIndentation();
-        this.sb.append("\n").append("task main() {");
         generateUsedVars();
         generateSensors();
         return null;
@@ -1108,9 +1107,6 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
             case RANDOM:
                 this.sb.append("ArrRand(");
                 break;
-            case MODE:
-                this.sb.append("ArrMode(");
-                break;
             default:
                 break;
         }
@@ -1268,18 +1264,25 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
         if ( !withWrapping ) {
             return;
         }
-        this.sb.append("#define WHEELDIAMETER " + this.brickConfiguration.getWheelDiameterCM() + "\n");
-        this.sb.append("#define TRACKWIDTH " + this.brickConfiguration.getTrackWidthCM() + "\n");
-        this.sb.append("#define MAXLINES 8 \n");
-        this.sb.append("#include \"NEPODefs.h\" // contains NEPO declarations for the NXC NXT API resources \n \n");
-        decrIndentation();
+        this.sb.append("#define WHEELDIAMETER ").append(this.brickConfiguration.getWheelDiameterCM());
+        nlIndent();
+        this.sb.append("#define TRACKWIDTH ").append(this.brickConfiguration.getTrackWidthCM());
+        nlIndent();
+        this.sb.append("#define MAXLINES 8");
+        nlIndent();
+        this.sb.append("#include \"NEPODefs.h\" // contains NEPO declarations for the NXC NXT API resources");
+        nlIndent();
+        nlIndent();
         generateSignaturesOfUserDefinedMethods();
     }
 
     @Override
     protected void generateProgramSuffix(boolean withWrapping) {
+        decrIndentation();
         if ( withWrapping ) {
-            this.sb.append("\n}\n");
+            nlIndent();
+            this.sb.append("}");
+            nlIndent();
         }
         generateUserDefinedMethods();
     }

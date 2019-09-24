@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.stmt;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ForStmtTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class ForStmtTest extends AstTest {
 
     @Test
     public void forStmt() throws Exception {
@@ -23,7 +23,7 @@ public class ForStmtTest {
                 + "    }\n"
                 + "}}";
 
-        this.h.assertCodeIsOk(a, "/syntax/stmt/for_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/stmt/for_stmt.xml");
     }
 
     @Test
@@ -31,11 +31,11 @@ public class ForStmtTest {
         String a =
             "for ( float k0 = 0; k0 < 10; k0+=1 ) {item3 += String.valueOf(\"Proba\");item3 += String.valueOf(\"Proba1\");for ( float k1 = 0; k1 < 10; k1+=1 ) {}}}";
 
-        this.h.assertCodeIsOk(a, "/syntax/control/repeat_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/control/repeat_stmt.xml");
     }
 
     @Test
     public void reverseTransformation() throws Exception {
-        this.h.assertTransformationIsOk("/syntax/stmt/for_stmt.xml");
+        UnitTestHelper.checkProgramReverseTransformation(testFactory, "/syntax/stmt/for_stmt.xml");
     }
 }

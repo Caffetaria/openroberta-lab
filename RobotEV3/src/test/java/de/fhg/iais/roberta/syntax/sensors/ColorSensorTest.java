@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ColorSensorTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class ColorSensorTest extends AstTest {
 
     @Test
     public void setColor() throws Exception {
@@ -15,6 +15,6 @@ public class ColorSensorTest {
                 + "hal.getColorSensorRgb(SensorPort.S3)"
                 + "hal.getColorSensorAmbient(SensorPort.S3)}";
 
-        this.h.assertCodeIsOk(a, "/syntax/sensors/sensor_setColor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_setColor.xml");
     }
 }

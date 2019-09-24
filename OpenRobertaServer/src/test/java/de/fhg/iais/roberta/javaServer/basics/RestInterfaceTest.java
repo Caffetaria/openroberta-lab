@@ -17,9 +17,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.factory.IRobotFactory;
-import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientConfiguration;
-import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientProgram;
-import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientUser;
+import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientConfiguration;
+import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientProgram;
+import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientUser;
 import de.fhg.iais.roberta.main.ServerStarter;
 import de.fhg.iais.roberta.persistence.util.DbSetup;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;

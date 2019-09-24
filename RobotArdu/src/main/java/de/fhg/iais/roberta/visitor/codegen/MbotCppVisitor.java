@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.Category;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.UsedActor;
@@ -55,8 +57,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.FlameSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.Joystick;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
@@ -72,16 +72,14 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
      * Initialize the C++ code generator visitor.
      *
      * @param brickConfiguration hardware configuration of the brick
-     * @param programPhrases to generate the code from
-     * @param indentation to start with. Will be incr/decr depending on block structure
+     * @param phrases to generate the code from
      */
     MbotCppVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> phrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> phrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases);
     }
 
     /**
@@ -100,7 +98,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
         Assert.notNull(brickConfiguration);
 
         final MbotCppVisitor astVisitor =
-            new MbotCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, withWrapping ? 1 : 0);
+            new MbotCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }

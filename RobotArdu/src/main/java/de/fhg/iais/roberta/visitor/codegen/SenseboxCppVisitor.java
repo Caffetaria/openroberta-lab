@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.Category;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
@@ -44,8 +46,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VemlLightSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.Pair;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.hardware.IArduinoVisitor;
@@ -61,9 +61,8 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         String SSID,
-        String password,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, indentation);
+        String password) {
+        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
         this.SSID = SSID;
         this.password = password;
     }
@@ -157,7 +156,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping) {
         SenseboxCppVisitor astVisitor =
-            new SenseboxCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, "", "", withWrapping ? 1 : 0);
+            new SenseboxCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, "", "");
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -171,7 +170,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
         String password,
         boolean withWrapping) {
         SenseboxCppVisitor astVisitor =
-            new SenseboxCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, SSID, password, withWrapping ? 1 : 0);
+            new SenseboxCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, SSID, password);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }

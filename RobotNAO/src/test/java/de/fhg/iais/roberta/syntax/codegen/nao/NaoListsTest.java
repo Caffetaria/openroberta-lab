@@ -2,11 +2,9 @@ package de.fhg.iais.roberta.syntax.codegen.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nao.HelperNaoForXmlTest;
-
 public class NaoListsTest {
 
-    private final HelperNaoForXmlTest naoHelper = new HelperNaoForXmlTest();
+
 
     @Test
     public void listsGetSetTest() throws Exception {

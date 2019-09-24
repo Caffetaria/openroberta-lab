@@ -69,17 +69,6 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     }
 
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet) {
-        Assert.isTrue(!phrasesSet.isEmpty());
-        Assert.notNull(brickConfiguration);
-
-        MbedStackMachineVisitor<Void> astVisitor = new MbedStackMachineVisitor<>(brickConfiguration, phrasesSet);
-        astVisitor.generateCodeFromPhrases(phrasesSet);
-        JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
-        return generatedCode.toString(2);
-    }
-
     @Override
     public V visitColorConst(ColorConst<V> colorConst) {
         int r = colorConst.getRedChannelInt();

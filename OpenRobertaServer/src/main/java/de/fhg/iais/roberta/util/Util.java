@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientAdmin;
-import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientInit;
+import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientAdmin;
+import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientInit;
 import de.fhg.iais.roberta.persistence.AbstractProcessor;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;
 import de.fhg.iais.roberta.robotCommunication.RobotCommunicationData;
@@ -65,6 +66,15 @@ public class Util {
         new ClientLogger().log(loggerForRequest, fullRequest);
         String initToken = fullRequest.optString("initToken");
         httpSessionState.validateInitToken(initToken);
+    }
+
+    public static void addResultInfo(JSONObject response, Key key, boolean success, Map<String, String> params) throws JSONException {
+        String responseCode = success ? "ok" : "error";
+        response.put("rc", responseCode);
+        response.put("message", key.getKey());
+        response.put("cause", key.getKey());
+        // TODO check params with respect to key
+        response.put("parameters", params);
     }
 
     public static void addResultInfo(JSONObject response, AbstractProcessor processor) throws JSONException {

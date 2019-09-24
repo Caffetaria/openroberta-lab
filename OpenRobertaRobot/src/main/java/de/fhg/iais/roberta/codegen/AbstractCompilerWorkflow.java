@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
+import de.fhg.iais.roberta.util.Pair;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
@@ -71,8 +72,9 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
      * @param executableWithParameters
      * @return true, when the crosscompiler succeeds; false, otherwise
      */
-    public final boolean runCrossCompiler(String[] executableWithParameters) {
+    public static Pair<Boolean, String> runCrossCompiler(String[] executableWithParameters) {
         int ecode = -1;
+        String crosscompilerResponse;
         try {
             ProcessBuilder procBuilder = new ProcessBuilder(executableWithParameters);
             procBuilder.redirectErrorStream(true);
@@ -82,44 +84,19 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             StringJoiner sj = new StringJoiner(System.getProperty("line.separator"));
             reader.lines().iterator().forEachRemaining(sj::add);
-            this.crosscompilerResponse = sj.toString();
+            crosscompilerResponse = sj.toString();
             ecode = p.waitFor();
             p.destroy();
         } catch ( Exception e ) {
-            this.crosscompilerResponse = "exception when calling the cross compiler";
-            LOG.error(this.crosscompilerResponse, e);
+            crosscompilerResponse = "exception when calling the cross compiler";
+            LOG.error(crosscompilerResponse, e);
             ecode = -1;
         }
-        LOG.error("DEBUG INFO: " + this.crosscompilerResponse);
-        if ( ecode == 0 ) {
-            return true;
-        } else {
-            LOG.error("compilation of program failed with message: \n" + this.crosscompilerResponse);
-            return false;
+        LOG.error("DEBUG INFO: " + crosscompilerResponse);
+        if ( ecode != 0 ) {
+            LOG.error("compilation of program failed with message: \n" + crosscompilerResponse);
         }
-    }
-
-    public static final boolean runCrossCompilerNoResponse(String[] executableWithParameters) {
-        int ecode = -1;
-        try {
-            ProcessBuilder procBuilder = new ProcessBuilder(executableWithParameters);
-            procBuilder.redirectErrorStream(true);
-            procBuilder.redirectInput(Redirect.INHERIT);
-            procBuilder.redirectOutput(Redirect.PIPE);
-            Process p = procBuilder.start();
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            StringJoiner sj = new StringJoiner(System.getProperty("line.separator"));
-            reader.lines().iterator().forEachRemaining(sj::add);
-            ecode = p.waitFor();
-            p.destroy();
-        } catch ( Exception e ) {
-            ecode = -1;
-        }
-        if ( ecode == 0 ) {
-            return true;
-        } else {
-            return false;
-        }
+        return Pair.of(ecode == 0, crosscompilerResponse);
     }
 
     /**

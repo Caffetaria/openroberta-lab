@@ -6,7 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.transformer.CompilerSetupBean;
+import de.fhg.iais.roberta.bean.CompilerSetupBean;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
@@ -18,7 +18,6 @@ public class MicrobitCompilerWorker implements IWorker {
     @Override
     public void execute(Project project) {
         runBuild(project);
-
     }
 
     /**

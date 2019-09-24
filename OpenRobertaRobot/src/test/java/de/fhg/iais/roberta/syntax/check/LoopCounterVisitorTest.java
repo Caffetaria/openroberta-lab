@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
-import de.fhg.iais.roberta.util.test.AbstractHelperForXmlTest;
-import de.fhg.iais.roberta.util.test.GenericHelperForXmlTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.collect.AbstractUsedHardwareCollectorVisitor;
 
-public class LoopCounterVisitorTest {
-    AbstractHelperForXmlTest h = new GenericHelperForXmlTest();
+public class LoopCounterVisitorTest extends AstTest {
 
     private class TestUsedHardware extends AbstractUsedHardwareCollectorVisitor {
         //TODO create fake for this class
@@ -32,7 +31,7 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_noLoops_returnsEmptyMap() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/no_loops.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/loop_counter/no_loops.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -42,7 +41,7 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_nestedLoopsNoBreakorContinue_returnsMapWithTwoFalseElements() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/nested_loops.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/loop_counter/nested_loops.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -53,7 +52,7 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_loopsWithBreakAndContinue_returnsMapWithFiveFalseElements() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/loops_with_break_and_continue.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/loop_counter/loops_with_break_and_continue.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -64,7 +63,7 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_loopWithBreakAndContinueInWait_returnsMapWithOneTrueElements() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/loop_with_break_and_continue_inside_wait.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/loop_counter/loop_with_break_and_continue_inside_wait.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -75,7 +74,8 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_loopsWithBreakAndContinueFitstInWaitSecondNot_returnsMapWithTwoElementsFirsTrueSecondFalse() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/two_loop_with_break_and_continue_one_inside_wait_another_not.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases =
+            UnitTestHelper.getAst(testFactory, "/loop_counter/two_loop_with_break_and_continue_one_inside_wait_another_not.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -86,7 +86,8 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_twoNestedloopsFirstWithBreakAndContinueInWaitSecondNot_returnsMapWithTwoElementsFirsTrueSecondFalse() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/two_nested_loops_first_with_break_in_wait_second_not.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases =
+            UnitTestHelper.getAst(testFactory, "/loop_counter/two_nested_loops_first_with_break_in_wait_second_not.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -97,7 +98,7 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_loopWithNestedTwoLoopsInsideWait_returnsMapWithThreeElementsFirsTrueSecondThirdFalse() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/loop_with_nested_two_loops_inside_wait.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/loop_counter/loop_with_nested_two_loops_inside_wait.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -108,7 +109,8 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_loopWithNestedTwoLoopsInsideWaitSecondContainWait_returnsMapWithThreeElementsFirsAndThirdTrueSecondFalse() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases =
+            UnitTestHelper.getAst(testFactory, "/loop_counter/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);
@@ -119,7 +121,8 @@ public class LoopCounterVisitorTest {
 
     @Test
     public void check_threeLoopsWithNestedTwoLoopsInsideWaitSecondContainWait_returnsMapWithFiveElementsFirsThirdFourthTrueSecondFifthFalse() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/loop_counter/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases =
+            UnitTestHelper.getAst(testFactory, "/loop_counter/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml");
 
         UsedHardwareBean.Builder builder = new Builder();
         TestUsedHardware checkVisitor = new TestUsedHardware(phrases);

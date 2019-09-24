@@ -4,6 +4,7 @@ import static de.fhg.iais.roberta.transformer.Jaxb2ConfigurationAst.block2OldCon
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +22,11 @@ import de.fhg.iais.roberta.blockly.generated.Instance;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.inter.mode.action.ILanguage;
+import de.fhg.iais.roberta.robotCommunication.RobotCommunicator;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.lang.blocksequence.Location;
 import de.fhg.iais.roberta.util.Key;
+import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
 
@@ -35,7 +38,8 @@ public class Project {
     private static final Logger LOG = LoggerFactory.getLogger(Project.class);
 
     private IRobotFactory robotFactory;
-    private final List<Key> errorMessages = new ArrayList<>();
+    private Key result = Key.COMPILERWORKFLOW_PROJECT_BUILD_SUCCESS;
+    private final Map<String, String> resultParams = new HashMap<>();
     private ProgramAst<Void> program = null;
     private ConfigurationAst configuration = null;
     Map<String, Object> workerResults = new HashMap<>();
@@ -50,6 +54,7 @@ public class Project {
     private String SSID;
     private String password;
     private ILanguage language;
+    private RobotCommunicator robotCommunicator;
 
     private Project() {
 
@@ -107,6 +112,10 @@ public class Project {
         return robotFactory;
     }
 
+    public RobotCommunicator getRobotCommunicator() {
+        return this.robotCommunicator;
+    }
+
     public Object getWorkerResult(String beanName) {
         return this.workerResults.get(beanName);
     }
@@ -115,19 +124,25 @@ public class Project {
         this.workerResults.put(beanName, bean);
     }
 
-    /**
-     * @return the list of keys with errorMessages
-     */
-    public List<Key> getErrorMessages() {
-        return this.errorMessages;
+    public Map<String, String> getResultParams() {
+        return Collections.unmodifiableMap(this.resultParams);
     }
 
-    public Key getErrorMessage() {
-        if ( !this.errorMessages.isEmpty() && this.errorMessages != null ) {
-            return this.errorMessages.get(0);
-        } else {
-            return Key.COMPILERWORKFLOW_SUCCESS;
-        }
+    public void addResultParam(String key, String value) {
+        this.resultParams.put(key, value);
+    }
+
+    public Key getResult() {
+        return this.result;
+    }
+
+    public void setResult(Key result) {
+        this.result = result;
+    }
+
+    public boolean hasSucceeded() {
+        Assert.notNull(this.result);
+        return this.result.isSuccess();
     }
 
     /**
@@ -162,19 +177,6 @@ public class Project {
             throw new DbcException("Transformation of configuration AST into blockset and into XML failed.");
         }
         return configurationXML;
-    }
-
-    public static Project.Builder setupWithExportXML(IRobotFactory factory, String exportXmlAsString) {
-        String[] parts = exportXmlAsString.split("\\s*</program>\\s*<config>\\s*");
-        String[] programParts = parts[0].split("<program>");
-        String program = programParts[1];
-        String[] configurationParts = parts[1].split("</config>");
-        String configuration = configurationParts[0];
-        return setupWithExportXML(factory, program, configuration);
-    }
-
-    public static Project.Builder setupWithExportXML(IRobotFactory factory, String programXmlAsString, String configurationXmlAsString) {
-        return new Project.Builder().setConfigurationXml(configurationXmlAsString).setProgramXml(programXmlAsString);
     }
 
     private static String jaxbToXml(BlockSet blockSet) throws JAXBException {
@@ -213,22 +215,23 @@ public class Project {
 
         private String configurationXml;
         private String programXml;
+        private String programNativeSource;
 
         public Builder() {
         }
 
         public Builder setToken(String token) {
-            project.token = token;
+            this.project.token = token;
             return this;
         }
 
         public Builder setRobot(String robot) {
-            project.robot = robot;
+            this.project.robot = robot;
             return this;
         }
 
         public Builder setProgramName(String programName) {
-            project.programName = programName;
+            this.project.programName = programName;
             return this;
         }
 
@@ -242,64 +245,76 @@ public class Project {
             return this;
         }
 
+        public Builder setProgramNativeSource(String programNativeSource) {
+            this.programNativeSource = programNativeSource;
+            return this;
+        }
+
         public Builder setFileExtension(String fileExtension) {
-            project.fileExtension = fileExtension;
+            this.project.fileExtension = fileExtension;
             return this;
         }
 
         public Builder setSSID(String sSID) {
-            project.SSID = sSID;
+            this.project.SSID = sSID;
             return this;
         }
 
         public Builder setPassword(String password) {
-            project.password = password;
+            this.project.password = password;
             return this;
         }
 
         public Builder setLanguage(ILanguage language) {
-            project.language = language;
+            this.project.language = language;
             return this;
         }
 
         public Builder setConfigurationAst(ConfigurationAst configurationAst) {
-            project.configuration = configurationAst;
+            this.project.configuration = configurationAst;
             return this;
         }
 
         public Builder setFactory(IRobotFactory factory) {
-            project.robotFactory = factory;
+            this.project.robotFactory = factory;
+            return this;
+        }
+
+        public Builder setRobotCommunicator(RobotCommunicator robotCommunicator) {
+            this.project.robotCommunicator = robotCommunicator;
             return this;
         }
 
         public Project build() {
-            if ( project.configuration == null ) {
-                transformConfiguration();
+            if ( this.programNativeSource == null ) { // Used to follow the default generation, compilation, run from blockly
+                if ( this.project.configuration == null ) {
+                    transformConfiguration();
+                }
+                if ( this.project.program == null ) {
+                    transformProgram();
+                }
+            } else { // Used to run native code directly
+                Assert.isNull(this.programXml, "Program XML should not be set when using native compile");
+                Assert.isNull(this.configurationXml, "Configuration XML should not be set when using native compile");
+                this.project.setSourceCode(this.programNativeSource);
             }
-            if ( project.program == null ) {
-                transformProgram();
-            }
-            return project;
+            return this.project;
         }
 
         /**
          * Transforms program XML into AST.
          */
         private void transformProgram() {
-            Key errorMessage = null;
-            if ( this.programXml == null || this.programXml.trim().equals("") ) {
-                errorMessage = Key.COMPILERWORKFLOW_ERROR_PROGRAM_NOT_FOUND;
+            if ( (this.programXml == null) || this.programXml.trim().isEmpty() ) {
+                this.project.result = Key.COMPILERWORKFLOW_ERROR_PROGRAM_NOT_FOUND;
             } else {
                 try {
                     Jaxb2ProgramAst<Void> programTransformer = JaxbHelper.generateProgramTransformer(this.project.robotFactory, this.programXml);
                     this.project.program = programTransformer.getData();
                 } catch ( Exception e ) {
                     LOG.error("Transformer failed", e);
-                    errorMessage = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
+                    this.project.result = Key.COMPILERWORKFLOW_ERROR_PROGRAM_TRANSFORM_FAILED;
                 }
-            }
-            if ( errorMessage != null ) {
-                this.project.errorMessages.add(errorMessage);
             }
         }
 
@@ -307,9 +322,8 @@ public class Project {
          * Transforms configuration XML into AST.
          */
         private void transformConfiguration() {
-            Key errorMessage = null;
-            if ( this.configurationXml == null || this.configurationXml.trim().equals("") ) {
-                errorMessage = Key.COMPILERWORKFLOW_ERROR_CONFIGURATION_NOT_FOUND;
+            if ( (this.configurationXml == null) || this.configurationXml.trim().isEmpty() ) {
+                this.project.result = Key.COMPILERWORKFLOW_ERROR_CONFIGURATION_NOT_FOUND;
             } else {
                 try {
                     final BlockSet blockSet = JaxbHelper.xml2BlockSet(this.configurationXml);
@@ -324,12 +338,8 @@ public class Project {
                     }
                 } catch ( Exception e ) {
                     LOG.error("Generation of the configuration failed", e);
-                    errorMessage = Key.COMPILERWORKFLOW_ERROR_CONFIGURATION_TRANSFORM_FAILED;
+                    this.project.result = Key.COMPILERWORKFLOW_ERROR_CONFIGURATION_TRANSFORM_FAILED;
                 }
-            }
-            if ( errorMessage != null ) {
-                this.project.errorMessages.add(errorMessage);
-                return;
             }
         }
 

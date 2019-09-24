@@ -33,8 +33,8 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 import de.fhg.iais.roberta.factory.IRobotFactory;
-import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientProgram;
-import de.fhg.iais.roberta.javaServer.restServices.all.v1.ClientUser;
+import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientProgram;
+import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientUser;
 import de.fhg.iais.roberta.main.ServerStarter;
 import de.fhg.iais.roberta.persistence.util.DbSetup;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;

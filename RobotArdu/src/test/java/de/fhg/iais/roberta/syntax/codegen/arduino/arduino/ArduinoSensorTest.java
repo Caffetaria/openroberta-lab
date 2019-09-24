@@ -10,7 +10,7 @@ import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.ardu.HelperArduinoForXmlTest;
 
 public class ArduinoSensorTest {
-    private final HelperArduinoForXmlTest arduinoHelper = new HelperArduinoForXmlTest();
+
 
     @Test
     public void analogDigitalReadTest() throws Exception {

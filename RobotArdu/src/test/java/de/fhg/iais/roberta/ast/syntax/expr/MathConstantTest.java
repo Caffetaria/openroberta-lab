@@ -3,10 +3,10 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MathConstantTest {
-    private final HelperBotNrollForXmlTest h = new HelperBotNrollForXmlTest();
+public class MathConstantTest extends AstTest {
 
     @Test
     public void Test() throws Exception {
@@ -14,7 +14,7 @@ public class MathConstantTest {
         String a = "PIM_EGOLDEN_RATIOM_SQRT2M_SQRT1_2INFINITY";
         //"Float.POSITIVE_INFINITY";
 
-        this.h.assertCodeIsOk(a, "/syntax/math/math_constant.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_constant.xml");
     }
 
     @Ignore
@@ -22,7 +22,7 @@ public class MathConstantTest {
 
         final String a = "RotateMotor(B,PI,360.0*((1.0+sqrt(5.0))/2.0)))";
 
-        this.h.assertCodeIsOk(a, "/syntax/math/math_constant1.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_constant1.xml");
     }
 
 }

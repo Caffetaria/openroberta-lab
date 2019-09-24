@@ -7,10 +7,9 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
 
 public class Ev3LejosSensorTest {
-    private final HelperEv3ForXmlTest ev3lejosHelper = new HelperEv3ForXmlTest();
+
     ConfigurationAst configuration = makeConfigurationWithHTSensors();
 
     public static ConfigurationAst makeConfigurationWithHTSensors() {

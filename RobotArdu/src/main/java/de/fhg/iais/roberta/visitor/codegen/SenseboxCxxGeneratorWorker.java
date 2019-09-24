@@ -1,8 +1,9 @@
 package de.fhg.iais.roberta.visitor.codegen;
 
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
+import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public class SenseboxCxxGeneratorWorker implements IWorker {
@@ -18,9 +19,9 @@ public class SenseboxCxxGeneratorWorker implements IWorker {
                 project.getConfigurationAst(),
                 project.getProgramAst().getTree(),
                 project.getSSID(),
-                project.getPassword(),
-                1);
+                project.getPassword());
         visitor.setStringBuilders(project.getSourceCode(), project.getIndentation());
         visitor.generateCode(true);
+        project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
     }
 }

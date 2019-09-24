@@ -2,16 +2,16 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ExprTest {
-    private final HelperBotNrollForXmlTest h = new HelperBotNrollForXmlTest();
+public class ExprTest extends AstTest {
 
     @Test
     public void test1() throws Exception {
         final String a = "\n8 + (-3 + 5)88 - ( 8 + (-3 + 5))(88 - ( 8 + (-3 + 5)))  - ( 88 - ( 8 + (-3 + 5) ))2 * ( 2 - 2 )\n" + "2 - (2 * 2)";
 
-        this.h.assertCodeIsOk(a, "/syntax/expr/expr1.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/expr1.xml");
     }
 
     @Test
@@ -19,6 +19,6 @@ public class ExprTest {
         final String a =
             "\n2 * ( 2 - 2 )\n" + "2 - (2 * 2)(88 - ( 8 + (-3 + 5))) - (2 * 2)((88 - ( 8 + (-3 + 5))) - (2 * 2) )/((float) ((88 -( 8 + (-3 + 5)))-(2 * 2) ))";
 
-        this.h.assertCodeIsOk(a, "/syntax/expr/expr2.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/expr2.xml");
     }
 }

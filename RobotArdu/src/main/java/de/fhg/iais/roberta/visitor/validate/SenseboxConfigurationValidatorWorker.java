@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
 
 public class SenseboxConfigurationValidatorWorker extends ArduinoConfigurationValidatorWorker {
     @Override

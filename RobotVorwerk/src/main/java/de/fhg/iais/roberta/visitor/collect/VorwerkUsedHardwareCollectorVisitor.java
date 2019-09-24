@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.vorwerk.BrushOff;
@@ -11,7 +12,6 @@ import de.fhg.iais.roberta.syntax.action.vorwerk.VacuumOff;
 import de.fhg.iais.roberta.syntax.action.vorwerk.VacuumOn;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.DropOffSensor;
 import de.fhg.iais.roberta.syntax.sensor.vorwerk.WallSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IVorwerkVisitor;
 
 /**
@@ -23,7 +23,6 @@ public final class VorwerkUsedHardwareCollectorVisitor extends AbstractUsedHardw
 
     public VorwerkUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
         super(builder, brickConfiguration);
-        check(phrasesSet);
     }
 
     @Override

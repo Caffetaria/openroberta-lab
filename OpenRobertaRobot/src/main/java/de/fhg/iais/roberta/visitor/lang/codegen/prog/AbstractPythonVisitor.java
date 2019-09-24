@@ -8,6 +8,7 @@ import static de.fhg.iais.roberta.mode.general.ListElementOperations.SET;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,8 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.inter.mode.general.IMode;
 import de.fhg.iais.roberta.mode.general.IndexLocation;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -59,8 +62,6 @@ import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon.Flow;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtList;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
@@ -73,22 +74,19 @@ import de.fhg.iais.roberta.visitor.lang.codegen.AbstractLanguageVisitor;
 public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractPythonVisitor.class);
 
-    protected Set<String> usedGlobalVarInFunctions;
+    protected Set<String> usedGlobalVarInFunctions = new HashSet<>();
     protected boolean isProgramEmpty = false;
 
     /**
      * initialize the Python code generator visitor.
      *
      * @param programPhrases to generate the code from
-     * @param indentation to start with. Will be ince/decr depending on block structure
-     * @param helperMethodGenerator TODO
      */
     protected AbstractPythonVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
     }
 
     @Override
@@ -442,11 +440,6 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
                 mathOnListFunct.getParam().get(0).visit(this);
                 this.sb.append("[0]");
                 break;
-            case MODE:
-                // TODO
-                //                this.sb.append("BlocklyMethods.modeOnList(");
-                //                mathOnListFunct.getParam().get(0).visit(this);
-                break;
             default:
                 break;
         }
@@ -654,13 +647,15 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
 
     @Override
     public Void visitMethodVoid(MethodVoid<Void> methodVoid) {
-        this.sb.append("\ndef ").append(methodVoid.getMethodName()).append('(');
+        nlIndent();
+        this.sb.append("def ").append(methodVoid.getMethodName()).append('(');
         List<String> paramList = new ArrayList<>();
         for ( Expr<Void> l : methodVoid.getParameters().get() ) {
             paramList.add(((VarDeclaration<Void>) l).getName());
         }
         this.sb.append(String.join(", ", paramList));
         this.sb.append("):");
+        incrIndentation();
         boolean isMethodBodyEmpty = methodVoid.getBody().get().isEmpty();
         if ( isMethodBodyEmpty ) {
             nlIndent();
@@ -672,18 +667,21 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
             }
             methodVoid.getBody().visit(this);
         }
+        decrIndentation();
         return null;
     }
 
     @Override
     public Void visitMethodReturn(MethodReturn<Void> methodReturn) {
-        this.sb.append("\ndef ").append(methodReturn.getMethodName()).append('(');
+        nlIndent();
+        this.sb.append("def ").append(methodReturn.getMethodName()).append('(');
         List<String> paramList = new ArrayList<>();
         for ( Expr<Void> l : methodReturn.getParameters().get() ) {
             paramList.add(((VarDeclaration<Void>) l).getName());
         }
         this.sb.append(String.join(", ", paramList));
         this.sb.append("):");
+        incrIndentation();
         if ( !this.usedGlobalVarInFunctions.isEmpty() ) {
             nlIndent();
             this.sb.append("global " + String.join(", ", this.usedGlobalVarInFunctions));
@@ -692,6 +690,7 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
         nlIndent();
         this.sb.append("return ");
         methodReturn.getReturnValue().visit(this);
+        decrIndentation();
         return null;
     }
 

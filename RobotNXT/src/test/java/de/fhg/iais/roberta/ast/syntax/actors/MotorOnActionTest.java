@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.ast.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MotorOnActionTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class MotorOnActionTest extends AstTest {
 
     @Test
     public void motorOn() throws Exception {
@@ -20,6 +20,6 @@ public class MotorOnActionTest {
     public void motorOnFor() throws Exception {
         String a = "RotateMotor(OUT_B,SpeedTest(30), 360 * 1);";
 
-        this.h.assertCodeIsOk(a, "/ast/actions/action_MotorOnFor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_MotorOnFor.xml");
     }
 }

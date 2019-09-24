@@ -4,10 +4,8 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.util.Util1;
-import de.fhg.iais.roberta.util.test.ardu.HelperSenseboxForXmlTest;
 
 public class SenseboxActorTest {
-    private final HelperSenseboxForXmlTest senseboxHelper = new HelperSenseboxForXmlTest();
 
     @Test
     public void sdCardOledOffTest() throws Exception {
@@ -22,7 +20,8 @@ public class SenseboxActorTest {
 
     @Test
     public void buzzerLedRgbTest() throws Exception {
-        ConfigurationAst config = this.senseboxHelper.regenerateConfiguration(Util1.readResourceContent("/ast/actions/sensebox_buzzer_led_rgb_test_config.xml"));
+        ConfigurationAst config =
+            this.senseboxHelper.regenerateConfiguration(Util1.readResourceContent("/ast/actions/sensebox_buzzer_led_rgb_test_config.xml"));
         this.senseboxHelper
             .compareExistingAndGeneratedSource("/ast/actions/sensebox_buzzer_led_rgb_test.ino", "/ast/actions/sensebox_buzzer_led_rgb_test.xml", config);
     }

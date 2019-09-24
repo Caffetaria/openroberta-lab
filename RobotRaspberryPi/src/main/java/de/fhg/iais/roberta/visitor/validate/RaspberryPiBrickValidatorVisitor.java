@@ -1,5 +1,6 @@
 package de.fhg.iais.roberta.visitor.validate;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.action.raspberrypi.LedBlinkAction;
 import de.fhg.iais.roberta.syntax.action.raspberrypi.LedDimAction;
@@ -7,7 +8,6 @@ import de.fhg.iais.roberta.syntax.action.raspberrypi.LedGetAction;
 import de.fhg.iais.roberta.syntax.action.raspberrypi.LedSetAction;
 import de.fhg.iais.roberta.syntax.lang.expr.ColorHexString;
 import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IRaspberryPiVisitor;
 
 public final class RaspberryPiBrickValidatorVisitor extends AbstractBrickValidatorVisitor implements IRaspberryPiVisitor<Void> {

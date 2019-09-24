@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.UsedSensor;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -10,7 +11,6 @@ import de.fhg.iais.roberta.syntax.action.light.LightAction;
 import de.fhg.iais.roberta.syntax.action.sound.PlayNoteAction;
 import de.fhg.iais.roberta.syntax.action.sound.ToneAction;
 import de.fhg.iais.roberta.syntax.action.sound.VolumeAction;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.IVisitor;
 
 /**
@@ -23,7 +23,6 @@ public final class NxtUsedHardwareCollectorVisitor extends AbstractUsedHardwareC
 
     public NxtUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
         super(builder, configuration);
-        check(phrasesSet);
     }
 
     /*public String getTmpArrVar() {

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public final class MbotUsedHardwareCollectorWorker implements IWorker {

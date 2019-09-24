@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.mode.general.IndexLocation;
 import de.fhg.iais.roberta.mode.general.ListElementOperations;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -44,8 +46,6 @@ import de.fhg.iais.roberta.syntax.lang.stmt.FunctionStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.IfStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.MethodStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.VisitorException;
 import de.fhg.iais.roberta.visitor.IVisitor;
@@ -61,14 +61,12 @@ public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
     /**
      * initialize the cpp code generator visitor.
      *
-     * @param indentation to start with. Will be ince/decr depending on block structure
      */
     protected AbstractCppVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
     }
 
     @Override
@@ -474,26 +472,35 @@ public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
 
     @Override
     public Void visitMethodVoid(MethodVoid<Void> methodVoid) {
-        this.sb.append("\n").append("void ");
-        this.sb.append(methodVoid.getMethodName() + "(");
+        nlIndent();
+        this.sb.append("void ");
+        this.sb.append(methodVoid.getMethodName()).append("(");
         methodVoid.getParameters().visit(this);
         this.sb.append(") {");
+        incrIndentation();
         methodVoid.getBody().visit(this);
-        this.sb.append("\n").append("}");
+        decrIndentation();
+        nlIndent();
+        this.sb.append("}");
         return null;
     }
 
     @Override
     public Void visitMethodReturn(MethodReturn<Void> methodReturn) {
-        this.sb.append("\n").append(getLanguageVarTypeFromBlocklyType(methodReturn.getReturnType()));
-        this.sb.append(" " + methodReturn.getMethodName() + "(");
+        nlIndent();
+        this.sb.append(getLanguageVarTypeFromBlocklyType(methodReturn.getReturnType()));
+        this.sb.append(" ").append(methodReturn.getMethodName()).append("(");
         methodReturn.getParameters().visit(this);
         this.sb.append(") {");
+        incrIndentation();
         methodReturn.getBody().visit(this);
         nlIndent();
         this.sb.append("return ");
         methodReturn.getReturnValue().visit(this);
-        this.sb.append(";\n").append("}");
+        this.sb.append(";");
+        decrIndentation();
+        nlIndent();
+        this.sb.append("}");
         return null;
     }
 

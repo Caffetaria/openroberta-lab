@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.ast.syntax.stmt;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class WhileUntilStmtTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class WhileUntilStmtTest extends AstTest {
 
     @Test
     public void whileUntilStmt() throws Exception {
@@ -25,7 +25,7 @@ public class WhileUntilStmtTest {
                 + "    }\n"
                 + "}";
 
-        this.h.assertCodeIsOk(a, "/syntax/stmt/whileUntil_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/stmt/whileUntil_stmt.xml");
     }
 
     //
@@ -34,11 +34,11 @@ public class WhileUntilStmtTest {
 
             "while ( true ) {\n" + "    ;\n" + "}" + "\n" + "while ( true ) {\n" + "    ;\n" + "}";
 
-        this.h.assertCodeIsOk(a, "/ast/control/repeat_stmt_loopForever.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/control/repeat_stmt_loopForever.xml");
     }
 
     @Test
     public void reverseTransformationWhileUntil() throws Exception {
-        this.h.assertTransformationIsOk("/syntax/stmt/whileUntil_stmt.xml");
+        UnitTestHelper.checkProgramReverseTransformation(testFactory, "/syntax/stmt/whileUntil_stmt.xml");
     }
 }

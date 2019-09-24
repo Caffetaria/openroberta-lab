@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class GetPowerActionTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class GetPowerActionTest extends AstTest {
 
     @Test
     public void getSpeed() throws Exception {
         String a = "\nhal.getRegulatedMotorSpeed(ActorPort.B)}";
 
-        this.h.assertCodeIsOk(a, "/syntax/actions/action_MotorGetPower.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_MotorGetPower.xml");
     }
 }

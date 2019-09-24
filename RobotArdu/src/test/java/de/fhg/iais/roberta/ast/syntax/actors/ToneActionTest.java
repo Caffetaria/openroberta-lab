@@ -2,16 +2,15 @@ package de.fhg.iais.roberta.ast.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ToneActionTest {
-
-    private final HelperBotNrollForXmlTest h = new HelperBotNrollForXmlTest();
+public class ToneActionTest extends AstTest {
 
     @Test
     public void playTone() throws Exception {
         final String a = "tone(9,300, 100);";
 
-        this.h.assertCodeIsOk(a, "/ast/actions/action_PlaySound.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_PlaySound.xml");
     }
 }

@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.UsedActor;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -20,7 +21,6 @@ import de.fhg.iais.roberta.syntax.actors.arduino.mbot.SendIRAction;
 import de.fhg.iais.roberta.syntax.expressions.arduino.LedMatrix;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.FlameSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.Joystick;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IMbotVisitor;
 
 /**
@@ -31,7 +31,6 @@ import de.fhg.iais.roberta.visitor.hardware.IMbotVisitor;
 public final class MbotUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IMbotVisitor<Void> {
     public MbotUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
         super(builder, configuration);
-        check(phrasesSet);
     }
 
     @Override

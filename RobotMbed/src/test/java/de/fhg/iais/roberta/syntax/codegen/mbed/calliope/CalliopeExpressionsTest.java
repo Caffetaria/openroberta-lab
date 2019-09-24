@@ -2,14 +2,14 @@ package de.fhg.iais.roberta.syntax.codegen.mbed.calliope;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.mbed.HelperCalliopeForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class CalliopeExpressionsTest {
-    HelperCalliopeForXmlTest calliopeHelper = new HelperCalliopeForXmlTest();
+public class CalliopeExpressionsTest extends AstTest {
 
     @Test
     public void calliopeBinaryTest() throws Exception {
-        this.calliopeHelper.compareExistingAndGeneratedSource("/expr/calliope_binary_test.cpp", "/expr/calliope_binary_test.xml");
+        UnitTestHelper.checkGeneratedSourceEquality(testFactory, "/expr/calliope_binary_test.cpp", "/expr/calliope_binary_test.xml");
     }
 
 }

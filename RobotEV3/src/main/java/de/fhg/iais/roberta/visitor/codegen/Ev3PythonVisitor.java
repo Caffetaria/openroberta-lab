@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
@@ -61,8 +63,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
@@ -85,16 +85,14 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
      *
      * @param brickConfiguration hardware configuration of the brick
      * @param programPhrases to generate the code from
-     * @param indentation to start with. Will be ince/decr depending on block structure
      */
     Ev3PythonVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation,
         ILanguage language) {
-        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
         this.brickConfiguration = brickConfiguration;
         this.language = language;
 
@@ -116,7 +114,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
         ILanguage language) {
         Assert.notNull(brickConfiguration);
 
-        Ev3PythonVisitor astVisitor = new Ev3PythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, 0, language);
+        Ev3PythonVisitor astVisitor = new Ev3PythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, language);
         astVisitor.generateCode(withWrapping);
 
         return astVisitor.sb.toString();

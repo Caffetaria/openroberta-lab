@@ -73,7 +73,7 @@ public class Ast2C4ev3VisitorTest {
 
     private static ConfigurationAst standardBrickConfiguration = HelperEv3ForXmlTest.makeStandardEv3DevConfiguration();
 
-    private final HelperEv3ForXmlTest helper = new HelperEv3ForXmlTest();
+
 
     @Test
     public void testLcdText() throws Exception {

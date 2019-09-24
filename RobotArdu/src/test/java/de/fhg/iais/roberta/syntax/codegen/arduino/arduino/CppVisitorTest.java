@@ -3,11 +3,12 @@ package de.fhg.iais.roberta.syntax.codegen.arduino.arduino;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ardu.HelperArduinoForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 @Ignore //REFACTORING CONFIGURATION MISSING
-public class CppVisitorTest {
-    private final HelperArduinoForXmlTest h = new HelperArduinoForXmlTest();
+public class CppVisitorTest extends AstTest {
+
     private static final String BASIC_INCLUDE =
         "//ThisfileisautomaticallygeneratedbytheOpenRobertaLab.\n"
             + "#include<math.h>\n"
@@ -105,7 +106,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(\"Hallo\");"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/show_text.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/show_text.xml");
     }
 
     @Test
@@ -120,7 +121,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(\"Hallo\");"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/show_text_i2c.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/show_text_i2c.xml");
     }
 
     @Test
@@ -135,7 +136,7 @@ public class CppVisitorTest {
                 + "_lcd_L.clear();"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/clear_display.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/clear_display.xml");
     }
 
     @Test
@@ -153,7 +154,7 @@ public class CppVisitorTest {
                 + "delay(2000);"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/led.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/led.xml");
     }
 
     @Test
@@ -169,7 +170,7 @@ public class CppVisitorTest {
                 + "delay(2000);"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/buzzer.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/buzzer.xml");
     }
 
     @Test
@@ -191,7 +192,7 @@ public class CppVisitorTest {
                 + "delay(1000);"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/rgbled.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/rgbled.xml");
     }
 
     @Test
@@ -208,7 +209,7 @@ public class CppVisitorTest {
                 + "delay(2000);"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/servo.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/servo.xml");
     }
 
     @Test
@@ -224,7 +225,7 @@ public class CppVisitorTest {
                 + "Motor_S.step(_SPU_S*5);"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/step.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/step.xml");
     }
 
     @Test
@@ -240,7 +241,7 @@ public class CppVisitorTest {
                 + "_lcd_LCD.print(_getUltrasonicDistance());"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/ultrasonic.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/ultrasonic.xml");
     }
 
     @Test
@@ -263,7 +264,7 @@ public class CppVisitorTest {
                 + "delay(500);"
                 + "}\n";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/timer.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/timer.xml");
     }
 
     @Test
@@ -288,7 +289,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(\"%\");}"
                 + "delay(500);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/light_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/light_sensor.xml");
     }
 
     @Test
@@ -304,7 +305,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(analogRead(_moisturePin_F)/10.24);"
                 + "delay(500);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/moisture_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/moisture_sensor.xml");
     }
 
     @Test
@@ -320,7 +321,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(((double)analogRead(_output_P))*5/1024);"
                 + "delay(500);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/potentiometer.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/potentiometer.xml");
     }
 
     @Test
@@ -347,7 +348,7 @@ public class CppVisitorTest {
                 + "delay(2000);"
                 + "_lcd_L.clear();}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/ir_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/ir_sensor.xml");
     }
 
     @Test
@@ -364,7 +365,7 @@ public class CppVisitorTest {
                 + "digitalWrite(_relay_R,HIGH);"
                 + "delay(1000);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/relay.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/relay.xml");
     }
 
     @Test
@@ -380,7 +381,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(map(analogRead(_TMP36_T),0,410,-50,150));"
                 + "delay(1000);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/temperature_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/temperature_sensor.xml");
     }
 
     @Test
@@ -398,7 +399,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(_dht_L2.readTemperature());"
                 + "delay(1000);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/humidity_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/humidity_sensor.xml");
     }
 
     @Test
@@ -415,7 +416,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(digitalRead(_output_B));"
                 + "delay(1000);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/motion_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/motion_sensor.xml");
     }
 
     @Test
@@ -431,7 +432,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(analogRead(_SensorPin_P));"
                 + "delay(1000);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/pulse_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/pulse_sensor.xml");
     }
 
     @Test
@@ -448,7 +449,7 @@ public class CppVisitorTest {
                 + "delay(1000);"
                 + "_lcd_L.clear();}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/drop_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/drop_sensor.xml");
     }
 
     @Test
@@ -464,7 +465,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(_readRFIDData());"
                 + "delay(500);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/rfid_sensor.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/rfid_sensor.xml");
     }
 
     @Test
@@ -480,7 +481,7 @@ public class CppVisitorTest {
                 + "_lcd_L.print(digitalRead(_taster_T));"
                 + "delay(10);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/button.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/button.xml");
     }
 
     @Test
@@ -497,7 +498,7 @@ public class CppVisitorTest {
                 + "Serial.println(\"Buka\");"
                 + "delay(500);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/serial_print.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/serial_print.xml");
     }
 
     @Ignore //TODO reactivate when PinWrite is fixed
@@ -538,7 +539,7 @@ public class CppVisitorTest {
                 + "Serial.println(_pinGetValue(A0,_ANALOG));"
                 + "delay(500);}";
 
-        this.h.assertCodeIsOk(a, "/syntax/code_generator/arduino/pin_read_write.xml", true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/pin_read_write.xml");
     }
 
 }

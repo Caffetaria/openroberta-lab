@@ -1,8 +1,8 @@
 package de.fhg.iais.roberta.visitor.collect;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 
 public class WedoUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor {
 

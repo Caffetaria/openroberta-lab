@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.generic.PinWriteValueAction;
@@ -46,7 +47,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
 
 /**
@@ -58,7 +58,6 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     public MbedUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst robotConfiguration) {
         super(builder, robotConfiguration);
-        check(phrasesSet);
     }
 
     @Override

@@ -2,16 +2,16 @@ package de.fhg.iais.roberta.ast.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ShowTextActionTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class ShowTextActionTest extends AstTest {
 
     @Test
     public void clearDisplay() throws Exception {
         final String a = "\nTextOut(0,(MAXLINES - 0) * MAXLINES,\"Hallo\");";
 
-        this.h.assertCodeIsOk(a, "/ast/actions/action_ShowText.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_ShowText.xml");
     }
 
 }

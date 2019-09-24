@@ -11,7 +11,14 @@ import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.util.test.ardu.HelperArduinoForXmlTest;
 
 public class ArduinoActorTest {
-    private final HelperArduinoForXmlTest arduinoHelper = new HelperArduinoForXmlTest();
+
+    public void relayOnTest() throws Exception {
+        Map<String, String> relayPins = HelperArduinoForXmlTest.createMap("IN", "6");
+        ConfigurationComponent relay = new ConfigurationComponent("RELAY", true, "relay", "R", relayPins);
+        ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
+        builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(relay));
+        this.arduinoHelper.compareExistingAndGeneratedSource("/ast/actions/arduino_relay_test.ino", "/ast/actions/arduino_relay_test.xml", builder.build());
+    }
 
     @Test
     public void relayOnTest() throws Exception {
@@ -58,10 +65,11 @@ public class ArduinoActorTest {
         ConfigurationComponent led = new ConfigurationComponent("LED", true, "LED", "L", ledPins);
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(led));
-        this.arduinoHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/arduino_show_on_serial_with_led_test.ino",
-            "/ast/actions/arduino_show_on_serial_with_led_test.xml",
-            builder.build());
+        this.arduinoHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/arduino_show_on_serial_with_led_test.ino",
+                "/ast/actions/arduino_show_on_serial_with_led_test.xml",
+                builder.build());
     }
 
     @Test
@@ -70,10 +78,11 @@ public class ArduinoActorTest {
         ConfigurationComponent screen = new ConfigurationComponent("LCD", true, "L", "L2", screenPins);
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(screen));
-        this.arduinoHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/arduino_lcd1602_show_clear_test.ino",
-            "/ast/actions/arduino_lcd1602_show_clear_test.xml",
-            builder.build());
+        this.arduinoHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/arduino_lcd1602_show_clear_test.ino",
+                "/ast/actions/arduino_lcd1602_show_clear_test.xml",
+                builder.build());
     }
 
     @Test
@@ -82,10 +91,11 @@ public class ArduinoActorTest {
         ConfigurationComponent screen = new ConfigurationComponent("LCDI2C", true, "L", "L", screenPins);
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(screen));
-        this.arduinoHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/arduino_lcd1602i2c_show_clear_test.ino",
-            "/ast/actions/arduino_lcd1602i2c_show_clear_test.xml",
-            builder.build());
+        this.arduinoHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/arduino_lcd1602i2c_show_clear_test.ino",
+                "/ast/actions/arduino_lcd1602i2c_show_clear_test.xml",
+                builder.build());
     }
 
     @Test
@@ -120,14 +130,14 @@ public class ArduinoActorTest {
         Map<String, String> analogOuputPins = HelperArduinoForXmlTest.createMap("INPUT", "3");
         Map<String, String> digitalOuputPins = HelperArduinoForXmlTest.createMap("INPUT", "0");
         ConfigurationComponent analogOutput = new ConfigurationComponent("ANALOG_INPUT", true, "ANALOG_INPUT", "A2", analogOuputPins);
-        ConfigurationComponent digitalOutput =
-            new ConfigurationComponent("DIGITAL_INPUT", true, "DIGITAL_INPUT", "A", digitalOuputPins);
+        ConfigurationComponent digitalOutput = new ConfigurationComponent("DIGITAL_INPUT", true, "DIGITAL_INPUT", "A", digitalOuputPins);
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(digitalOutput, analogOutput));
-        this.arduinoHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/arduino_analog_digital_output_test.ino",
-            "/ast/actions/arduino_analog_digital_output_test.xml",
-            builder.build());
+        this.arduinoHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/arduino_analog_digital_output_test.ino",
+                "/ast/actions/arduino_analog_digital_output_test.xml",
+                builder.build());
     }
 
     @Test
@@ -140,26 +150,27 @@ public class ArduinoActorTest {
         ConfigurationComponent rfid2 = new ConfigurationComponent("RFID", true, "rfid", "R7", rfidPins);
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(rfid1, rfid2, servoMotor1, servoMotor2));
-        this.arduinoHelper.compareExistingAndGeneratedSource(
-            "/ast/brickConfiguration/arduino_multi_include_test.ino",
-            "/ast/brickConfiguration/arduino_multi_include_test.xml",
-            builder.build());
+        this.arduinoHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/brickConfiguration/arduino_multi_include_test.ino",
+                "/ast/brickConfiguration/arduino_multi_include_test.xml",
+                builder.build());
     }
 
     @Test(expected = DbcException.class)
     public void negativeIncludeTest() throws Exception {
         Map<String, String> servoMotorPins = HelperArduinoForXmlTest.createMap("PULSE", "8");
         ConfigurationComponent servoMotor1 = new ConfigurationComponent("NON-EXISTING-COMPONENT", true, "servo", "S", servoMotorPins);
-        ConfigurationComponent servoMotor2 =
-            new ConfigurationComponent("NON-EXISTING-COMPONENT2", true, "servo", "S2", servoMotorPins);
+        ConfigurationComponent servoMotor2 = new ConfigurationComponent("NON-EXISTING-COMPONENT2", true, "servo", "S2", servoMotorPins);
         Map<String, String> rfidPins = HelperArduinoForXmlTest.createMap("RST", "9", "SDA", "10", "SCK", "13", "MOSI", "11", "MISO", "12");
         ConfigurationComponent rfid1 = new ConfigurationComponent("NON-EXISTING-COMPONENT", true, "rfid", "R6", rfidPins);
         ConfigurationComponent rfid2 = new ConfigurationComponent("NON-EXISTING-COMPONENT2", true, "rfid", "R7", rfidPins);
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(rfid1, rfid2, servoMotor1, servoMotor2));
-        this.arduinoHelper.compareExistingAndGeneratedSource(
-            "/ast/brickConfiguration/arduino_multi_include_test.ino",
-            "/ast/brickConfiguration/arduino_multi_include_test.xml",
-            builder.build());
+        this.arduinoHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/brickConfiguration/arduino_multi_include_test.ino",
+                "/ast/brickConfiguration/arduino_multi_include_test.xml",
+                builder.build());
     }
 }

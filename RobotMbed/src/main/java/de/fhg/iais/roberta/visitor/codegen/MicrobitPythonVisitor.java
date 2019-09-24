@@ -2,6 +2,8 @@ package de.fhg.iais.roberta.visitor.codegen;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.inter.mode.general.IMode;
 import de.fhg.iais.roberta.mode.action.mbed.DisplayTextMode;
@@ -45,8 +47,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.PinGetValueSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
@@ -71,9 +71,8 @@ public final class MicrobitPythonVisitor extends AbstractPythonVisitor implement
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
     }
 
     /**
@@ -90,7 +89,7 @@ public final class MicrobitPythonVisitor extends AbstractPythonVisitor implement
         boolean withWrapping) {
         Assert.notNull(brickConfiguration);
 
-        final MicrobitPythonVisitor astVisitor = new MicrobitPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, 0);
+        final MicrobitPythonVisitor astVisitor = new MicrobitPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }
@@ -100,7 +99,7 @@ public final class MicrobitPythonVisitor extends AbstractPythonVisitor implement
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         boolean withWrapping) {
-        final MicrobitPythonVisitor astVisitor = new MicrobitPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, null, programPhrases, 0);
+        final MicrobitPythonVisitor astVisitor = new MicrobitPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, null, programPhrases);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }

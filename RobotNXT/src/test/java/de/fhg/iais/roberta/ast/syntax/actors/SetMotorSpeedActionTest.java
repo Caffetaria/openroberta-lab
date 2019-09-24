@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.ast.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class SetMotorSpeedActionTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class SetMotorSpeedActionTest extends AstTest {
 
     @Test
     public void setMotorSpeed() throws Exception {
         final String a = "OnFwdRegEx(OUT_B,SpeedTest(30),OUT_REGMODE_SPEED,RESET_NONE);";
 
-        this.h.assertCodeIsOk(a, "/ast/actions/action_MotorSetPower.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_MotorSetPower.xml");
     }
 }

@@ -2,22 +2,22 @@ package de.fhg.iais.roberta.ast.syntax.sensors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TimerSensorTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class TimerSensorTest extends AstTest {
 
     @Test
     public void getTimerValue() throws Exception {
         String a = "\nGetTimerValue(timer1)";
 
-        this.h.assertCodeIsOk(a, "/ast/sensors/sensor_getSampleTimer.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/sensors/sensor_getSampleTimer.xml");
     }
 
     @Test
     public void resetTimer() throws Exception {
         String a = "\nResetTimerValue(timer1);";
 
-        this.h.assertCodeIsOk(a, "/ast/sensors/sensor_resetTimer.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/sensors/sensor_resetTimer.xml");
     }
 }

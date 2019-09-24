@@ -2,6 +2,8 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.EdisonMethods;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.motor.MotorOnAction;
@@ -18,8 +20,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.GetSampleSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.IRSeekerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.InfraredSensor;
 import de.fhg.iais.roberta.syntax.sensors.edison.ResetSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.EdisonMethods;
 import de.fhg.iais.roberta.visitor.hardware.IEdisonVisitor;
 
 /**
@@ -28,7 +28,7 @@ import de.fhg.iais.roberta.visitor.hardware.IEdisonVisitor;
 public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IEdisonVisitor<Void> {
 
     public EdisonUsedHardwareCollectorVisitor(
-        UsedHardwareBean.Builder builder,
+        Builder builder,
         ArrayList<ArrayList<Phrase<Void>>> programPhrases,
         ConfigurationAst robotConfiguration) {
         super(builder, robotConfiguration);

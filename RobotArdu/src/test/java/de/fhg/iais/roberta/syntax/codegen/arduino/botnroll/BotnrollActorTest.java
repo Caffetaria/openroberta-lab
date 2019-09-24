@@ -6,7 +6,6 @@ import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
 
 public class BotnrollActorTest {
-    HelperBotNrollForXmlTest botnrollHelper = new HelperBotNrollForXmlTest();
 
     ConfigurationAst configuration = HelperBotNrollForXmlTest.makeConfiguration();
 

@@ -4,10 +4,8 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.util.Util1;
-import de.fhg.iais.roberta.util.test.ardu.HelperSenseboxForXmlTest;
 
 public class SenseboxSensorTest {
-    private final HelperSenseboxForXmlTest senseboxHelper = new HelperSenseboxForXmlTest();
 
     @Test
     public void builtinAndSimpleActorsTest() throws Exception {

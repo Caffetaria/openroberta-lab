@@ -1,8 +1,9 @@
 package de.fhg.iais.roberta.visitor.codegen;
 
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
+import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public class ArduinoCxxGeneratorWorker implements IWorker {
@@ -16,9 +17,9 @@ public class ArduinoCxxGeneratorWorker implements IWorker {
                 (UsedHardwareBean) usedHardwareBean,
                 (CodeGeneratorSetupBean) codeGeneratorSetupBean,
                 project.getConfigurationAst(),
-                project.getProgramAst().getTree(),
-                1);
+                project.getProgramAst().getTree());
         visitor.setStringBuilders(project.getSourceCode(), project.getIndentation());
         visitor.generateCode(true);
+        project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
     }
 }

@@ -3,10 +3,8 @@ package de.fhg.iais.roberta.syntax.codegen.arduino.botnroll;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
 
 public class BotnrollSensorTest {
-    HelperBotNrollForXmlTest botnrollHelper = new HelperBotNrollForXmlTest();
 
     ConfigurationAst configuration = HelperBotNrollForXmlTest.makeConfiguration();
 

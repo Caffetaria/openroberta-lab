@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.UsedSensor;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.SC;
@@ -15,7 +16,6 @@ import de.fhg.iais.roberta.syntax.actors.arduino.bob3.SendIRAction;
 import de.fhg.iais.roberta.syntax.sensor.generic.GetSampleSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.PinTouchSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.bob3.CodePadSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IBob3Visitor;
 
 /**
@@ -27,7 +27,6 @@ public final class Bob3UsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     public Bob3UsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet) {
         super(builder, null);
-        check(phrasesSet);
     }
 
     @Override

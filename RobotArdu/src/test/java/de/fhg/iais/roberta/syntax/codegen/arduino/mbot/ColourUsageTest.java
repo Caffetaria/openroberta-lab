@@ -2,10 +2,8 @@ package de.fhg.iais.roberta.syntax.codegen.arduino.mbot;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ardu.HelperMBotForXmlTest;
-
 public class ColourUsageTest {
-    private final HelperMBotForXmlTest h = new HelperMBotForXmlTest();
+    
 
     @Test
     public void colourUsageTest() throws Exception {

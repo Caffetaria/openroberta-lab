@@ -7,11 +7,8 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
-import de.fhg.iais.roberta.util.test.ardu.HelperArduinoForXmlTest;
-import de.fhg.iais.roberta.util.test.ardu.HelperMBotForXmlTest;
 
 public class MbotSensorTest {
-    HelperMBotForXmlTest mbotHelper = new HelperMBotForXmlTest();
 
     private final ConfigurationAst standardMbotConfiguration = makeMbotStandardConfiguration();
 

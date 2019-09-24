@@ -15,7 +15,7 @@ import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
 
 public class AstToEv3PythonVisitorTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+    
 
     private static final String IMPORTS =
         "" //

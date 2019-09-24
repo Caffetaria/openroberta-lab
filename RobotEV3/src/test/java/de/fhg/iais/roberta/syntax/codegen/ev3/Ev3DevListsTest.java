@@ -3,11 +3,9 @@ package de.fhg.iais.roberta.syntax.codegen.ev3;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3DevForXmlTest;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
 
 public class Ev3DevListsTest {
-    private final HelperEv3ForXmlTest ev3DevHelper = new HelperEv3DevForXmlTest();
+
     private final ConfigurationAst configuration = HelperEv3ForXmlTest.makeConfiguration();
 
     @Test

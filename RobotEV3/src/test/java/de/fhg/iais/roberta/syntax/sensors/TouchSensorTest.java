@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.syntax.sensors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TouchSensorTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class TouchSensorTest extends AstTest {
 
     @Test
     public void isPressed() throws Exception {
         String a = "\nhal.isPressed(SensorPort.S1)}";
 
-        this.h.assertCodeIsOk(a, "/syntax/sensors/sensor_Touch.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_Touch.xml");
     }
 }

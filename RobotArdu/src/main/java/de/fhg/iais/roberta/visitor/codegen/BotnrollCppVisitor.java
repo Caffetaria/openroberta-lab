@@ -2,6 +2,8 @@ package de.fhg.iais.roberta.visitor.codegen;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -32,8 +34,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.KeysSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
@@ -49,16 +49,14 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
      * Initialize the C++ code generator visitor.
      *
      * @param brickConfiguration hardware configuration of the brick
-     * @param programPhrases to generate the code from
-     * @param indentation to start with. Will be incr/decr depending on block structure
+     * @param phrases to generate the code from
      */
     BotnrollCppVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> phrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> phrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases);
     }
 
     /**
@@ -76,7 +74,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
         boolean withWrapping) {
         Assert.notNull(brickConfiguration);
         BotnrollCppVisitor astVisitor =
-            new BotnrollCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, withWrapping ? 1 : 0);
+            new BotnrollCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
         astVisitor.generateCode(withWrapping);
         return astVisitor.sb.toString();
     }

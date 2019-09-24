@@ -2,23 +2,22 @@ package de.fhg.iais.roberta.ast.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TurnActionTest {
-
-    private final HelperBotNrollForXmlTest h = new HelperBotNrollForXmlTest();
+public class TurnActionTest extends AstTest {
 
     @Test
     public void turn() throws Exception {
         final String a = "\none.movePID(50,-50);";
 
-        this.h.assertCodeIsOk(a, "/ast/actions/action_MotorDiffTurn.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_MotorDiffTurn.xml");
     }
 
     @Test
     public void turnFor() throws Exception {
         final String a = "\nbnr.moveTimePID(50,-50,20);";
 
-        this.h.assertCodeIsOk(a, "/ast/actions/action_MotorDiffTurnFor.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_MotorDiffTurnFor.xml");
     }
 }

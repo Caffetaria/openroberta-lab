@@ -2,6 +2,7 @@ package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.UsedActor;
 import de.fhg.iais.roberta.components.UsedSensor;
@@ -13,7 +14,6 @@ import de.fhg.iais.roberta.syntax.action.serial.SerialWriteAction;
 import de.fhg.iais.roberta.syntax.actors.arduino.RelayAction;
 import de.fhg.iais.roberta.syntax.sensor.generic.EncoderSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.PinGetValueSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.IArduinoVisitor;
 
 /**
@@ -28,7 +28,6 @@ public final class ArduinoUsedHardwareCollectorVisitor extends AbstractUsedHardw
         ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
         ConfigurationAst robotConfiguration) {
         super(builder, robotConfiguration);
-        check(phrasesSet);
     }
 
     @Override

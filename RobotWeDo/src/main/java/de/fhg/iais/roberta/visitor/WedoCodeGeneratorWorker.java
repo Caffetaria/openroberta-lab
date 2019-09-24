@@ -4,8 +4,9 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
+import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public final class WedoCodeGeneratorWorker implements IWorker {
@@ -20,5 +21,6 @@ public final class WedoCodeGeneratorWorker implements IWorker {
         JSONObject generatedCode = new JSONObject();
         generatedCode.put(C.OPS, visitor.getOpArray()).put(C.FUNCTION_DECLARATION, visitor.getFctDecls());
         project.setSourceCode(generatedCode.toString(2));
+        project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
     }
 }

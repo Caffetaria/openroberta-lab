@@ -12,10 +12,9 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
 
 public class NxcVisitorTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+    
     //TODO: change diameter and trackwidth to changeable
     // when sensors are added to nxt, fix the sensors description here
 

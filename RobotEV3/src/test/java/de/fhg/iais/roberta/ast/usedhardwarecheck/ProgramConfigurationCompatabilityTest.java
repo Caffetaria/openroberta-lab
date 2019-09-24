@@ -8,16 +8,16 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.Phrase;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.validate.AbstractBrickValidatorVisitor;
 import de.fhg.iais.roberta.visitor.validate.Ev3BrickValidatorVisitor;
 
-public class ProgramConfigurationCompatabilityTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class ProgramConfigurationCompatabilityTest extends AstTest {
 
     @Test
     public void ev3program_configuration_compatibility_4_errors() throws Exception {
@@ -35,7 +35,7 @@ public class ProgramConfigurationCompatabilityTest {
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, ultrasonicSensor));
 
         ConfigurationAst brickConfiguration = builder.build();
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/program_config_compatibility.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/visitors/program_config_compatibility.xml");
         UsedHardwareBean.Builder beanBuilder = new UsedHardwareBean.Builder();
         AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(beanBuilder, brickConfiguration);
         programChecker.check(phrases);
@@ -70,7 +70,7 @@ public class ProgramConfigurationCompatabilityTest {
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, colorSensor, gyroSensor, ultrasonicSensor));
 
         ConfigurationAst brickConfiguration = builder.build();
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/program_config_compatibility_gyro_touch_ultra_color.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/visitors/program_config_compatibility_gyro_touch_ultra_color.xml");
         UsedHardwareBean.Builder beanBuilder = new UsedHardwareBean.Builder();
         AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(beanBuilder, brickConfiguration);
         programChecker.check(phrases);

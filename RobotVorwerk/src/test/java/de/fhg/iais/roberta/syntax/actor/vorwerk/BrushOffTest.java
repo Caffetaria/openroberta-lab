@@ -1,24 +1,23 @@
 package de.fhg.iais.roberta.syntax.actor.vorwerk;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.vorwerk.HelperVorwerkForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class BrushOffTest {
-    private final HelperVorwerkForXmlTest h = new HelperVorwerkForXmlTest();
+public class BrushOffTest extends AstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfAnimationClass() throws Exception {
         String expectedResult = "BlockAST [project=[[Location [x=384, y=50], " + "MainTask [], BrushOff []]]]";
 
-        String result = this.h.generateTransformerString("/actors/brush_off.xml");
+        UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/actors/brush_off.xml");
 
-        Assert.assertEquals(expectedResult, result);
+        
     }
 
     @Test
     public void astToBlock_XMLtoJAXBtoASTtoXML_ReturnsSameXML() throws Exception {
-        this.h.assertTransformationIsOk("/actors/brush_off.xml");
+        UnitTestHelper.checkProgramReverseTransformation(testFactory, "/actors/brush_off.xml");
     }
 }

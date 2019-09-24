@@ -14,13 +14,10 @@ import de.fhg.iais.roberta.syntax.lang.expr.BoolConst;
 import de.fhg.iais.roberta.syntax.lang.expr.NumConst;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.typecheck.TypecheckVisitor;
-import de.fhg.iais.roberta.util.test.GenericHelperForXmlTest;
 import de.fhg.iais.roberta.visitor.codegen.CalliopeCppVisitor;
 
 public class Expr1add2Test {
     private static final Logger LOG = LoggerFactory.getLogger(Expr1add2Test.class);
-
-    private final GenericHelperForXmlTest h = new GenericHelperForXmlTest();
 
     /**
      * take XML and generate the AST from that. Check that the AST is ok.

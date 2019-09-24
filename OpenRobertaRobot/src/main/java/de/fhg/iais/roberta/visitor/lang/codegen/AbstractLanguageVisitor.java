@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.Category;
 import de.fhg.iais.roberta.inter.mode.general.IMode;
 import de.fhg.iais.roberta.syntax.Phrase;
@@ -35,23 +37,21 @@ import de.fhg.iais.roberta.syntax.lang.stmt.IfStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.MethodStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtList;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.visitor.lang.ILanguageVisitor;
 
 public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> {
     //TODO find more simple way of handling the loops
-    protected final String INDENT = "    ";
-    protected int loopCounter = 0;
+    private static final String INDENT = "    ";
+    private int loopCounter = 0;
     protected LinkedList<Integer> currenLoop = new LinkedList<>();
     protected Map<Integer, Boolean> loopsLabels = new HashMap<>();
 
     protected StringBuilder sb = new StringBuilder();
     protected final List<Phrase<Void>> programPhrases;
 
-    private int indentation;
+    private int indentation = 0;
     private StringBuilder indent = new StringBuilder();
 
     protected UsedHardwareBean usedHardwareBean;
@@ -59,18 +59,14 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
 
     /**
      * initialize the common language code generator visitor.
-     *
-     * @param indentation to start with. Will be ince/decr depending on block structure
      */
     public AbstractLanguageVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation) {
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
         Assert.isTrue(!programPhrases.isEmpty());
         this.usedHardwareBean = usedHardwareBean;
         this.codeGeneratorSetupBean = codeGeneratorSetupBean;
-        this.indentation = indentation;
         this.programPhrases =
             programPhrases
                 .stream()
@@ -83,7 +79,7 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
         this.sb = sourceCode;
         this.indent = indentation;
         for ( int i = 0; i < this.indentation; i++ ) {
-            this.indent.append(this.INDENT);
+            this.indent.append(AbstractLanguageVisitor.INDENT);
         }
     }
 
@@ -122,15 +118,13 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
     }
 
     protected void generateUserDefinedMethods() {
-        incrIndentation();
         this.programPhrases
             .stream()
             .filter(phrase -> phrase.getKind().getCategory() == Category.METHOD && !phrase.getKind().hasName("METHOD_CALL"))
             .forEach(e -> {
                 e.visit(this);
-                this.sb.append("\n");
+                nlIndent();
             });
-        decrIndentation();
     }
 
     @Override
@@ -299,12 +293,12 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
 
     protected void incrIndentation() {
         this.indentation += 1;
-        this.indent.append(this.INDENT);
+        this.indent.append(AbstractLanguageVisitor.INDENT);
     }
 
     protected void decrIndentation() {
         this.indentation -= 1;
-        this.indent.delete(0, this.INDENT.length());
+        this.indent.delete(0, AbstractLanguageVisitor.INDENT.length());
     }
 
     protected void indent() {
@@ -312,7 +306,7 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
             return;
         } else {
             for ( int i = 0; i < this.indentation; i++ ) {
-                this.sb.append(this.INDENT);
+                this.sb.append(AbstractLanguageVisitor.INDENT);
             }
         }
     }

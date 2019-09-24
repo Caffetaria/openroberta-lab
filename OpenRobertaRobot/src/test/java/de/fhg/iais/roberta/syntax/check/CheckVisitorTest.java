@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.display.ClearDisplayAction;
@@ -20,13 +22,12 @@ import de.fhg.iais.roberta.syntax.action.speech.SetLanguageAction;
 import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
 import de.fhg.iais.roberta.syntax.sensor.ExternalSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TemperatureSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.util.test.AbstractHelperForXmlTest;
-import de.fhg.iais.roberta.util.test.GenericHelperForXmlTest;
+import de.fhg.iais.roberta.transformer.Project;
+import de.fhg.iais.roberta.util.Util1;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.validate.AbstractProgramValidatorVisitor;
 
-public class CheckVisitorTest {
-    AbstractHelperForXmlTest h = new GenericHelperForXmlTest();
+public class CheckVisitorTest extends AstTest {
 
     class TestProgramCheckVisitor extends AbstractProgramValidatorVisitor {
 
@@ -103,7 +104,10 @@ public class CheckVisitorTest {
 
     @Test
     public void check_noLoops_returnsEmptyMap() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/invalide_use_of_variable.xml");
+        String programXml = Util1.readResourceContent("/visitors/invalide_use_of_variable.xml");
+        Project.Builder builder = UnitTestHelper.setupWithProgramXML(testFactory, programXml);
+        Project project = builder.build();
+        ArrayList<ArrayList<Phrase<Void>>> phrases = project.getProgramAst().getTree();
 
         TestProgramCheckVisitor checkVisitor = new TestProgramCheckVisitor(null, null);
         checkVisitor.check(phrases);

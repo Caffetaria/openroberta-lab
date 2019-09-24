@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.syntax.sensors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class UltrasonicSensorTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class UltrasonicSensorTest extends AstTest {
 
     @Test
     public void setUltrasonic() throws Exception {
         String a = "\nhal.getUltraSonicSensorDistance(SensorPort.S4)" + "hal.getUltraSonicSensorPresence(SensorPort.S2)}";
 
-        this.h.assertCodeIsOk(a, "/syntax/sensors/sensor_setUltrasonic.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_setUltrasonic.xml");
     }
 }

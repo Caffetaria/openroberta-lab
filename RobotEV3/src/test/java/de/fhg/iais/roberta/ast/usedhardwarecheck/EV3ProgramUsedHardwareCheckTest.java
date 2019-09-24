@@ -9,17 +9,16 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.Phrase;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.collect.Ev3UsedHardwareCollectorVisitor;
 
-public class EV3ProgramUsedHardwareCheckTest {
-
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class EV3ProgramUsedHardwareCheckTest extends AstTest {
 
     private static ConfigurationAst makeConfiguration() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
@@ -48,7 +47,7 @@ public class EV3ProgramUsedHardwareCheckTest {
     }
 
     private void runTest(String pathToXml, String sensorResult, String actorResult) throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrasesOfPhrases = this.h.generateASTs(pathToXml);
+        ArrayList<ArrayList<Phrase<Void>>> phrasesOfPhrases = UnitTestHelper.getAst(testFactory, pathToXml);
         UsedHardwareBean.Builder builder = new Builder();
         Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(builder, phrasesOfPhrases, makeConfiguration());
         //        for ( ArrayList<Phrase<Void>> phrases : phrasesOfPhrases ) {

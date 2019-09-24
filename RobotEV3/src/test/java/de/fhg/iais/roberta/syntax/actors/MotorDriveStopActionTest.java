@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MotorDriveStopActionTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class MotorDriveStopActionTest extends AstTest {
 
     @Test
     public void stop() throws Exception {
         String a = "\nhal.stopRegulatedDrive();}";
 
-        this.h.assertCodeIsOk(a, "/syntax/actions/action_Stop.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_Stop.xml");
     }
 }

@@ -3,10 +3,10 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LogicExprTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class LogicExprTest extends AstTest {
 
     @Test
     public void test1() throws Exception {
@@ -21,21 +21,21 @@ public class LogicExprTest {
                 + "(( (5 + 7) ) ==((5 + 7) )) >= (  (( (5 + 7)) == ((5 + 7)) ) && ( ((5 + 7)) <= ((5 + 7)) )  )\n"
                 + "!(((5 + 7))==((5 + 7)) )== true";
 
-        this.h.assertCodeIsOk(a, "/syntax/expr/logic_expr.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_expr.xml");
     }
 
     @Test
     public void logicNegate() throws Exception {
         final String a = "\n!((0!= 0)&&false)";
 
-        this.h.assertCodeIsOk(a, "/syntax/expr/logic_negate.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_negate.xml");
     }
 
     @Test
     public void logicNull() throws Exception {
         final String a = "\nNULL";
 
-        this.h.assertCodeIsOk(a, "/syntax/expr/logic_null.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_null.xml");
     }
 
     // The ternary was removed
@@ -43,6 +43,6 @@ public class LogicExprTest {
     public void logicTernary() throws Exception {
         final String a = "\n( 0 == 0 ) ? false : true";
 
-        this.h.assertCodeIsOk(a, "/syntax/expr/logic_ternary.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_ternary.xml");
     }
 }

@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.ast.syntax.sensors;
 
 import org.junit.Ignore;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LightSensorTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class LightSensorTest extends AstTest {
 
     @Ignore
     public void setColor() throws Exception {
         final String a = "\nSensorColor(IN_3,\"RED\")SensorColor(IN_4,\"AMBIENTLIGHT\")";
 
-        this.h.assertCodeIsOk(a, "/ast/sensors/sensor_setLight.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/sensors/sensor_setLight.xml");
     }
 }

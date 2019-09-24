@@ -2,16 +2,16 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MathModuloTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class MathModuloTest extends AstTest {
 
     @Test
     public void Test() throws Exception {
         String a = "float___variablenName;taskmain(){___variablenName=1%0;";
 
-        this.h.assertCodeIsOk(a, "/syntax/math/math_modulo.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_modulo.xml");
     }
 
 }

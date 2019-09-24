@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ardu.HelperBotNrollForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MathRandomIntTest {
-    private final HelperBotNrollForXmlTest h = new HelperBotNrollForXmlTest();
+public class MathRandomIntTest extends AstTest {
 
     @Test
     public void Test() throws Exception {
         final String a = "_randomIntegerInRange(1,100)";
 
-        this.h.assertCodeIsOk(a, "/syntax/math/math_random_int.xml", false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_random_int.xml");
     }
 }

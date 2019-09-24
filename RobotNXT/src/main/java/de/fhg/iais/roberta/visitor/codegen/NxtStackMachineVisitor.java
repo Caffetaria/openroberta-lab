@@ -56,21 +56,9 @@ import de.fhg.iais.roberta.visitor.lang.codegen.AbstractStackMachineVisitor;
 
 public class NxtStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> implements INxtVisitor<V> {
 
-    private NxtStackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases, ILanguage language) {
+    public NxtStackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases) {
         super(configuration);
         Assert.isTrue(!phrases.isEmpty());
-
-    }
-
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ILanguage language) {
-        Assert.isTrue(!phrasesSet.isEmpty());
-        Assert.notNull(brickConfiguration);
-
-        NxtStackMachineVisitor<Void> astVisitor = new NxtStackMachineVisitor<>(brickConfiguration, phrasesSet, language);
-        astVisitor.generateCodeFromPhrases(phrasesSet);
-        JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
-        return generatedCode.toString(2);
     }
 
     @Override

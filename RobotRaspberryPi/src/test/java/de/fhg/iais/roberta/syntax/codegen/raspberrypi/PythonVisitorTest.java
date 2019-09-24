@@ -6,11 +6,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.util.test.raspberrypi.HelperRaspberryPiForXmlTest;
 
 @Ignore
 public class PythonVisitorTest {
-    private final HelperRaspberryPiForXmlTest h = new HelperRaspberryPiForXmlTest();
+    
 
     private static final String IMPORTS =
         "" //

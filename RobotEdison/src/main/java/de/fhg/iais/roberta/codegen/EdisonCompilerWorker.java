@@ -8,9 +8,10 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.transformer.CompilerSetupBean;
+import de.fhg.iais.roberta.bean.CompilerSetupBean;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
+import de.fhg.iais.roberta.util.Pair;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
@@ -20,22 +21,20 @@ import de.fhg.iais.roberta.visitor.validate.IWorker;
  * See also: https://github.com/Bdanilko/EdPy
  */
 public class EdisonCompilerWorker implements IWorker {
-
-    /**
-     * Logger for this class
-     */
     private static final Logger LOG = LoggerFactory.getLogger(EdisonCompilerWorker.class);
 
     @Override
     public void execute(Project project) {
-        Util1.storeGeneratedProgram(project.getSourceCode().toString(), project.getToken(), project.getProgramName(), ".py");
-        Key workflowResult = runBuild(project);
-        project.getErrorMessages().add(workflowResult);
         String programName = project.getProgramName();
-        if ( workflowResult == Key.COMPILERWORKFLOW_SUCCESS ) {
-            LOG.info("compile arduino program {} successful", programName);
+        String robot = project.getRobot();
+        Util1.storeGeneratedProgram(project.getSourceCode().toString(), project.getToken(), programName, "." + project.getFileExtension());
+        Pair<Key, String> workflowResult = runBuild(project);
+        project.setResult(workflowResult.getFirst());
+        project.addResultParam("MESSAGE", workflowResult.getSecond());
+        if ( workflowResult.getFirst() == Key.COMPILERWORKFLOW_SUCCESS ) {
+            LOG.info("compile {} program {} successful", robot, programName);
         } else {
-            LOG.error("compile arduino program {} failed with {}", programName, workflowResult);
+            LOG.error("compile {} program {} failed with {}", robot, programName, workflowResult);
         }
     }
 
@@ -44,13 +43,11 @@ public class EdisonCompilerWorker implements IWorker {
      * process.
      * The file will be stored as {@link PluginProperties#getTempDir()}/token/source/XXXX.wav and also in {@link #compiledWav} as a Base64 String.
      *
-     * @param token the credential supplied by the user. Needed to provide a unique temporary directory name
-     * @param pyFile the source file name
      * @return a Key that gives information about the building process (success, failure, interrupted,...)
      */
-    private Key runBuild(Project project) {
+    private Pair<Key, String> runBuild(Project project) {
         CompilerSetupBean compilerWorkflowBean = (CompilerSetupBean) project.getWorkerResult("CompilerSetup");
-        final String compilerBinDir = compilerWorkflowBean.getCompilerBinDir();
+        final String compilerBinDir = compilerWorkflowBean.getCompilerBinDir(); // TODO should it be used?
         final String compilerResourcesDir = compilerWorkflowBean.getCompilerResourcesDir();
         final String tempDir = compilerWorkflowBean.getTempDir();
         //get all directories
@@ -70,18 +67,19 @@ public class EdisonCompilerWorker implements IWorker {
                 targetFilePath + pyFile + ".wav"
             };
 
-        boolean success = AbstractCompilerWorkflow.runCrossCompilerNoResponse(executableWithParameters);
-        if ( success ) {
+        Pair<Boolean, String> result = AbstractCompilerWorkflow.runCrossCompiler(executableWithParameters);
+        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS
+                                          : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+        if (result.getFirst()) {
             try {
                 byte[] wavBytes = FileUtils.readFileToByteArray(new File(targetFilePath + pyFile + ".wav"));
                 project.setCompiledHex(Base64.getEncoder().encodeToString(wavBytes));
-                return Key.COMPILERWORKFLOW_SUCCESS;
+                resultKey =  Key.COMPILERWORKFLOW_SUCCESS;
             } catch ( IOException e ) {
                 LOG.error("Compilation successful, but reading WAV file failed (IOException)", e);
-                return Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+                resultKey =  Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
             }
-        } else {
-            return Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
         }
+        return Pair.of(resultKey, result.getSecond());
     }
 }

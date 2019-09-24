@@ -185,8 +185,8 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
     private void loadWorkers() {
         LOG.debug("Loading workers...");
         this.pluginProperties.getPluginProperties().forEach((k, v) -> {
-            if ( k.toString().startsWith("robot.plugin.workers") ) {
-                String[] workersForType = k.toString().split("\\.");
+            if ( k.toString().startsWith("robot.plugin.worker") ) {
+                String[] workersForType = k.toString().split("robot\\.plugin\\.worker\\.");
                 String workersType = workersForType[workersForType.length - 1];
                 List<String> workerClassNames = Stream.of(v.toString().trim().split("\\s*,\\s*")).collect(Collectors.toList());
                 workerClassNames.forEach(workerClassName -> {
@@ -196,11 +196,11 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
                         IWorker newWorker = (IWorker) Class.forName(workerClassName).newInstance();
                         Assert.isNull(this.workers.put(workersType, newWorker));
                     } catch ( InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | SecurityException e ) {
-                        throw new DbcException("Provided worker class is invalid", e);
+                        throw new DbcException("Provided worker class:" + workerClassName + " is invalid", e);
                     }
                 });
             }
-            if ( k.toString().startsWith("robot.plugin.workflows") ) {
+            if ( k.toString().startsWith("robot.plugin.workflow") ) {
                 String[] workflowsForType = k.toString().split("\\.");
                 String workflowName = workflowsForType[workflowsForType.length - 1];
                 this.workflows.put(workflowName, Stream.of(v.toString().trim().split("\\s*,\\s*")).collect(Collectors.toList()));
@@ -230,8 +230,11 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
     public List<IWorker> getWorkerPipe(String workflow) {
         List<String> workerTypes = this.workflows.get(workflow);
         List<IWorker> workerPipe = new ArrayList<>();
+        Assert.notNull(workerTypes, "Workflow %s is null for robot %s, check the properties", workflow, getRealName());
         for ( String type : workerTypes ) {
-            workerPipe.add(this.workers.get(type));
+            IWorker worker = this.workers.get(type);
+            Assert.notNull(worker, "Worker for type %s is null, check the properties, worker names may not match", type);
+            workerPipe.add(worker);
         }
         return workerPipe;
     }

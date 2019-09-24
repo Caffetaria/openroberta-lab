@@ -1,21 +1,21 @@
 package de.fhg.iais.roberta.ast.syntax.expr;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ListsOccurrenceTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class ListsOccurrenceTest extends AstTest {
 
     //ignore
     public void Test() throws Exception {
         final String a = "";
 
-        this.h.assertCodeIsOk(a, "/syntax/lists/lists_occurrence.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_occurrence.xml");
     }
 
     //ignore
     public void Test1() throws Exception {
         final String a = "";
 
-        this.h.assertCodeIsOk(a, "/syntax/lists/lists_occurrence1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_occurrence1.xml");
     }
 }

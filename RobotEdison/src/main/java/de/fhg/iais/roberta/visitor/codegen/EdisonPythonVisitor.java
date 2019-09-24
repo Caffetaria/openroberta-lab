@@ -4,6 +4,9 @@ import static de.fhg.iais.roberta.syntax.lang.functions.FunctionNames.SUM;
 
 import java.util.ArrayList;
 
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.EdisonMethods;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
@@ -40,9 +43,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.KeysSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.syntax.sensors.edison.ResetSensor;
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.EdisonMethods;
 import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.hardware.IEdisonVisitor;
@@ -63,15 +63,13 @@ public class EdisonPythonVisitor extends AbstractPythonVisitor implements IEdiso
      *
      * @param brickConfig hardware configuration of the robot (fixed)
      * @param programPhrases to generate the code from
-     * @param indentation to start with. Will be incremented/decremented depending on block structure
      */
     public EdisonPythonVisitor(
         UsedHardwareBean usedHardwareBean,
         CodeGeneratorSetupBean codeGeneratorSetupBean,
         ConfigurationAst brickConfig,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        int indentation) {
-        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases, indentation);
+        ArrayList<ArrayList<Phrase<Void>>> programPhrases) {
+        super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
     }
 
     /**
@@ -149,7 +147,7 @@ public class EdisonPythonVisitor extends AbstractPythonVisitor implements IEdiso
         boolean withWrapping) {
         Assert.notNull(brickCfg);
 
-        EdisonPythonVisitor visitor = new EdisonPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickCfg, programPhrases, 0);
+        EdisonPythonVisitor visitor = new EdisonPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickCfg, programPhrases);
         visitor.generateCode(withWrapping);
 
         return visitor.sb.toString();

@@ -2,16 +2,16 @@ package de.fhg.iais.roberta.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ListsEmptyListTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class ListsEmptyListTest extends AstTest {
 
     @Test
     public void Test() throws Exception {
         String a = "newArrayList<String>()" + "newArrayList<Pickcolor>()" + "newArrayList<Boolean>()" + "newArrayList<Float>()}";
 
-        this.h.assertCodeIsOk(a, "/syntax/lists/lists_empty_list.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_empty_list.xml");
     }
 
 }

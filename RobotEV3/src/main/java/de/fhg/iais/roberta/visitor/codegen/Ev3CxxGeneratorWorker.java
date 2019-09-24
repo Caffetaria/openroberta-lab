@@ -3,9 +3,10 @@ package de.fhg.iais.roberta.visitor.codegen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.iais.roberta.transformer.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.transformer.Project;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
+import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public final class Ev3CxxGeneratorWorker implements IWorker {
@@ -22,9 +23,9 @@ public final class Ev3CxxGeneratorWorker implements IWorker {
                 project.getProgramName(),
                 project.getConfigurationAst(),
                 project.getProgramAst().getTree(),
-                1,
                 project.getLanguage());
         visitor.setStringBuilders(project.getSourceCode(), project.getIndentation());
         visitor.generateCode(true);
+        project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
     }
 }

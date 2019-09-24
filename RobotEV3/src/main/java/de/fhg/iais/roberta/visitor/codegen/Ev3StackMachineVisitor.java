@@ -62,21 +62,10 @@ import de.fhg.iais.roberta.visitor.lang.codegen.AbstractStackMachineVisitor;
 
 public class Ev3StackMachineVisitor<V> extends AbstractStackMachineVisitor<V> implements IEv3Visitor<V> {
 
-    private Ev3StackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases, ILanguage language) {
+    public Ev3StackMachineVisitor(ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases, ILanguage language) {
         super(configuration);
         Assert.isTrue(!phrases.isEmpty());
 
-    }
-
-    public static String generate(ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ILanguage language) {
-        Assert.isTrue(!phrasesSet.isEmpty());
-        Assert.notNull(brickConfiguration);
-
-        Ev3StackMachineVisitor<Void> astVisitor = new Ev3StackMachineVisitor<>(brickConfiguration, phrasesSet, language);
-        astVisitor.generateCodeFromPhrases(phrasesSet);
-        JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
-        return generatedCode.toString(2);
     }
 
     @Override

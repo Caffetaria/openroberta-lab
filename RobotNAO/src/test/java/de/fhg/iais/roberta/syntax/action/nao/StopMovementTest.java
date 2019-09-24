@@ -1,25 +1,24 @@
 package de.fhg.iais.roberta.syntax.action.nao;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.util.test.nao.HelperNaoForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class StopMovementTest {
-    private final HelperNaoForXmlTest h = new HelperNaoForXmlTest();
+public class StopMovementTest extends AstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfWalkClass() throws Exception {
         String expectedResult = "BlockAST [project=[[Location [x=138, y=88], " + "MainTask [], " + "Stop []]]]";
 
-        String result = this.h.generateTransformerString("/action/stop.xml");
+        UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stop.xml");
 
-        Assert.assertEquals(expectedResult, result);
+        
     }
 
     @Test
     public void astToBlock_XMLtoJAXBtoASTtoXML_ReturnsSameXML() throws Exception {
 
-        this.h.assertTransformationIsOk("/action/stop.xml");
+        UnitTestHelper.checkProgramReverseTransformation(testFactory, "/action/stop.xml");
     }
 }

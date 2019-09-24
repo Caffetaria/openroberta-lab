@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.syntax.Phrase;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
-import de.fhg.iais.roberta.util.test.edison.HelperEdisonForXmlTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.collect.EdisonUsedHardwareCollectorVisitor;
 
-public class UsedHardwareCollectorVisitorTest {
-    private final HelperEdisonForXmlTest h = new HelperEdisonForXmlTest();
+public class UsedHardwareCollectorVisitorTest extends AstTest {
 
     @Test
     public void TestAllHelperMethods() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/collector/all_helper_methods.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/collector/all_helper_methods.xml");
         ConfigurationAst edisonConfig = HelperEdisonForXmlTest.makeConfig();
         UsedHardwareBean.Builder builder = new Builder();
         EdisonUsedHardwareCollectorVisitor checker = new EdisonUsedHardwareCollectorVisitor(builder, phrases, edisonConfig);

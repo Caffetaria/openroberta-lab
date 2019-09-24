@@ -9,16 +9,16 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
+import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.syntax.Phrase;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean.Builder;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.validate.Ev3BrickValidatorVisitor;
 
-public class Ev3RobProgramCheckVisitorTest {
-    private final HelperEv3ForXmlTest h = new HelperEv3ForXmlTest();
+public class Ev3RobProgramCheckVisitorTest extends AstTest {
 
     private static ConfigurationAst makeConfiguration() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
@@ -48,7 +48,7 @@ public class Ev3RobProgramCheckVisitorTest {
 
     @Test
     public void check_GlobalVariableUsedInUserCreatedFunction_returnsListWithOneElement() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> phrases = this.h.generateASTs("/visitors/MoveWithZeroSpeed.xml");
+        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/visitors/MoveWithZeroSpeed.xml");
         UsedHardwareBean.Builder builder = new Builder();
         Ev3BrickValidatorVisitor checkVisitor = new Ev3BrickValidatorVisitor(builder, makeConfiguration());
         checkVisitor.check(phrases);

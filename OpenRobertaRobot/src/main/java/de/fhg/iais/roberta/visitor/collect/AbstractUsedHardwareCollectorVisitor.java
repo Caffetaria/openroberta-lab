@@ -1,5 +1,6 @@
 package de.fhg.iais.roberta.visitor.collect;
 
+import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.components.UsedActor;
@@ -51,7 +52,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
-import de.fhg.iais.roberta.transformer.UsedHardwareBean;
 import de.fhg.iais.roberta.visitor.hardware.actor.IAllActorsVisitor;
 import de.fhg.iais.roberta.visitor.hardware.sensor.ISensorVisitor;
 import de.fhg.iais.roberta.visitor.validate.AbstractCollectorVisitor;
@@ -103,7 +103,7 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
     @Override
     public Void visitEncoderSensor(EncoderSensor<Void> encoderSensor) {
         ConfigurationComponent actor = this.robotConfiguration.getConfigurationComponent(encoderSensor.getPort());
-        this.usedActors.add(new UsedActor(encoderSensor.getPort(), actor.getComponentType()));
+        this.builder.addUsedActor(new UsedActor(encoderSensor.getPort(), actor.getComponentType()));
         return null;
     }
 

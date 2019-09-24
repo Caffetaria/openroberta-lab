@@ -2,15 +2,15 @@ package de.fhg.iais.roberta.ast.syntax.actors;
 
 import org.junit.Ignore;
 
-import de.fhg.iais.roberta.util.test.nxt.HelperNxtForXmlTest;
+import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LightSensorActionTest {
-    private final HelperNxtForXmlTest h = new HelperNxtForXmlTest();
+public class LightSensorActionTest extends AstTest {
 
     @Ignore
     public void redOn() throws Exception {
         String a = "";
 
-        this.h.assertCodeIsOk(a, "/ast/actions/action_LightSensorAction.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_LightSensorAction.xml");
     }
 }

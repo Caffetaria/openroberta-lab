@@ -7,10 +7,8 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
-import de.fhg.iais.roberta.util.test.ardu.HelperMBotForXmlTest;
 
 public class MbotActorTest {
-    HelperMBotForXmlTest mbotHelper = new HelperMBotForXmlTest();
 
     private final ConfigurationAst standardMbotConfiguration = makeMbotStandardConfiguration();
 
@@ -26,33 +24,37 @@ public class MbotActorTest {
 
     @Test
     public void mbotPlayNoteFrequencyTest() throws Exception {
-        this.mbotHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/mbot_play_note_frequency_test.ino",
-            "/ast/actions/mbot_play_note_frequency_test.xml",
-            this.standardMbotConfiguration);
+        this.mbotHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/mbot_play_note_frequency_test.ino",
+                "/ast/actions/mbot_play_note_frequency_test.xml",
+                this.standardMbotConfiguration);
     }
 
     @Test
     public void mbotMotorsTest() throws Exception {
-        this.mbotHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/mbot_motor_related_actions_test.ino",
-            "/ast/actions/mbot_motor_related_actions_test.xml",
-            this.standardMbotConfiguration);
+        this.mbotHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/mbot_motor_related_actions_test.ino",
+                "/ast/actions/mbot_motor_related_actions_test.xml",
+                this.standardMbotConfiguration);
     }
 
     @Test
     public void mbotSerialAndLedTest() throws Exception {
-        this.mbotHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/mbot_serial_and_led_test.ino",
-            "/ast/actions/mbot_serial_and_led_test.xml",
-            this.standardMbotConfiguration);
+        this.mbotHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/mbot_serial_and_led_test.ino",
+                "/ast/actions/mbot_serial_and_led_test.xml",
+                this.standardMbotConfiguration);
     }
 
     @Test
     public void mbotSendReceiveMessageTest() throws Exception {
-        this.mbotHelper.compareExistingAndGeneratedSource(
-            "/ast/actions/mbot_send_receive_message_test.ino",
-            "/ast/actions/mbot_send_receive_message_test.xml",
-            this.standardMbotConfiguration);
+        this.mbotHelper
+            .compareExistingAndGeneratedSource(
+                "/ast/actions/mbot_send_receive_message_test.ino",
+                "/ast/actions/mbot_send_receive_message_test.xml",
+                this.standardMbotConfiguration);
     }
 }
