@@ -2,22 +2,26 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3AstTest;
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LightActionStatusTest extends AstTest {
+public class LightActionStatusTest extends Ev3LejosAstTest {
 
     @Test
     public void ledOff() throws Exception {
         String a = "\nhal.ledOff();}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_BrickLightStatus.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_BrickLightStatus.xml",
+                                                                                   false);
     }
 
     @Test
     public void resetLED() throws Exception {
         String a = "\nhal.resetLED();}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_BrickLightStatus1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_BrickLightStatus1.xml",
+                                                                                   false);
     }
 }

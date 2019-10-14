@@ -3,11 +3,10 @@ package de.fhg.iais.roberta.syntax.codegen.arduino.botnroll;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 @Ignore
-public class CppVisitorTest extends AstTest {
+public class CppVisitorTest extends BotnrollAstTest {
 
     private static final String MAIN_METHOD1 =
         ""
@@ -50,7 +49,8 @@ public class CppVisitorTest extends AstTest {
                 + "        one.lcd1(\"Hallo\");\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator.xml",
+                                                                                   false);
     }
 
     @Test
@@ -68,7 +68,8 @@ public class CppVisitorTest extends AstTest {
                 + "        }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator1.xml",
+                                                                                   false);
     }
 
     @Test
@@ -141,7 +142,8 @@ public class CppVisitorTest extends AstTest {
                 + "    one.stop();}}"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator3.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator3.xml",
+                                                                                   false);
     }
 
     @Test
@@ -164,7 +166,8 @@ public class CppVisitorTest extends AstTest {
                 + "tone(9, 300, 100);delay(1);}}"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator4.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator4.xml",
+                                                                                   false);
     }
 
     @Test
@@ -183,7 +186,8 @@ public class CppVisitorTest extends AstTest {
                 + "       tone(9,0,0);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator5.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator5.xml",
+                                                                                   false);
     }
 
     @Test
@@ -200,7 +204,8 @@ public class CppVisitorTest extends AstTest {
                 + "        tone(9,300, 3000);\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator6.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator6.xml",
+                                                                                   false);
     }
 
     @Test
@@ -216,7 +221,8 @@ public class CppVisitorTest extends AstTest {
                 + "          bnr.move1mTime(1,30,1);\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator7.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator7.xml",
+                                                                                   false);
     }
 
     @Test
@@ -241,7 +247,8 @@ public class CppVisitorTest extends AstTest {
                 + "        item3 = false;\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator8.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator8.xml",
+                                                                                   false);
     }
 
     @Test
@@ -260,7 +267,8 @@ public class CppVisitorTest extends AstTest {
                 + "    test();"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/methods/method_void_2.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_2.xml",
+                                                                                   false);
     }
 
     @Test
@@ -280,7 +288,8 @@ public class CppVisitorTest extends AstTest {
                 + "test(true);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/methods/method_if_return_1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_1.xml",
+                                                                                   false);
     }
 
     @Test
@@ -309,7 +318,8 @@ public class CppVisitorTest extends AstTest {
                 + "        test2();"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/methods/method_void_3.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_3.xml",
+                                                                                   false);
     }
 
     @Test
@@ -336,7 +346,8 @@ public class CppVisitorTest extends AstTest {
                 + "one.lcd1(test(0,variablenName));"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/methods/method_return_1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_1.xml",
+                                                                                   false);
     }
 
     @Test
@@ -358,7 +369,8 @@ public class CppVisitorTest extends AstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/stmt/if_stmt4.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt4.xml",
+                                                                                   false);
     }
 
     @Test
@@ -376,7 +388,8 @@ public class CppVisitorTest extends AstTest {
                 + "voidloop(){"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator11.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/botnroll/java_code_generator11.xml",
+                                                                                   false);
     }
 
     @Test
@@ -399,7 +412,8 @@ public class CppVisitorTest extends AstTest {
                 + "    bnr.moveTimePID(item, item, 100);delay(1);}"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/stmt/forEach_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/forEach_stmt.xml",
+                                                                                   false);
     }
 
     @Test
@@ -414,7 +428,8 @@ public class CppVisitorTest extends AstTest {
                 + "tone(9, 50, 500);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayTone.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayTone.xml",
+                                                                                   false);
     }
 
     @Test
@@ -429,7 +444,8 @@ public class CppVisitorTest extends AstTest {
                 + "tone(9, 261.626, 2000);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayNote.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayNote.xml",
+                                                                                   false);
     }
 
 }

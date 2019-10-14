@@ -25,7 +25,6 @@ public class Uf2FileContainer {
      * The advantage of a smalled UF2 is a shorter upload time to the robot using USB (which is slow, ~10 sec for 1MB file).
      * the payload max length is 476, but we have to put the file name a the end.
      * A payload of 400 bytes seems reasonable to have a smaller file and still allowing long file names.
-     *
      */
     //private static final int UF2_BLOCK_PAYLOAD_SIZE = 256;
     private static final int UF2_BLOCK_PAYLOAD_SIZE = 400;

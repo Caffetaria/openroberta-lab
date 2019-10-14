@@ -16,7 +16,6 @@ public class PinGetValueSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/read_value_from_pin.xml");
 
-        
     }
 
     @Test

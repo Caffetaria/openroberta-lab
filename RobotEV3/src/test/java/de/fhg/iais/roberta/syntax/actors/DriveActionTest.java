@@ -2,22 +2,32 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
+import de.fhg.iais.roberta.visitor.collect.Ev3UsedMethodCollectorWorker;
 
-public class DriveActionTest extends AstTest {
+public class DriveActionTest extends Ev3LejosAstTest {
 
     @Test
     public void drive() throws Exception {
         String a = "\nhal.regulatedDrive(DriveDirection.FOREWARD, 50);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_MotorDiffOn.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/actions/action_MotorDiffOn.xml",
+                                    new Ev3UsedMethodCollectorWorker(),
+                                    new Ev3JavaGeneratorWorker());
     }
 
     @Test
     public void driveFor() throws Exception {
         String a = "\nhal.driveDistance(DriveDirection.FOREWARD, 50, 20);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_MotorDiffOnFor.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/actions/action_MotorDiffOnFor.xml",
+                                    new Ev3UsedMethodCollectorWorker(),
+                                    new Ev3JavaGeneratorWorker());
     }
 }

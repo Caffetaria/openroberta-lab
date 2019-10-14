@@ -33,13 +33,7 @@ public class LightAction<V> extends Action<V> {
     private static boolean isActor;
     private static boolean isBlink;
 
-    private LightAction(
-        String port,
-        IBrickLedColor color,
-        ILightMode mode,
-        Expr<V> rgbLedColor,
-        BlocklyBlockProperties properties,
-        BlocklyComment comment) {
+    private LightAction(String port, IBrickLedColor color, ILightMode mode, Expr<V> rgbLedColor, BlocklyBlockProperties properties, BlocklyComment comment) {
         super(BlockTypeContainer.getByName("LIGHT_ACTION"), properties, comment);
         Assert.isTrue(mode != null);
         this.rgbLedColor = rgbLedColor;

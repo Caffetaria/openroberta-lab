@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensor.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ElectricCurrentTest extends AstTest {
+public class ElectricCurrentTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfLearnFaceClass() throws Exception {
@@ -42,7 +42,6 @@ public class ElectricCurrentTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/electriccurrent.xml");
 
-        
     }
 
     @Test

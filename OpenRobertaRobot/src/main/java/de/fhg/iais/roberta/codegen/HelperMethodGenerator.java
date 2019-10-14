@@ -58,7 +58,7 @@ public class HelperMethodGenerator {
                 for ( Class<? extends Enum> anEnum : this.enums ) {
                     try {
                         this.helperMethods.put(Enum.valueOf(anEnum, methodName), implementation);
-                    } catch ( IllegalArgumentException e) {
+                    } catch ( IllegalArgumentException e ) {
                         // not all enum values need to have an implementation
                     }
                 }
@@ -138,6 +138,23 @@ public class HelperMethodGenerator {
             return nameMatcher.group(1);
         } else {
             throw new DbcException("Method definition in helper methods is incorrect!");
+        }
+    }
+
+    public static Language getLanguageFromFileExtension(String ext) {
+        switch ( ext ) {
+            case "java":
+                return Language.JAVA;
+            case "py":
+                return Language.PYTHON;
+            case "cpp":
+            case "ino":
+            case "nxc":
+                return Language.C;
+            case "json":
+                return Language.JSON;
+            default:
+                throw new DbcException("File extension not implemented!");
         }
     }
 }

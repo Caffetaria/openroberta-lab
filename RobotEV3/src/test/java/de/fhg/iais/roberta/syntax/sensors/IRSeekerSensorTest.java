@@ -2,10 +2,12 @@ package de.fhg.iais.roberta.syntax.sensors;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
 
-public class IRSeekerSensorTest extends AstTest {
+public class IRSeekerSensorTest extends Ev3LejosAstTest {
 
     @Test
     public void getIRSeeker() throws Exception {
@@ -13,6 +15,7 @@ public class IRSeekerSensorTest extends AstTest {
             "hal.drawText(String.valueOf(hal.getHiTecIRSeekerModulated(SensorPort.S1)), 0, 0);"
                 + "hal.drawText(String.valueOf(hal.getHiTecIRSeekerUnmodulated(SensorPort.S1)), 0, 0);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_getIRSeeker.xml");
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/sensors/sensor_getIRSeeker.xml",
+                                                                                   new Ev3JavaGeneratorWorker());
     }
 }

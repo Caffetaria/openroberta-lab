@@ -27,10 +27,7 @@ import de.fhg.iais.roberta.visitor.hardware.IEdisonVisitor;
  */
 public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IEdisonVisitor<Void> {
 
-    public EdisonUsedHardwareCollectorVisitor(
-        Builder builder,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        ConfigurationAst robotConfiguration) {
+    public EdisonUsedHardwareCollectorVisitor(Builder builder, ArrayList<ArrayList<Phrase<Void>>> programPhrases, ConfigurationAst robotConfiguration) {
         super(builder, robotConfiguration);
     }
 
@@ -39,7 +36,8 @@ public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareColl
         this.builder.addUsedMethod(EdisonMethods.MOTORON);
         this.builder.addUsedMethod(EdisonMethods.SHORTEN); //used inside helper method
         this.builder.addUsedMethod(EdisonMethods.GETDIR);
-        return super.visitMotorOnAction(motorOnAction);
+        return null;
+//        return super.visitMotorOnAction(motorOnAction);
     }
 
     @Override

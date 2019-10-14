@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LearnFaceOfTest extends AstTest {
+public class LearnFaceOfTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfLearnFaceClass() throws Exception {
@@ -14,7 +14,6 @@ public class LearnFaceOfTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/learnFace.xml");
 
-        
     }
 
     @Test

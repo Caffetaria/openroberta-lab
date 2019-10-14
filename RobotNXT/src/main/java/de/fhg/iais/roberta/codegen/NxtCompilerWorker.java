@@ -55,17 +55,17 @@ public class NxtCompilerWorker implements IWorker {
             nbcCompilerFileName = compilerResourcesDir + "/osx/nbc";
         }
 
-        String[] executableWithParameters = {
-            nbcCompilerFileName,
-            "-q",
-            "-sm-",
-            tempDir + token + "/" + mainFile + "/source/" + mainFile + "." + project.getFileExtension(),
-            "-O=" + tempDir + token + "/" + mainFile + "/target/" + mainFile + ".rxe",
-            "-I=" + base.resolve(path).toAbsolutePath().normalize()
-        };
+        String[] executableWithParameters =
+            {
+                nbcCompilerFileName,
+                "-q",
+                "-sm-",
+                tempDir + token + "/" + mainFile + "/source/" + mainFile + "." + project.getFileExtension(),
+                "-O=" + tempDir + token + "/" + mainFile + "/target/" + mainFile + ".rxe",
+                "-I=" + base.resolve(path).toAbsolutePath().normalize()
+            };
         Pair<Boolean, String> result = AbstractCompilerWorkflow.runCrossCompiler(executableWithParameters);
-        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS
-                                          : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
         return Pair.of(resultKey, result.getSecond());
     }
 }

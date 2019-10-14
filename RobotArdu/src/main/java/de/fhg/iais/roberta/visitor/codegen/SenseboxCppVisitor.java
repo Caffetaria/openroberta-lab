@@ -142,39 +142,6 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
         // nothing to do because the arduino loop closes the program
     }
 
-    /**
-     * factory method to generate C++ code from an AST.<br>
-     *
-     * @param brickConfiguration
-     * @param programPhrases to generate the code from
-     * @param withWrapping if false the generated code will be without the surrounding configuration code
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        boolean withWrapping) {
-        SenseboxCppVisitor astVisitor =
-            new SenseboxCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, "", "");
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
-    }
-
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        String SSID,
-        String password,
-        boolean withWrapping) {
-        SenseboxCppVisitor astVisitor =
-            new SenseboxCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases, SSID, password);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
-    }
-
     @Override
     public Void visitMotorOnAction(MotorOnAction<Void> motorOnAction) {
         return null;

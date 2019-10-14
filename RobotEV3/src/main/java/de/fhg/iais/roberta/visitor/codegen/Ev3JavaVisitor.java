@@ -81,7 +81,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.codegen.utilities.TTSLanguageMapper;
@@ -121,30 +120,6 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         // Picture strings are UTF-16 encoded with extra \0 padding bytes
         initPredefinedImages();
 
-    }
-
-    /**
-     * factory method to generate Java code from an AST.<br>
-     *
-     * @param programName name of the program
-     * @param brickConfiguration hardware configuration of the brick
-     * @param phrasesSet to generate the code from
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        String programName,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
-        boolean withWrapping,
-        ILanguage language) {
-        Assert.notNull(programName);
-        Assert.notNull(brickConfiguration);
-
-        Ev3JavaVisitor astVisitor =
-            new Ev3JavaVisitor(usedHardwareBean, codeGeneratorSetupBean, programName, phrasesSet, brickConfiguration, language);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
     }
 
     @Override

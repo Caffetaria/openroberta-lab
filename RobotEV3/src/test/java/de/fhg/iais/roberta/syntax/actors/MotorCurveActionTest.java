@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MotorCurveActionTest extends AstTest {
+public class MotorCurveActionTest extends Ev3LejosAstTest {
 
     @Test
     public void visitCurveAction_curveForwardThenBackward_generateValidJavaCode() throws Exception {
@@ -15,7 +15,9 @@ public class MotorCurveActionTest extends AstTest {
                 + "hal.driveInCurve(DriveDirection.BACKWARD, 50, 20);"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_MotorCurveOn.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_MotorCurveOn.xml",
+                                                                                   makeStandardConfiguration(),
+                                                                                   false);
     }
 
     @Test
@@ -26,6 +28,8 @@ public class MotorCurveActionTest extends AstTest {
                 + "hal.driveInCurve(DriveDirection.BACKWARD, 50, 20, 20);"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_MotorCurveOnFor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_MotorCurveOnFor.xml",
+                                                                                   makeStandardConfiguration(),
+                                                                                   false);
     }
 }

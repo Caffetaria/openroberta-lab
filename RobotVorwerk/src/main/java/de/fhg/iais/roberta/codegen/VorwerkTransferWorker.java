@@ -9,7 +9,6 @@ import de.fhg.iais.roberta.bean.CompilerSetupBean;
 import de.fhg.iais.roberta.components.vorwerk.VorwerkCommunicator;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
-import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public class VorwerkTransferWorker implements IWorker {

@@ -111,9 +111,10 @@ import de.fhg.iais.roberta.visitor.lang.ILanguageVisitor;
 
 /**
  * A helper class for unit tests to validate that all ASTs built from blockly XML are using compatible types.
- *
- * <p>This helper can be used in tests to validate the constraints on blockly toolboxes (generic ones and robot specific
- * ones).</p>
+ * <p>
+ * This helper can be used in tests to validate the constraints on blockly toolboxes (generic ones and robot specific
+ * ones).
+ * </p>
  */
 public class TypecheckVisitor implements ILanguageVisitor<BlocklyType>, ISensorVisitor<BlocklyType>, IAllActorsVisitor<BlocklyType> {
     private final int ERROR_LIMIT_FOR_TYPECHECK = 10;

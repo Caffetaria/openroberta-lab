@@ -19,7 +19,10 @@ import de.fhg.iais.roberta.visitor.hardware.IRaspberryPiVisitor;
  */
 public final class RaspberryPiUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IRaspberryPiVisitor<Void> {
 
-    public RaspberryPiUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
+    public RaspberryPiUsedHardwareCollectorVisitor(
+        UsedHardwareBean.Builder builder,
+        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
+        ConfigurationAst brickConfiguration) {
         super(builder, brickConfiguration);
     }
 

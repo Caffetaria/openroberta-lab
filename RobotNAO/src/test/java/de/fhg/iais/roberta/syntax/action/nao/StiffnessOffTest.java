@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class StiffnessOffTest extends AstTest {
+public class StiffnessOffTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfStiffnessBodyOffClass() throws Exception {
@@ -13,7 +13,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfBodyOff.xml");
 
-        
     }
 
     @Test
@@ -22,7 +21,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfArmsOff.xml");
 
-        
     }
 
     @Test
@@ -31,7 +29,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfLeftArmOff.xml");
 
-        
     }
 
     @Test
@@ -40,7 +37,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfHeadOff.xml");
 
-        
     }
 
     @Test
@@ -49,7 +45,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfRightArmOff.xml");
 
-        
     }
 
     @Test
@@ -58,7 +53,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfLegsOff.xml");
 
-        
     }
 
     @Test
@@ -67,7 +61,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfLeftLegOff.xml");
 
-        
     }
 
     @Test
@@ -76,7 +69,6 @@ public class StiffnessOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfRightLegOff.xml");
 
-        
     }
 
     @Test

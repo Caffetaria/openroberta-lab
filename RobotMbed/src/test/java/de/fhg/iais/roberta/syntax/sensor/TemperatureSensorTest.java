@@ -16,7 +16,6 @@ public class TemperatureSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/get_temperature.xml");
 
-        
     }
 
     @Test

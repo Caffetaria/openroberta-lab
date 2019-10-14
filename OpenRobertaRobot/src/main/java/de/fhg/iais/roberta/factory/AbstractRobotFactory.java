@@ -209,23 +209,6 @@ public abstract class AbstractRobotFactory implements IRobotFactory {
 
     }
 
-    public static HelperMethodGenerator.Language getLanguageFromFileExtension(String ext) {
-        switch ( ext ) {
-            case "java":
-                return HelperMethodGenerator.Language.JAVA;
-            case "py":
-                return HelperMethodGenerator.Language.PYTHON;
-            case "cpp":
-            case "ino":
-            case "nxc":
-                return HelperMethodGenerator.Language.C;
-            case "json":
-                return HelperMethodGenerator.Language.JSON;
-            default:
-                throw new DbcException("File extension not implemented!");
-        }
-    }
-
     @Override
     public List<IWorker> getWorkerPipe(String workflow) {
         List<String> workerTypes = this.workflows.get(workflow);

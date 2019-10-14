@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class FourDigitDisplayShowActionTest extends AstTest {
+public class FourDigitDisplayShowActionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfFourDigitDisplayShowActionClass() throws Exception {
@@ -14,7 +14,6 @@ public class FourDigitDisplayShowActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/fourdigitdisplay_show.xml");
 
-        
     }
 
     @Test

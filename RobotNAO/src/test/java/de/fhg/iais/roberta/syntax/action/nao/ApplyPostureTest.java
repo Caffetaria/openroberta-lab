@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ApplyPostureTest extends AstTest {
+public class ApplyPostureTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfApplyPostureCrouchClass() throws Exception {
@@ -13,7 +13,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_crouch.xml");
 
-        
     }
 
     @Test
@@ -22,7 +21,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_lyingBack.xml");
 
-        
     }
 
     @Test
@@ -31,7 +29,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_lyingBelly.xml");
 
-        
     }
 
     @Test
@@ -40,7 +37,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_sit.xml");
 
-        
     }
 
     @Test
@@ -49,7 +45,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_sitRelax.xml");
 
-        
     }
 
     @Test
@@ -58,7 +53,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_stand.xml");
 
-        
     }
 
     @Test
@@ -67,7 +61,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_standInit.xml");
 
-        
     }
 
     @Test
@@ -76,7 +69,6 @@ public class ApplyPostureTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/posture_standZero.xml");
 
-        
     }
 
     @Test

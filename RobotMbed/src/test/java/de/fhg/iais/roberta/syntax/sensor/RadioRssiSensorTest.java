@@ -14,7 +14,6 @@ public class RadioRssiSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/radio_rssi.xml");
 
-        
     }
 
     @Test

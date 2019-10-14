@@ -87,12 +87,13 @@ public final class WalkAsync<V> extends Action<V> {
         Phrase<V> YSpeed = helper.extractValue(values, new ExprParam(BlocklyConstants.Y + BlocklyConstants.SPEED, BlocklyType.NUMBER_INT));
         Phrase<V> ZSpeed = helper.extractValue(values, new ExprParam(BlocklyConstants.Z + BlocklyConstants.SPEED, BlocklyType.NUMBER_INT));
 
-        return WalkAsync.make(
-            helper.convertPhraseToExpr(XSpeed),
-            helper.convertPhraseToExpr(YSpeed),
-            helper.convertPhraseToExpr(ZSpeed),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return WalkAsync
+            .make(
+                helper.convertPhraseToExpr(XSpeed),
+                helper.convertPhraseToExpr(YSpeed),
+                helper.convertPhraseToExpr(ZSpeed),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

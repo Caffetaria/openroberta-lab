@@ -93,8 +93,10 @@ public class WaitStmt<V> extends Stmt<V> {
         for ( int i = 0; i <= mutat; i++ ) {
             Phrase<V> expr = helper.extractValue(values, new ExprParam(BlocklyConstants.WAIT + i, BlocklyType.BOOLEAN));
             statement = helper.extractStatement(statementss, BlocklyConstants.DO + i);
-            list.addStmt(
-                RepeatStmt.make(Mode.WAIT, helper.convertPhraseToExpr(expr), statement, helper.extractBlockProperties(block), helper.extractComment(block)));
+            list
+                .addStmt(
+                    RepeatStmt
+                        .make(Mode.WAIT, helper.convertPhraseToExpr(expr), statement, helper.extractBlockProperties(block), helper.extractComment(block)));
         }
         list.setReadOnly();
         return WaitStmt.make(list, helper.extractBlockProperties(block), helper.extractComment(block));

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.sensor.generic.EncoderSensor;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class EncoderSensorTest extends AstTest {
+public class EncoderSensorTest extends NxtAstTest {
 
     @Test
     public void sensorSetEncoder() throws Exception {

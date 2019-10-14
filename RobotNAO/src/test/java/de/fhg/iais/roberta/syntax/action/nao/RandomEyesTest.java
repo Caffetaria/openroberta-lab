@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class RandomEyesTest extends AstTest {
+public class RandomEyesTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfRandomEyesClass() throws Exception {
@@ -13,7 +13,6 @@ public class RandomEyesTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/randomEyes.xml");
 
-        
     }
 
     @Test

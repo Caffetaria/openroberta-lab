@@ -19,18 +19,8 @@ import de.fhg.iais.roberta.visitor.IVisitor;
  */
 public final class NxtUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor {
 
-    private boolean isVolumeVariableNeeded = false;
-
     public NxtUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst configuration) {
         super(builder, configuration);
-    }
-
-    /*public String getTmpArrVar() {
-        return this.tmpArrVar;
-    }*/
-
-    public boolean isVolumeVariableNeeded() {
-        return this.isVolumeVariableNeeded;
     }
 
     @Override
@@ -42,21 +32,21 @@ public final class NxtUsedHardwareCollectorVisitor extends AbstractUsedHardwareC
     @Override
     public Void visitVolumeAction(VolumeAction<Void> volumeAction) {
         super.visitVolumeAction(volumeAction);
-        this.isVolumeVariableNeeded = true;
+        this.builder.setVolumeVariableNeeded(true);
         return null;
     }
 
     @Override
     public Void visitToneAction(ToneAction<Void> toneAction) {
         super.visitToneAction(toneAction);
-        this.isVolumeVariableNeeded = true;
+        this.builder.setVolumeVariableNeeded(true);
         return null;
     }
 
     @Override
     public Void visitPlayNoteAction(PlayNoteAction<Void> playNoteAction) {
         super.visitPlayNoteAction(playNoteAction);
-        this.isVolumeVariableNeeded = true;
+        this.builder.setVolumeVariableNeeded(true);
         return null;
     }
     /*TODO: rewrite it in a nicer way, check why it is not detecting inserted arrays, fix sensors

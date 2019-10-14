@@ -277,13 +277,7 @@ abstract public class AbstractJaxb2Ast<V> {
     public ExprList<V> argumentsToExprList(List<Arg> arguments) {
         ExprList<V> parameters = ExprList.make();
         for ( Arg arg : arguments ) {
-            Var<V> parametar =
-                Var
-                    .make(
-                        BlocklyType.get(arg.getType()),
-                        arg.getName(),
-                        BlocklyBlockProperties.make("1", "1"),
-                        null);
+            Var<V> parametar = Var.make(BlocklyType.get(arg.getType()), arg.getName(), BlocklyBlockProperties.make("1", "1"), null);
             parameters.addExpr(parametar);
         }
         parameters.setReadOnly();

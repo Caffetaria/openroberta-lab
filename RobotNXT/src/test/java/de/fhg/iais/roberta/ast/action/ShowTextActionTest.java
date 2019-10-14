@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.display.ShowTextAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ShowTextActionTest extends AstTest {
+public class ShowTextActionTest extends NxtAstTest {
 
     @Test
     public void make() throws Exception {
@@ -20,21 +20,21 @@ public class ShowTextActionTest extends AstTest {
 
     @Test
     public void getMsg() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_ShowText.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_ShowText.xml");
         ShowTextAction<Void> spa = (ShowTextAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("StringConst [Hallo]", spa.getMsg().toString());
     }
 
     @Test
     public void getX() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_ShowText.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_ShowText.xml");
         ShowTextAction<Void> spa = (ShowTextAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("NumConst [0]", spa.getX().toString());
     }
 
     @Test
     public void getY() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_ShowText.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_ShowText.xml");
         ShowTextAction<Void> spa = (ShowTextAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("NumConst [0]", spa.getY().toString());
     }

@@ -2,43 +2,59 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.codegen.arduino.arduino.ArduinoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.ArduinoCxxGeneratorWorker;
 
-public class ListsCreateWithTest extends AstTest {
+public class ListsCreateWithTest extends ArduinoAstTest {
 
     @Test
     public void Test() throws Exception {
         String a = "{1.0,3.1,2}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_create_with.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/lists/lists_create_with.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void Test1() throws Exception {
         String a = "{\"a\",\"b\",\"c\"}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_create_with1.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/lists/lists_create_with1.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void Test2() throws Exception {
         String a = "{true,true,false}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_create_with2.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/lists/lists_create_with2.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void Test3() throws Exception {
         String a = "{true,true,true}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_create_with3.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/lists/lists_create_with3.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void Test4() throws Exception {
         String a = "{RGB(0x58,0x58,0x58),RGB(0xB3,0x00,0x06),RGB(0x53,0x21,0x15)}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/lists/lists_create_with4.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/lists/lists_create_with4.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 }

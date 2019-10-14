@@ -67,8 +67,8 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      */
     function loadProgramFromXML(programName, xmlText, successFn) {
         COMM.json("/project/import", {
-            "name" : programName,
-            "program" : xmlText
+            "programName" : programName,
+            "programBlockSet" : xmlText
         }, successFn, "open program '" + programName + "' from XML");
     }
 

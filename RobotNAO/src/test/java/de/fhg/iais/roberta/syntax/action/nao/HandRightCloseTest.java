@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class HandRightCloseTest extends AstTest {
+public class HandRightCloseTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfHandClass() throws Exception {
@@ -17,7 +17,7 @@ public class HandRightCloseTest extends AstTest {
     /*
     @Test
     public void astToBlock_XMLtoJAXBtoASTtoXML_ReturnsSameXML() throws Exception {
-
+    
         UnitTestHelper.checkProgramReverseTransformation(testFactory, "/action/handLeftOpen.xml");
     }*/
 }

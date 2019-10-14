@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.collect.NaoUsedHardwareCollectorVisitor;
 
-public class UsedHardwareCollectorVisitorTest extends AstTest {
+public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
 
     private ConfigurationAst makeConfiguration() {
         return new ConfigurationAst.Builder().build();

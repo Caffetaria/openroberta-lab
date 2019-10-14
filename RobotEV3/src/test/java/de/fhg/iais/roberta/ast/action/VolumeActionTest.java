@@ -20,14 +20,14 @@ public class VolumeActionTest extends AstTest {
 
     @Test
     public void getVolume() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_SetVolume.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_SetVolume.xml");
         VolumeAction<Void> va = (VolumeAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("NumConst [50]", va.getVolume().toString());
     }
 
     @Test
     public void getMode() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_SetVolume.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_SetVolume.xml");
         VolumeAction<Void> va = (VolumeAction<Void>) forest.get(0).get(1);
         Assert.assertEquals(VolumeAction.Mode.SET, va.getMode());
     }

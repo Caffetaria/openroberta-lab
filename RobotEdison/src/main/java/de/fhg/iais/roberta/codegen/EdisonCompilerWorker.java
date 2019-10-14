@@ -68,16 +68,15 @@ public class EdisonCompilerWorker implements IWorker {
             };
 
         Pair<Boolean, String> result = AbstractCompilerWorkflow.runCrossCompiler(executableWithParameters);
-        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS
-                                          : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
-        if (result.getFirst()) {
+        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+        if ( result.getFirst() ) {
             try {
                 byte[] wavBytes = FileUtils.readFileToByteArray(new File(targetFilePath + pyFile + ".wav"));
                 project.setCompiledHex(Base64.getEncoder().encodeToString(wavBytes));
-                resultKey =  Key.COMPILERWORKFLOW_SUCCESS;
+                resultKey = Key.COMPILERWORKFLOW_SUCCESS;
             } catch ( IOException e ) {
                 LOG.error("Compilation successful, but reading WAV file failed (IOException)", e);
-                resultKey =  Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+                resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
             }
         }
         return Pair.of(resultKey, result.getSecond());

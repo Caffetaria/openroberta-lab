@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class SetLedsTest extends AstTest {
+public class SetLedsTest extends NaoAstTest {
 
     @Test
     public void testLedsOnColor() throws Exception {

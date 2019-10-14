@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.SC;
 import de.fhg.iais.roberta.syntax.sensor.generic.LightSensor;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LightSensorTest extends AstTest {
+public class LightSensorTest extends NxtAstTest {
 
     @Test
     public void sensorSetLight() throws Exception {

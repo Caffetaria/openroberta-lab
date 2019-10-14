@@ -84,7 +84,7 @@ public class ShowTextAction<V> extends Action<V> {
     /**
      * @return port of the display.
      */
-    public String  getPort() {
+    public String getPort() {
         return this.port;
     }
 

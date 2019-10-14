@@ -40,7 +40,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/get_sample_sensor.xml");
 
-        
     }
 
     @Ignore("Test is ignored until next commit")

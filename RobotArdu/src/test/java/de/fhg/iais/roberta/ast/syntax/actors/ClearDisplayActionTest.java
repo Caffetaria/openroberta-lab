@@ -12,6 +12,7 @@ public class ClearDisplayActionTest extends AstTest {
     @Test
     public void clearDisplay() throws Exception {
         String a = "publicvoidrun(){clearscreen();}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_ClearDisplay.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_ClearDisplay.xml",
+                                                                                   false);
     }
 }

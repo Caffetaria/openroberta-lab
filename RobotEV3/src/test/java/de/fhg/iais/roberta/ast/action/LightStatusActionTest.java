@@ -22,7 +22,7 @@ public class LightStatusActionTest extends AstTest {
 
     @Test
     public void getStatus() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_BrickLightStatus.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_BrickLightStatus.xml");
         LightStatusAction<Void> lsa = (LightStatusAction<Void>) forest.get(0).get(1);
         Assert.assertEquals(LightStatusAction.Status.OFF, lsa.getStatus());
     }

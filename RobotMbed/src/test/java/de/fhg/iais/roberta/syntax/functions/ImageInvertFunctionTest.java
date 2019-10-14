@@ -3,10 +3,10 @@ package de.fhg.iais.roberta.syntax.functions;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ImageInvertFunctionTest extends AstTest {
+public class ImageInvertFunctionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfImageInvertFunctionClass() throws Exception {
@@ -17,7 +17,6 @@ public class ImageInvertFunctionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/function/image_invert_heart_image.xml");
 
-        
     }
 
     @Test
@@ -29,7 +28,6 @@ public class ImageInvertFunctionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/function/image_invert_missing_image.xml");
 
-        
     }
 
     @Test

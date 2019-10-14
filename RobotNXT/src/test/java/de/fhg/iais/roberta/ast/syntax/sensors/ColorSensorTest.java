@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.ast.syntax.sensors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ColorSensorTest extends AstTest {
+public class ColorSensorTest extends NxtAstTest {
 
     @Test
     public void setColor() throws Exception {

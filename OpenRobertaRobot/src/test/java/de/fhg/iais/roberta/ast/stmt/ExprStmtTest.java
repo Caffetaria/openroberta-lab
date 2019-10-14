@@ -8,7 +8,6 @@ import de.fhg.iais.roberta.syntax.lang.expr.NumConst;
 import de.fhg.iais.roberta.syntax.lang.stmt.ExprStmt;
 
 public class ExprStmtTest {
-    
 
     @Test
     public void make() throws Exception {

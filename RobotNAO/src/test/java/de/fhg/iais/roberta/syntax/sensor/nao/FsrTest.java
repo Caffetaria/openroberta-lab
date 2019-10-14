@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensor.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class FsrTest extends AstTest {
+public class FsrTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfAnimationClass() throws Exception {
@@ -18,7 +18,6 @@ public class FsrTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/fsr.xml");
 
-        
     }
 
     @Test

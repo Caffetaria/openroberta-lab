@@ -9,7 +9,6 @@ import de.fhg.iais.roberta.syntax.action.motor.differential.DriveAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class DriveActionTest extends AstTest {
-    
 
     @Test
     public void make() throws Exception {
@@ -24,7 +23,7 @@ public class DriveActionTest extends AstTest {
 
     @Test
     public void getDirection() throws Exception {
-        DriveAction<?> da = (DriveAction<?>) UnitTestHelper.getAstOfFirstBlock(testFactory,"/ast/actions/action_MotorDiffOnFor.xml");
+        DriveAction<?> da = (DriveAction<?>) UnitTestHelper.getAstOfFirstBlock(testFactory, "/ast/actions/action_MotorDiffOnFor.xml");
         Assert.assertEquals(DriveDirection.FOREWARD, da.getDirection());
     }
 
@@ -40,7 +39,7 @@ public class DriveActionTest extends AstTest {
 
     @Test
     public void getParam() throws Exception {
-        DriveAction<?> da = (DriveAction<?>) UnitTestHelper.getAstOfFirstBlock(testFactory,"/ast/actions/action_MotorDiffOnFor.xml");
+        DriveAction<?> da = (DriveAction<?>) UnitTestHelper.getAstOfFirstBlock(testFactory, "/ast/actions/action_MotorDiffOnFor.xml");
         Assert.assertEquals("MotionParam [speed=NumConst [50], duration=MotorDuration [type=DISTANCE, value=NumConst [20]]]", da.getParam().toString());
     }
 

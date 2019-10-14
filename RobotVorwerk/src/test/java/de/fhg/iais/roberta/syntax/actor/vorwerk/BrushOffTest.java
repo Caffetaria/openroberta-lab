@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.actor.vorwerk;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.VorwerkAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class BrushOffTest extends AstTest {
+public class BrushOffTest extends VorwerkAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfAnimationClass() throws Exception {
@@ -13,7 +13,6 @@ public class BrushOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/actors/brush_off.xml");
 
-        
     }
 
     @Test

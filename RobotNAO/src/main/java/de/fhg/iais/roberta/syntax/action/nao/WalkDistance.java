@@ -85,11 +85,12 @@ public final class WalkDistance<V> extends Action<V> {
         String walkDirection = helper.extractField(fields, BlocklyConstants.DIRECTION);
         Phrase<V> walkDistance = helper.extractValue(values, new ExprParam(BlocklyConstants.POWER, BlocklyType.NUMBER_INT));
 
-        return WalkDistance.make(
-            DriveDirection.get(walkDirection),
-            helper.convertPhraseToExpr(walkDistance),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return WalkDistance
+            .make(
+                DriveDirection.get(walkDirection),
+                helper.convertPhraseToExpr(walkDistance),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

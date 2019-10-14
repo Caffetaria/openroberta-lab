@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.mode.action.MotorStopMode;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.motor.MotorStopAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MotorStopActionTest extends AstTest {
+public class MotorStopActionTest extends NxtAstTest {
 
     @Test
     public void make() throws Exception {
@@ -21,14 +21,14 @@ public class MotorStopActionTest extends AstTest {
 
     @Test
     public void getPort() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_MotorStop.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_MotorStop.xml");
         MotorStopAction<Void> mgp = (MotorStopAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("A", mgp.getUserDefinedPort());
     }
 
     @Test
     public void getMode() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_MotorStop.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_MotorStop.xml");
         MotorStopAction<Void> mgp = (MotorStopAction<Void>) forest.get(0).get(1);
         Assert.assertEquals(MotorStopMode.FLOAT, mgp.getMode());
     }

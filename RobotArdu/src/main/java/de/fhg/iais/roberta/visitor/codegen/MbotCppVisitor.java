@@ -57,7 +57,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.VoltageSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.FlameSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.Joystick;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IMbotVisitor;
@@ -80,27 +79,6 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
         ConfigurationAst brickConfiguration,
         ArrayList<ArrayList<Phrase<Void>>> phrases) {
         super(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrases);
-    }
-
-    /**
-     * factory method to generate C++ code from an AST.<br>
-     *
-     * @param brickConfiguration hardware configuration of the brick
-     * @param programPhrases to generate the code from
-     * @param withWrapping if false the generated code will be without the surrounding configuration code
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        boolean withWrapping) {
-        Assert.notNull(brickConfiguration);
-
-        final MbotCppVisitor astVisitor =
-            new MbotCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
     }
 
     @Override

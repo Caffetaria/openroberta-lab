@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class RadioReciveActionTest extends AstTest {
+public class RadioReciveActionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfRadioReciveActionClass() throws Exception {
@@ -14,7 +14,6 @@ public class RadioReciveActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/radio_receive_message.xml");
 
-        
     }
 
     @Test

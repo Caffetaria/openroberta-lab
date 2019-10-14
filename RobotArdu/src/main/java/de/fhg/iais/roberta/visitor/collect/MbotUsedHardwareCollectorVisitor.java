@@ -19,6 +19,7 @@ import de.fhg.iais.roberta.syntax.action.sound.ToneAction;
 import de.fhg.iais.roberta.syntax.actors.arduino.mbot.ReceiveIRAction;
 import de.fhg.iais.roberta.syntax.actors.arduino.mbot.SendIRAction;
 import de.fhg.iais.roberta.syntax.expressions.arduino.LedMatrix;
+import de.fhg.iais.roberta.syntax.lang.expr.VarDeclaration;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.FlameSensor;
 import de.fhg.iais.roberta.syntax.sensors.arduino.mbot.Joystick;
 import de.fhg.iais.roberta.visitor.hardware.IMbotVisitor;
@@ -135,5 +136,4 @@ public final class MbotUsedHardwareCollectorVisitor extends AbstractUsedHardware
         this.builder.addUsedActor(new UsedActor("INTERNAL", SC.IR_TRANSMITTER));
         return null;
     }
-
 }

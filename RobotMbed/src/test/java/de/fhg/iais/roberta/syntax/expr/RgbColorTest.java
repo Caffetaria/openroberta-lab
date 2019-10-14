@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class RgbColorTest extends AstTest {
+public class RgbColorTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstancesOfRgbColorClass() throws Exception {
@@ -14,7 +14,6 @@ public class RgbColorTest extends AstTest {
                 + "DisplayTextAction [TEXT, RgbColor [NumConst [20], NumConst [25], NumConst [30], NumConst [30]]]]]]";
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/expr/create_color.xml");
 
-        
     }
 
     @Test

@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LedOnActionTest extends AstTest {
+public class LedOnActionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfLedOnActionClass() throws Exception {
@@ -18,7 +18,6 @@ public class LedOnActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/led_on_three_colors.xml");
 
-        
     }
 
     @Test
@@ -27,7 +26,6 @@ public class LedOnActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/led_on_missing_color.xml");
 
-        
     }
 
     @Test

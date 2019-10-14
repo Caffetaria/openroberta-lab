@@ -9,19 +9,16 @@ import de.fhg.iais.roberta.syntax.lang.stmt.StmtFlowCon.Flow;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 
 public class StmtFlowContrTest {
-    
 
     @Test
     public void make() throws Exception {
-        StmtFlowCon<Void> flowCon =
-            StmtFlowCon.make(Flow.BREAK, BlocklyBlockProperties.make("1", "1"), null);
+        StmtFlowCon<Void> flowCon = StmtFlowCon.make(Flow.BREAK, BlocklyBlockProperties.make("1", "1"), null);
         Assert.assertEquals("\nStmtFlowCon [BREAK]", flowCon.toString());
     }
 
     @Test
     public void getFlow() throws Exception {
-        StmtFlowCon<Void> flowCon =
-            StmtFlowCon.make(Flow.BREAK, BlocklyBlockProperties.make("1", "1"), null);
+        StmtFlowCon<Void> flowCon = StmtFlowCon.make(Flow.BREAK, BlocklyBlockProperties.make("1", "1"), null);
         Assert.assertEquals(Flow.BREAK, flowCon.getFlow());
     }
 

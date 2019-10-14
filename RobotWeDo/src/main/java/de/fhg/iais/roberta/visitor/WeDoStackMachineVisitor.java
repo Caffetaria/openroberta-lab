@@ -23,7 +23,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.GyroSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.InfraredSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.KeysSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.hardware.IWeDoVisitor;
 import de.fhg.iais.roberta.visitor.lang.codegen.AbstractStackMachineVisitor;
@@ -32,17 +31,6 @@ public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisito
 
     WeDoStackMachineVisitor(UsedHardwareBean usedHardwareBean, ConfigurationAst configuration, ArrayList<ArrayList<Phrase<Void>>> phrases) {
         super(configuration);
-    }
-
-    public static String generate(UsedHardwareBean usedHardwareBean, ConfigurationAst brickConfiguration, ArrayList<ArrayList<Phrase<Void>>> phrasesSet) {
-        Assert.isTrue(!phrasesSet.isEmpty());
-        Assert.notNull(brickConfiguration);
-
-        WeDoStackMachineVisitor<Void> astVisitor = new WeDoStackMachineVisitor<>(usedHardwareBean, brickConfiguration, phrasesSet);
-        astVisitor.generateCodeFromPhrases(phrasesSet);
-        JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, astVisitor.getOpArray()).put(C.FUNCTION_DECLARATION, astVisitor.getFctDecls());
-        return generatedCode.toString(2);
     }
 
     @Override

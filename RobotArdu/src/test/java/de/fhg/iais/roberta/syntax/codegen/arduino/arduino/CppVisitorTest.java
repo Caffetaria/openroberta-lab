@@ -3,11 +3,10 @@ package de.fhg.iais.roberta.syntax.codegen.arduino.arduino;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 @Ignore //REFACTORING CONFIGURATION MISSING
-public class CppVisitorTest extends AstTest {
+public class CppVisitorTest extends ArduinoAstTest {
 
     private static final String BASIC_INCLUDE =
         "//ThisfileisautomaticallygeneratedbytheOpenRobertaLab.\n"
@@ -106,7 +105,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(\"Hallo\");"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/show_text.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/show_text.xml",
+                                                                                   false);
     }
 
     @Test
@@ -121,7 +121,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(\"Hallo\");"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/show_text_i2c.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/show_text_i2c.xml",
+                                                                                   false);
     }
 
     @Test
@@ -136,7 +137,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.clear();"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/clear_display.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/clear_display.xml",
+                                                                                   false);
     }
 
     @Test
@@ -154,7 +156,8 @@ public class CppVisitorTest extends AstTest {
                 + "delay(2000);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/led.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/led.xml",
+                                                                                   false);
     }
 
     @Test
@@ -170,7 +173,8 @@ public class CppVisitorTest extends AstTest {
                 + "delay(2000);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/buzzer.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/buzzer.xml",
+                                                                                   false);
     }
 
     @Test
@@ -192,7 +196,8 @@ public class CppVisitorTest extends AstTest {
                 + "delay(1000);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/rgbled.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/rgbled.xml",
+                                                                                   false);
     }
 
     @Test
@@ -209,7 +214,8 @@ public class CppVisitorTest extends AstTest {
                 + "delay(2000);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/servo.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/servo.xml",
+                                                                                   false);
     }
 
     @Test
@@ -225,7 +231,8 @@ public class CppVisitorTest extends AstTest {
                 + "Motor_S.step(_SPU_S*5);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/step.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/step.xml",
+                                                                                   false);
     }
 
     @Test
@@ -241,7 +248,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_LCD.print(_getUltrasonicDistance());"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/ultrasonic.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/ultrasonic.xml",
+                                                                                   false);
     }
 
     @Test
@@ -264,7 +272,8 @@ public class CppVisitorTest extends AstTest {
                 + "delay(500);"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/timer.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/timer.xml",
+                                                                                   false);
     }
 
     @Test
@@ -289,7 +298,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(\"%\");}"
                 + "delay(500);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/light_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/light_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -305,7 +315,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(analogRead(_moisturePin_F)/10.24);"
                 + "delay(500);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/moisture_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/moisture_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -321,7 +332,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(((double)analogRead(_output_P))*5/1024);"
                 + "delay(500);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/potentiometer.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/potentiometer.xml",
+                                                                                   false);
     }
 
     @Test
@@ -348,7 +360,8 @@ public class CppVisitorTest extends AstTest {
                 + "delay(2000);"
                 + "_lcd_L.clear();}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/ir_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/ir_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -365,7 +378,8 @@ public class CppVisitorTest extends AstTest {
                 + "digitalWrite(_relay_R,HIGH);"
                 + "delay(1000);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/relay.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/relay.xml",
+                                                                                   false);
     }
 
     @Test
@@ -381,7 +395,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(map(analogRead(_TMP36_T),0,410,-50,150));"
                 + "delay(1000);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/temperature_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/temperature_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -399,7 +414,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(_dht_L2.readTemperature());"
                 + "delay(1000);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/humidity_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/humidity_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -416,7 +432,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(digitalRead(_output_B));"
                 + "delay(1000);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/motion_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/motion_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -432,7 +449,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(analogRead(_SensorPin_P));"
                 + "delay(1000);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/pulse_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/pulse_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -449,7 +467,8 @@ public class CppVisitorTest extends AstTest {
                 + "delay(1000);"
                 + "_lcd_L.clear();}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/drop_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/drop_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -465,7 +484,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(_readRFIDData());"
                 + "delay(500);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/rfid_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/rfid_sensor.xml",
+                                                                                   false);
     }
 
     @Test
@@ -481,7 +501,8 @@ public class CppVisitorTest extends AstTest {
                 + "_lcd_L.print(digitalRead(_taster_T));"
                 + "delay(10);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/button.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/button.xml",
+                                                                                   false);
     }
 
     @Test
@@ -498,7 +519,8 @@ public class CppVisitorTest extends AstTest {
                 + "Serial.println(\"Buka\");"
                 + "delay(500);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/serial_print.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/serial_print.xml",
+                                                                                   false);
     }
 
     @Ignore //TODO reactivate when PinWrite is fixed
@@ -539,7 +561,8 @@ public class CppVisitorTest extends AstTest {
                 + "Serial.println(_pinGetValue(A0,_ANALOG));"
                 + "delay(500);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/code_generator/arduino/pin_read_write.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/arduino/pin_read_write.xml",
+                                                                                   false);
     }
 
 }

@@ -35,13 +35,7 @@ public interface ICompilerWorkflow {
      * @return the generated source code; null in case of an error
      */
 
-    default void generateSourceCode(
-        String token,
-        String programName,
-        Project transformer,
-        String SSID,
-        String password,
-        ILanguage language) {
+    default void generateSourceCode(String token, String programName, Project transformer, String SSID, String password, ILanguage language) {
         generateSourceCode(token, programName, transformer, language);
     }
 

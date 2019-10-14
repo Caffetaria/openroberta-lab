@@ -8,10 +8,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.UnmarshalException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -22,8 +20,6 @@ import com.google.inject.Inject;
 
 import de.fhg.iais.roberta.blockly.generated.Export;
 import de.fhg.iais.roberta.javaServer.provider.OraData;
-import de.fhg.iais.roberta.javaServer.restServices.all.service.ProjectService;
-import de.fhg.iais.roberta.mode.action.Language;
 import de.fhg.iais.roberta.persistence.AccessRightProcessor;
 import de.fhg.iais.roberta.persistence.ConfigurationProcessor;
 import de.fhg.iais.roberta.persistence.LikeProcessor;
@@ -35,8 +31,6 @@ import de.fhg.iais.roberta.persistence.dao.ConfigurationDao;
 import de.fhg.iais.roberta.persistence.util.DbSession;
 import de.fhg.iais.roberta.persistence.util.HttpSessionState;
 import de.fhg.iais.roberta.persistence.util.SessionFactoryWrapper;
-import de.fhg.iais.roberta.robotCommunication.RobotCommunicator;
-import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.ServerProperties;
 import de.fhg.iais.roberta.util.Statistics;
@@ -58,6 +52,12 @@ public class ProjectRestController {
         this.isPublicServer = serverProperties.getBooleanProperty("server.public");
     }
 
+    private static String getRobot(HttpSessionState httpSessionState) {
+        return (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty())
+            ? httpSessionState.getRobotName()
+            : httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
+    }
+
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -69,52 +69,45 @@ public class ProjectRestController {
         } catch ( JSONException e ) {
             throw new DbcException("Invalid JSON object: data not found", e);
         }
-        final int userId = httpSessionState.getUserId();
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-        final JSONObject response = new JSONObject();
-        String programName = null;
-        String programText = null;
-        Long timestamp = null;
-        Program program;
-        Timestamp programTimestamp = null;
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
         try {
-            timestamp = dataPart.getLong("timestamp");
-            programTimestamp = new Timestamp(timestamp);
-        } catch ( JSONException e2 ) {
-            programTimestamp = null;
-        }
-        try {
-            programName = dataPart.getString("programName");
-            programText = dataPart.getString("programText");
-        } catch ( JSONException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        final String configName = dataPart.optString("configName", null);
-        final String configText = dataPart.optString("configText", null);
-        final boolean isShared = dataPart.optBoolean("shared", false);
-        if ( isShared ) {
-            programTimestamp = null;
-        }
-        program = programProcessor.persistProgramText(programName, programText, configName, configText, userId, robot, userId, programTimestamp, !isShared);
-        if ( programProcessor.succeeded() && (program != null) ) {
-            try {
+            int userId = httpSessionState.getUserId();
+            String robot = getRobot(httpSessionState);
+            Long timestamp = dataPart.optLong("timestamp");
+            Timestamp programTimestamp = new Timestamp(timestamp);
+            String programName = dataPart.getString("programName");
+            String programText = dataPart.getString("programText");
+            String configName = dataPart.optString("configName", null);
+            String configText = dataPart.optString("configText", null);
+            boolean isShared = dataPart.optBoolean("shared", false);
+            Program program;
+            if ( dataPart.getString("cmd").equals("saveP") ) {
+                program =
+                    programProcessor.persistProgramText(programName, programText, configName, configText, userId, robot, userId, programTimestamp, !isShared);
+            } else {
+                program = programProcessor.persistProgramText(programName, programText, configName, configText, userId, robot, userId, null, true);
+            }
+            if ( programProcessor.succeeded() && (program != null) ) {
                 response.put("lastChanged", program.getLastChanged().getTime());
-                Util.addResultInfo(response, programProcessor);
-            } catch ( JSONException e ) {
-                e.printStackTrace();
+            }
+            Util.addResultInfo(response, programProcessor);
+            Statistics.info("ProgramSave", "success", programProcessor.succeeded());
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
             }
         }
-        dbSession.commit();
-        if ( dbSession != null ) {
-            dbSession.close();
-        }
-        Statistics.info("ProgramSave", "success", programProcessor.succeeded());
         return Response.ok(response).build();
     }
 
@@ -129,25 +122,23 @@ public class ProjectRestController {
         } catch ( JSONException e ) {
             throw new DbcException("Invalid JSON object: data not found", e);
         }
-        final JSONObject response = new JSONObject();
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
         try {
             if ( !httpSessionState.isUserLoggedIn() && !dataPart.getString("owner").equals("Roberta") && !dataPart.getString("owner").equals("Gallery") ) {
                 LOG.info("Unauthorized load request");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
             } else {
-                final String programName = dataPart.getString("name");
-                final String ownerName = dataPart.getString("owner");
-                final String authorName = dataPart.getString("authorName");
-                final String robot =
-                    (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-                    httpSessionState.getRobotName() :
-                    httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-                final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-                final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-                final Program program = programProcessor.getProgram(programName, ownerName, robot, authorName);
+                String programName = dataPart.getString("programName");
+                String ownerName = dataPart.getString("owner");
+                String authorName = dataPart.getString("authorName");
+                String robot = getRobot(httpSessionState);
+
+                Program program = programProcessor.getProgram(programName, ownerName, robot, authorName);
                 if ( program != null ) {
                     response.put("programText", program.getProgramText());
-                    final String configText = programProcessor.getProgramsConfig(program);
+                    String configText = programProcessor.getProgramsConfig(program);
                     response.put("configName", program.getConfigName()); // may be null, if an anonymous configuration is used
                     response.put("configText", configText); // may be null, if the default configuration is used
                     response.put("lastChanged", program.getLastChanged().getTime());
@@ -159,9 +150,19 @@ public class ProjectRestController {
                 Util.addResultInfo(response, programProcessor);
                 Statistics.info("ProgramLoad", "success", programProcessor.succeeded());
             }
-        } catch ( JSONException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
+            }
         }
         return Response.ok(response).build();
     }
@@ -171,33 +172,34 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProgramNames(@OraData HttpSessionState httpSessionState, JSONObject request) {
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        final JSONObject response = new JSONObject();
-        if ( !httpSessionState.isUserLoggedIn() ) {
-            LOG.error("Unauthorized");
-            try {
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
+        try {
+            String robot = getRobot(httpSessionState);
+            if ( !httpSessionState.isUserLoggedIn() ) {
+                LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-            final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-            final int userId = httpSessionState.getUserId();
-            final JSONArray programInfo = programProcessor.getProgramInfo(userId, robot, userId);
-            try {
+            } else {
+                int userId = httpSessionState.getUserId();
+                JSONArray programInfo = programProcessor.getProgramInfo(userId, robot, userId);
                 response.put("programNames", programInfo);
                 Util.addResultInfo(response, programProcessor);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            }
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
             }
         }
-        // TODO: statistics entry?
         return Response.ok(response).build();
     }
 
@@ -206,33 +208,34 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProgramExampleNames(@OraData HttpSessionState httpSessionState, JSONObject request) {
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        final JSONObject response = new JSONObject();
-        if ( !httpSessionState.isUserLoggedIn() ) {
-            LOG.error("Unauthorized");
-            try {
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
+        try {
+            if ( !httpSessionState.isUserLoggedIn() ) {
+                LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-            final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-            final int userId = 1;
-            final JSONArray programInfo = programProcessor.getProgramInfo(userId, robot, userId);
-            try {
+            } else {
+                String robot = getRobot(httpSessionState);
+                int userId = 1;
+                JSONArray programInfo = programProcessor.getProgramInfo(userId, robot, userId);
                 response.put("programNames", programInfo);
                 Util.addResultInfo(response, programProcessor);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            }
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
             }
         }
-        // TODO: statistics entry?
         return Response.ok(response).build();
     }
 
@@ -241,42 +244,48 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProgramEntity(@OraData HttpSessionState httpSessionState, JSONObject request) {
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        final JSONObject response = new JSONObject();
-        if ( !httpSessionState.isUserLoggedIn() ) {
-            LOG.error("Unauthorized");
-            try {
+        JSONObject dataPart;
+        try {
+            dataPart = request.getJSONObject("data");
+        } catch ( JSONException e ) {
+            throw new DbcException("Invalid JSON object: data not found", e);
+        }
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        UserProcessor up = new UserProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
+        try {
+            if ( !httpSessionState.isUserLoggedIn() ) {
+                LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-            final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-            final UserProcessor up = new UserProcessor(dbSession, httpSessionState);
-            String programName;
-            try {
-                programName = request.getString("name");
-                String ownerName = request.getString("owner");
-                String authorName = request.getString("author");
-                final User owner = up.getUser(ownerName);
-                final int ownerID = owner.getId();
-                final int authorId = up.getUser(authorName).getId();
-                final JSONArray program = programProcessor.getProgramEntity(programName, ownerID, robot, authorId);
+            } else {
+                String robot = getRobot(httpSessionState);
+                String programName = dataPart.getString("name");
+                String ownerName = dataPart.getString("owner");
+                String authorName = dataPart.getString("author");
+                User owner = up.getUser(ownerName);
+                int ownerID = owner.getId();
+                int authorId = up.getUser(authorName).getId();
+                JSONArray program = programProcessor.getProgramEntity(programName, ownerID, robot, authorId);
                 if ( program != null ) {
                     response.put("program", program);
                 }
                 Util.addResultInfo(response, programProcessor);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            }
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
             }
         }
-        // TODO: statistics entry?
         return Response.ok(response).build();
     }
 
@@ -285,19 +294,29 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGallery(@OraData HttpSessionState httpSessionState, JSONObject request) {
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-        final int userId = httpSessionState.getUserId();
-        final JSONObject response = new JSONObject();
-        final JSONArray programInfo = programProcessor.getProgramGallery(userId);
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
         try {
+            int userId = httpSessionState.getUserId();
+            JSONArray programInfo = programProcessor.getProgramGallery(userId);
             response.put("programNames", programInfo);
             Util.addResultInfo(response, programProcessor);
-        } catch ( JSONException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Statistics.info("GalleryView", "success", programProcessor.succeeded());
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
+            }
         }
-        Statistics.info("GalleryView", "success", programProcessor.succeeded());
         return Response.ok(response).build();
     }
 
@@ -312,33 +331,29 @@ public class ProjectRestController {
         } catch ( JSONException e ) {
             throw new DbcException("Invalid JSON object: data not found", e);
         }
-        final JSONObject response = new JSONObject();
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        String xmlText;
+        JSONObject response = new JSONObject();
         try {
-            xmlText = dataPart.getString("program");
+            String robot = getRobot(httpSessionState);
+            String xmlText = dataPart.getString("programBlockSet");
             xmlText = Util.checkProgramTextForXSS(xmlText);
             if ( xmlText.contains("robottype=\"ardu\"") ) {
                 xmlText = xmlText.replaceAll("robottype=\"ardu\"", "robottype=\"botnroll\"");
                 LOG.warn("Ardu to botnroll renaming on import should be removed in future.");
             }
-            String programName = dataPart.getString("name");
+            String programName = dataPart.getString("programName");
             if ( !Util1.isValidJavaIdentifier(programName) ) {
                 programName = "NEPOprog";
             }
 
-            Export jaxbImportExport = null;
+            Export jaxbImportExport;
             try {
                 jaxbImportExport = JaxbHelper.xml2Element(xmlText, Export.class);
-            } catch ( final UnmarshalException | org.xml.sax.SAXException e ) {
+            } catch ( UnmarshalException | org.xml.sax.SAXException e ) {
                 jaxbImportExport = null;
             }
             if ( jaxbImportExport != null ) {
-                final String robotType1 = jaxbImportExport.getProgram().getBlockSet().getRobottype();
-                final String robotType2 = jaxbImportExport.getConfig().getBlockSet().getRobottype();
+                String robotType1 = jaxbImportExport.getProgram().getBlockSet().getRobottype();
+                String robotType2 = jaxbImportExport.getConfig().getBlockSet().getRobottype();
                 if ( robotType1.equals(robot) && robotType2.equals(robot) ) {
                     response.put("programName", programName);
                     response.put("programText", JaxbHelper.blockSet2xml(jaxbImportExport.getProgram().getBlockSet()));
@@ -352,9 +367,14 @@ public class ProjectRestController {
             } else {
                 Util.addErrorInfo(response, Key.PROGRAM_IMPORT_ERROR);
             }
-        } catch ( Exception e ) { //TODO: this is bad, do not catch all exceptions.
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch ( Exception e ) { // JaxbHelper methods throw Exception
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
         }
         return Response.ok(response).build();
     }
@@ -364,26 +384,30 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response shareProgram(@OraData HttpSessionState httpSessionState, JSONObject request) {
-        JSONObject response = new JSONObject();
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final UserProcessor userProcessor = new UserProcessor(dbSession, httpSessionState);
-        final AccessRightProcessor accessRightProcessor = new AccessRightProcessor(dbSession, httpSessionState);
-        final int userId = httpSessionState.getUserId();
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
+        JSONObject dataPart;
         try {
+            dataPart = request.getJSONObject("data");
+        } catch ( JSONException e ) {
+            throw new DbcException("Invalid JSON object: data not found", e);
+        }
+
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        UserProcessor userProcessor = new UserProcessor(dbSession, httpSessionState);
+        AccessRightProcessor accessRightProcessor = new AccessRightProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
+
+        try {
+            int userId = httpSessionState.getUserId();
+            String robot = getRobot(httpSessionState);
             if ( !httpSessionState.isUserLoggedIn() ) {
                 LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-
             } else {
-                final User user = userProcessor.getUser(userId);
+                User user = userProcessor.getUser(userId);
                 if ( !this.isPublicServer || ((user != null) && user.isActivated()) ) {
-                    final String programName = request.getString("programName");
-                    final String userToShareName = request.getString("userToShare");
-                    final String right = request.getString("right");
+                    String programName = dataPart.getString("programName");
+                    String userToShareName = dataPart.getString("userToShare");
+                    String right = dataPart.getString("right");
                     accessRightProcessor.shareToUser(userId, robot, programName, userId, userToShareName, right);
                     Util.addResultInfo(response, accessRightProcessor);
                     Statistics.info("ProgramShare", "success", accessRightProcessor.succeeded());
@@ -391,9 +415,19 @@ public class ProjectRestController {
                     Util.addErrorInfo(response, Key.ACCOUNT_NOT_ACTIVATED_TO_SHARE);
                 }
             }
-        } catch ( Exception e ) { //TODO: this is bad, do not catch all exceptions.
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch ( Exception e ) { // UserProcessor throws Exception
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
+            }
         }
         return Response.ok(response).build();
     }
@@ -403,36 +437,44 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteProject(@OraData HttpSessionState httpSessionState, JSONObject request) {
+        JSONObject dataPart;
+        try {
+            dataPart = request.getJSONObject("data");
+        } catch ( JSONException e ) {
+            throw new DbcException("Invalid JSON object: data not found", e);
+        }
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
         JSONObject response = new JSONObject();
-        final int userId = httpSessionState.getUserId();
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-        if ( !httpSessionState.isUserLoggedIn() ) {
-            LOG.error("Unauthorized");
-            try {
+        try {
+            int userId = httpSessionState.getUserId();
+            String robot = getRobot(httpSessionState);
+            if ( !httpSessionState.isUserLoggedIn() ) {
+                LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            Statistics.info("ProgramDelete", "success", false);
-        } else {
-            String programName;
-            String author;
-            try {
-                programName = request.getString("name");
-                author = request.getString("author");
+                Statistics.info("ProgramDelete", "success", false);
+            } else {
+                String programName;
+                String author;
+                programName = dataPart.getString("name");
+                author = dataPart.getString("author");
                 programProcessor.deleteByName(programName, userId, robot, author);
                 Util.addResultInfo(response, programProcessor);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Statistics.info("ProgramDelete", "success", programProcessor.succeeded());
             }
-            Statistics.info("ProgramDelete", "success", programProcessor.succeeded());
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
+            }
         }
         return Response.ok(response).build();
     }
@@ -442,28 +484,29 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response likeProject(@OraData HttpSessionState httpSessionState, JSONObject request) {
+        JSONObject dataPart;
+        try {
+            dataPart = request.getJSONObject("data");
+        } catch ( JSONException e ) {
+            throw new DbcException("Invalid JSON object: data not found", e);
+        }
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        LikeProcessor lp = new LikeProcessor(dbSession, httpSessionState);
         JSONObject response = new JSONObject();
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final LikeProcessor lp = new LikeProcessor(dbSession, httpSessionState);
-        if ( !httpSessionState.isUserLoggedIn() ) {
-            LOG.error("Unauthorized");
-            try {
+        try {
+            if ( !httpSessionState.isUserLoggedIn() ) {
+                LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            Statistics.info("GalleryLike", "success", false);
-        } else {
-            String programName;
-            String robotName;
-            String authorName;
-            boolean like;
-            try {
-                programName = request.getString("programName");
-                robotName = request.getString("robotName");
-                authorName = request.getString("authorName");
-                like = request.getBoolean("like");
+                Statistics.info("GalleryLike", "success", false);
+            } else {
+                String programName;
+                String robotName;
+                String authorName;
+                boolean like;
+                programName = dataPart.getString("programName");
+                robotName = dataPart.getString("robotName");
+                authorName = dataPart.getString("authorName");
+                like = dataPart.getBoolean("like");
                 if ( like ) {
                     lp.createLike(programName, robotName, authorName);
                     if ( lp.succeeded() ) {
@@ -479,9 +522,19 @@ public class ProjectRestController {
                     Statistics.info("GalleryLike", "success", true, "deleted", true);
                 }
                 Util.addResultInfo(response, lp);
-            } catch ( Exception e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            }
+        } catch ( Exception e ) { // LikeProcessor throws Exception
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
             }
         }
         return Response.ok(response).build();
@@ -492,42 +545,50 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteProjectShare(@OraData HttpSessionState httpSessionState, JSONObject request) {
+        JSONObject dataPart;
+        try {
+            dataPart = request.getJSONObject("data");
+        } catch ( JSONException e ) {
+            throw new DbcException("Invalid JSON object: data not found", e);
+        }
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        AccessRightProcessor accessRightProcessor = new AccessRightProcessor(dbSession, httpSessionState);
+        UserProcessor userProcessor = new UserProcessor(dbSession, httpSessionState);
         JSONObject response = new JSONObject();
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final int userId = httpSessionState.getUserId();
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-        final AccessRightProcessor accessRightProcessor = new AccessRightProcessor(dbSession, httpSessionState);
-        final UserProcessor userProcessor = new UserProcessor(dbSession, httpSessionState);
-        if ( !httpSessionState.isUserLoggedIn() ) {
-            LOG.error("Unauthorized");
-            Statistics.info("ProgramShareDelete", "success", false);
-            try {
+        try {
+            int userId = httpSessionState.getUserId();
+            String robot = getRobot(httpSessionState);
+            if ( !httpSessionState.isUserLoggedIn() ) {
+                LOG.error("Unauthorized");
+                Statistics.info("ProgramShareDelete", "success", false);
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                final String programName = request.getString("programName");
-                final String owner = request.getString("owner");
-                final String author = request.getString("author");
+            } else {
+                String programName = dataPart.getString("programName");
+                String owner = dataPart.getString("owner");
+                String author = dataPart.getString("author");
                 accessRightProcessor.shareDelete(owner, robot, programName, author, userId);
                 Util.addResultInfo(response, accessRightProcessor);
                 // if this program was shared from the gallery we need to delete the copy of it as well
                 if ( owner.equals("Gallery") ) {
-                    final int ownerId = userProcessor.getUser(owner).getId();
+                    int ownerId = userProcessor.getUser(owner).getId();
                     programProcessor.deleteByName(programName, ownerId, robot, userId);
                     Statistics.info("ProgramShareDelete", "success", true);
                     Util.addResultInfo(response, programProcessor);
                 }
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            }
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
             }
         }
         return Response.ok(response).build();
@@ -538,49 +599,47 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createProjectShare(@OraData HttpSessionState httpSessionState, JSONObject request) {
+        JSONObject dataPart;
+        try {
+            dataPart = request.getJSONObject("data");
+        } catch ( JSONException e ) {
+            throw new DbcException("Invalid JSON object: data not found", e);
+        }
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        AccessRightProcessor accessRightProcessor = new AccessRightProcessor(dbSession, httpSessionState);
+        UserProcessor userProcessor = new UserProcessor(dbSession, httpSessionState);
+        ConfigurationProcessor configurationProcessor = new ConfigurationProcessor(dbSession, httpSessionState);
         JSONObject response = new JSONObject();
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final int userId = httpSessionState.getUserId();
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
-        final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-        final AccessRightProcessor accessRightProcessor = new AccessRightProcessor(dbSession, httpSessionState);
-        final UserProcessor userProcessor = new UserProcessor(dbSession, httpSessionState);
-        final ConfigurationProcessor configurationProcessor = new ConfigurationProcessor(dbSession, httpSessionState);
-        if ( !httpSessionState.isUserLoggedIn() ) {
-            LOG.error("Unauthorized");
-            try {
+        try {
+            int userId = httpSessionState.getUserId();
+            String robot = getRobot(httpSessionState);
+            if ( !httpSessionState.isUserLoggedIn() ) {
+                LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
-            } catch ( JSONException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                final String programName = request.getString("programName");
-                final int galleryId = userProcessor.getUser("Gallery").getId();
+            } else {
+                String programName = dataPart.getString("programName");
+                int galleryId = userProcessor.getUser("Gallery").getId();
                 // generating a unique name for the program owned by the gallery.
-                final User user = userProcessor.getUser(userId);
-                final String userAccount = user.getAccount();
+                User user = userProcessor.getUser(userId);
+                String userAccount = user.getAccount();
                 if ( !this.isPublicServer || ((user != null) && user.isActivated()) ) {
                     // get the program from the origin user to share with the gallery
-                    final Program program = programProcessor.getProgram(programName, userAccount, robot, userAccount);
+                    Program program = programProcessor.getProgram(programName, userAccount, robot, userAccount);
                     String confText;
                     if ( program != null ) {
                         if ( program.getConfigName() == null ) {
                             if ( program.getConfigHash() == null ) {
                                 confText = null;
                             } else {
-                                final ConfigurationDao confDao = new ConfigurationDao(dbSession);
+                                ConfigurationDao confDao = new ConfigurationDao(dbSession);
                                 confText = confDao.load(program.getConfigHash()).getConfigurationText();
                             }
                         } else {
                             confText = configurationProcessor.getConfigurationText(program.getConfigName(), userId, robot);
                         }
                         // make a copy of the user program and store it as a gallery owned program
-                        final Program programCopy =
+                        Program programCopy =
                             programProcessor.persistProgramText(programName, program.getProgramText(), null, confText, galleryId, robot, userId, null, true);
                         if ( programProcessor.succeeded() ) {
                             if ( programCopy != null ) {
@@ -604,9 +663,19 @@ public class ProjectRestController {
                     Util.addErrorInfo(response, Key.ACCOUNT_NOT_ACTIVATED_TO_SHARE);
                     Statistics.info("GalleryShare", "success", false);
                 }
-            } catch ( Exception e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            }
+        } catch ( Exception e ) { // UserProcessor throws Exception
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
             }
         }
         return Response.ok(response).build();
@@ -617,29 +686,41 @@ public class ProjectRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProjectRelations(@OraData HttpSessionState httpSessionState, JSONObject request) {
-        JSONObject response = new JSONObject();
-        final DbSession dbSession = this.sessionFactoryWrapper.getSession();
-        final ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
-        final int userId = httpSessionState.getUserId();
-        final String robot =
-            (httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup().isEmpty()) ?
-            httpSessionState.getRobotName() :
-            httpSessionState.getRobotFactory(httpSessionState.getRobotName()).getGroup();
+        JSONObject dataPart;
         try {
+            dataPart = request.getJSONObject("data");
+        } catch ( JSONException e ) {
+            throw new DbcException("Invalid JSON object: data not found", e);
+        }
+        DbSession dbSession = this.sessionFactoryWrapper.getSession();
+        ProgramProcessor programProcessor = new ProgramProcessor(dbSession, httpSessionState);
+        JSONObject response = new JSONObject();
+        try {
+            int userId = httpSessionState.getUserId();
+            String robot = getRobot(httpSessionState);
             if ( !httpSessionState.isUserLoggedIn() ) {
                 LOG.error("Unauthorized");
                 Util.addErrorInfo(response, Key.USER_ERROR_NOT_LOGGED_IN);
             } else {
-                final String programName = request.getString("name");
-                final JSONArray relations = programProcessor.getProgramRelations(programName, userId, robot, userId);
+                String programName = dataPart.getString("name");
+                JSONArray relations = programProcessor.getProgramRelations(programName, userId, robot, userId);
                 response.put("relations", relations);
                 Util.addResultInfo(response, programProcessor);
             }
-        } catch ( JSONException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch ( DbcException | JSONException e ) {
+            dbSession.rollback();
+            String errorTicketId = Util1.getErrorTicketId();
+            LOG.error("Exception. Error ticket: {}", errorTicketId, e);
+            try {
+                Util.addErrorInfo(response, Key.SERVER_ERROR).append("parameters", errorTicketId);
+            } catch ( JSONException ex ) {
+                LOG.error("Could not add error info to response!", ex);
+            }
+        } finally {
+            if ( dbSession != null ) {
+                dbSession.close();
+            }
         }
-        // TODO: statistics entry?
         return Response.ok(response).build();
     }
 }

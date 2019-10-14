@@ -1,9 +1,9 @@
 package de.fhg.iais.roberta.ast.syntax.stmt;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class FlowControlStmtTest extends AstTest {
+public class FlowControlStmtTest extends NxtAstTest {
 
     //
     public void flowControlStmt() throws Exception {
@@ -17,6 +17,7 @@ public class FlowControlStmtTest extends AstTest {
                 + "    break;\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/stmt/flowControl_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/flowControl_stmt.xml",
+                                                                                   false);
     }
 }

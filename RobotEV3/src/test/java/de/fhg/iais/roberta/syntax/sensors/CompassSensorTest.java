@@ -2,10 +2,12 @@ package de.fhg.iais.roberta.syntax.sensors;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
 
-public class CompassSensorTest extends AstTest {
+public class CompassSensorTest extends Ev3LejosAstTest {
 
     @Test
     public void getCompass() throws Exception {
@@ -13,13 +15,15 @@ public class CompassSensorTest extends AstTest {
             "hal.drawText(String.valueOf(hal.getHiTecCompassAngle(SensorPort.S1)), 0, 0);"
                 + "hal.drawText(String.valueOf(hal.getHiTecCompassCompass(SensorPort.S1)), 0, 0);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_getCompass.xml");
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/sensors/sensor_getCompass.xml",
+                                                                                   new Ev3JavaGeneratorWorker());
     }
 
     @Test
     public void calibrateCompass() throws Exception {
         String a = "hal.hiTecCompassStartCalibration(SensorPort.S1);" + "hal.waitFor(40000);" + "hal.hiTecCompassStopCalibration(SensorPort.S1);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_calibrateCompass.xml");
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/sensors/sensor_calibrateCompass.xml",
+                                                                                   new Ev3JavaGeneratorWorker());
     }
 }

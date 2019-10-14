@@ -3,10 +3,11 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.codegen.arduino.arduino.ArduinoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.ArduinoCxxGeneratorWorker;
 
-public class MathConstantTest extends AstTest {
+public class MathConstantTest extends ArduinoAstTest {
 
     @Test
     public void Test() throws Exception {
@@ -14,7 +15,10 @@ public class MathConstantTest extends AstTest {
         String a = "PIM_EGOLDEN_RATIOM_SQRT2M_SQRT1_2INFINITY";
         //"Float.POSITIVE_INFINITY";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_constant.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_constant.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Ignore
@@ -22,7 +26,10 @@ public class MathConstantTest extends AstTest {
 
         final String a = "RotateMotor(B,PI,360.0*((1.0+sqrt(5.0))/2.0)))";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_constant1.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_constant1.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
 }

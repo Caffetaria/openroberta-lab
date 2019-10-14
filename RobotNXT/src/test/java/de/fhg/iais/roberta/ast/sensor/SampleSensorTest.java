@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.ast.sensor;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class SampleSensorTest extends AstTest {
+public class SampleSensorTest extends NxtAstTest {
 
     @Test
     public void sensorGetSample1() throws Exception {

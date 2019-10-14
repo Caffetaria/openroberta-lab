@@ -102,12 +102,13 @@ public final class MoveJoint<V> extends Action<V> {
 
         Phrase<V> walkDistance = helper.extractValue(values, new ExprParam(BlocklyConstants.POWER, BlocklyType.NUMBER_INT));
 
-        return MoveJoint.make(
-            Joint.get(joint),
-            RelativeAbsolute.get(relativeAbsolute),
-            helper.convertPhraseToExpr(walkDistance),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return MoveJoint
+            .make(
+                Joint.get(joint),
+                RelativeAbsolute.get(relativeAbsolute),
+                helper.convertPhraseToExpr(walkDistance),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

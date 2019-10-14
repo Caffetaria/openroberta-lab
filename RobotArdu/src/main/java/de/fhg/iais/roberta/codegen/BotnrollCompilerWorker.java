@@ -65,27 +65,27 @@ public class BotnrollCompilerWorker implements IWorker {
         Path path = Paths.get(tempDir + project.getToken() + "/" + project.getProgramName());
         Path base = Paths.get("");
 
-        String[] executableWithParameters = {
-            scriptName,
-            "-hardware=" + compilerResourcesDir + "hardware/builtin",
-            "-hardware=" + compilerResourcesDir + "hardware/additional",
-            "-tools=" + compilerResourcesDir + "/" + os + "/tools-builder",
-            "-libraries=" + compilerResourcesDir + "/libraries",
-            "-fqbn=arduino:avr:uno",
-            "-prefs=compiler.path=" + compilerBinDir,
-            "-build-path=" + base.resolve(path).toAbsolutePath().normalize() + "/target/",
-            base.resolve(path).toAbsolutePath().normalize() + "/source/" + project.getProgramName() + "." + project.getFileExtension()
-        };
+        String[] executableWithParameters =
+            {
+                scriptName,
+                "-hardware=" + compilerResourcesDir + "hardware/builtin",
+                "-hardware=" + compilerResourcesDir + "hardware/additional",
+                "-tools=" + compilerResourcesDir + "/" + os + "/tools-builder",
+                "-libraries=" + compilerResourcesDir + "/libraries",
+                "-fqbn=arduino:avr:uno",
+                "-prefs=compiler.path=" + compilerBinDir,
+                "-build-path=" + base.resolve(path).toAbsolutePath().normalize() + "/target/",
+                base.resolve(path).toAbsolutePath().normalize() + "/source/" + project.getProgramName() + "." + project.getFileExtension()
+            };
 
         Pair<Boolean, String> result = AbstractCompilerWorkflow.runCrossCompiler(executableWithParameters);
-        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS
-                                          : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
-        if (result.getFirst()) {
+        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+        if ( result.getFirst() ) {
             project.setCompiledHex(AbstractCompilerWorkflow.getBase64EncodedHex(path + "/target/" + project.getProgramName() + ".ino.hex"));
             if ( project.getCompiledHex() != null ) {
-                resultKey =  Key.COMPILERWORKFLOW_SUCCESS;
+                resultKey = Key.COMPILERWORKFLOW_SUCCESS;
             } else {
-                resultKey =  Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+                resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
             }
         }
         return Pair.of(resultKey, result.getSecond());

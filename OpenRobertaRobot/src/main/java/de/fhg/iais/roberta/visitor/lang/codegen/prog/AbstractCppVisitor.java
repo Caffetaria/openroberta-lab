@@ -56,11 +56,8 @@ import de.fhg.iais.roberta.visitor.lang.codegen.AbstractLanguageVisitor;
  * StringBuilder. <b>This representation is correct C++ code.</b> <br>
  */
 public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
-    protected List<Method<Void>> userDefinedMethods = new ArrayList<>();
-
     /**
      * initialize the cpp code generator visitor.
-     *
      */
     protected AbstractCppVisitor(
         UsedHardwareBean usedHardwareBean,
@@ -667,7 +664,7 @@ public abstract class AbstractCppVisitor extends AbstractLanguageVisitor {
     }
 
     protected void generateSignaturesOfUserDefinedMethods() {
-        for ( Method<Void> phrase : this.userDefinedMethods ) {
+        for ( Method<Void> phrase : this.usedHardwareBean.getUserDefinedMethods() ) {
             this.sb.append(getLanguageVarTypeFromBlocklyType(phrase.getReturnType()) + " ");
             this.sb.append(phrase.getMethodName() + "(");
             phrase.getParameters().visit(this);

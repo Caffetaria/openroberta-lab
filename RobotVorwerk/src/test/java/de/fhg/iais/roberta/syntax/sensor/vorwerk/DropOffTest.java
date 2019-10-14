@@ -19,7 +19,6 @@ public class DropOffTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensors/drop_off.xml");
 
-        
     }
 
     @Test

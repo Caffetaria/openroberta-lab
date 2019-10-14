@@ -1,14 +1,11 @@
 package de.fhg.iais.roberta.syntax.check;
 
-import java.util.ArrayList;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.display.ClearDisplayAction;
 import de.fhg.iais.roberta.syntax.action.display.ShowTextAction;
 import de.fhg.iais.roberta.syntax.action.light.LightAction;
@@ -26,8 +23,21 @@ import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.validate.AbstractProgramValidatorVisitor;
+import de.fhg.iais.roberta.visitor.validate.AbstractValidatorWorker;
 
 public class CheckVisitorTest extends AstTest {
+
+    private class TestProgramCheckWorker extends AbstractValidatorWorker {
+        @Override
+        protected AbstractProgramValidatorVisitor getVisitor(UsedHardwareBean.Builder builder, Project project) {
+            return new TestProgramCheckVisitor(builder, project.getConfigurationAst());
+        }
+
+        @Override
+        protected String getBeanName() {
+            return "ProgramValidator";
+        }
+    }
 
     class TestProgramCheckVisitor extends AbstractProgramValidatorVisitor {
 
@@ -104,15 +114,13 @@ public class CheckVisitorTest extends AstTest {
 
     @Test
     public void check_noLoops_returnsEmptyMap() throws Exception {
-        String programXml = Util1.readResourceContent("/visitors/invalide_use_of_variable.xml");
-        Project.Builder builder = UnitTestHelper.setupWithProgramXML(testFactory, programXml);
+        Project.Builder builder = UnitTestHelper.setupWithProgramXML(testFactory, Util1.readResourceContent("/visitors/invalide_use_of_variable.xml"));
         Project project = builder.build();
-        ArrayList<ArrayList<Phrase<Void>>> phrases = project.getProgramAst().getTree();
 
-        TestProgramCheckVisitor checkVisitor = new TestProgramCheckVisitor(null, null);
-        checkVisitor.check(phrases);
+        TestProgramCheckWorker worker = new TestProgramCheckWorker();
+        worker.execute(project);
 
-        Assert.assertEquals(1, checkVisitor.getErrorCount());
+        Assert.assertEquals(1, project.getErrorCounter());
     }
 
 }

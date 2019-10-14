@@ -1,11 +1,8 @@
 package de.fhg.iais.roberta.visitor.validate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
-import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.lang.blocksequence.MainTask;
 import de.fhg.iais.roberta.syntax.lang.expr.Binary;
 import de.fhg.iais.roberta.syntax.lang.expr.BoolConst;
@@ -55,7 +52,6 @@ import de.fhg.iais.roberta.syntax.lang.stmt.StmtTextComment;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitStmt;
 import de.fhg.iais.roberta.syntax.lang.stmt.WaitTimeStmt;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.visitor.lang.ILanguageVisitor;
 
 public abstract class AbstractCollectorVisitor implements ILanguageVisitor<Void> {
@@ -67,37 +63,6 @@ public abstract class AbstractCollectorVisitor implements ILanguageVisitor<Void>
 
     protected AbstractCollectorVisitor(UsedHardwareBean.Builder builder) {
         this.builder = builder;
-    }
-
-    protected void check(ArrayList<ArrayList<Phrase<Void>>> phrasesSet) {
-        Assert.isTrue(!phrasesSet.isEmpty());
-        collectGlobalVariables(phrasesSet);
-        for ( List<Phrase<Void>> phrases : phrasesSet ) {
-            for ( Phrase<Void> phrase : phrases ) {
-                if ( isMainBlock(phrase) ) {
-                    this.builder.setProgramEmpty(phrases.size() == 2);
-                } else {
-                    phrase.visit(this);
-                }
-            }
-        }
-    }
-
-    protected void collectGlobalVariables(ArrayList<ArrayList<Phrase<Void>>> phrasesSet) {
-        for ( List<Phrase<Void>> phrases : phrasesSet ) {
-            Phrase<Void> phrase = phrases.get(1);
-            visitIfMain(phrase);
-        }
-    }
-
-    private void visitIfMain(Phrase<Void> phrase) {
-        if ( isMainBlock(phrase) ) {
-            phrase.visit(this);
-        }
-    }
-
-    protected boolean isMainBlock(Phrase<Void> phrase) {
-        return phrase.getKind().getName().equals("MAIN_TASK");
     }
 
     @Override
@@ -190,6 +155,7 @@ public abstract class AbstractCollectorVisitor implements ILanguageVisitor<Void>
 
     @Override
     public Void visitEmptyList(EmptyList<Void> emptyList) {
+        this.builder.setListsUsed(true);
         return null;
     }
 
@@ -200,7 +166,6 @@ public abstract class AbstractCollectorVisitor implements ILanguageVisitor<Void>
 
     @Override
     public final Void visitExprList(ExprList<Void> exprList) {
-        this.builder.setListsUsed(true);
         exprList.get().stream().forEach(expr -> expr.visit(this));
         return null;
     }

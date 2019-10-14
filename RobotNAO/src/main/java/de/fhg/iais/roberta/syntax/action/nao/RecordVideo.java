@@ -107,13 +107,14 @@ public final class RecordVideo<V> extends Action<V> {
         Phrase<V> duration = helper.extractValue(values, new ExprParam(BlocklyConstants.DURATION, BlocklyType.NUMBER_INT));
         Phrase<V> msg = helper.extractValue(values, new ExprParam(BlocklyConstants.FILENAME, BlocklyType.NUMBER_INT));
 
-        return RecordVideo.make(
-            Resolution.get(resolution),
-            Camera.get(camera),
-            helper.convertPhraseToExpr(duration),
-            helper.convertPhraseToExpr(msg),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return RecordVideo
+            .make(
+                Resolution.get(resolution),
+                Camera.get(camera),
+                helper.convertPhraseToExpr(duration),
+                helper.convertPhraseToExpr(msg),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ImageTest extends AstTest {
+public class ImageTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstancesOfImageClass() throws Exception {
@@ -20,7 +20,6 @@ public class ImageTest extends AstTest {
                 + "]]]]]";
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/expr/image_create.xml");
 
-        
     }
 
     @Test

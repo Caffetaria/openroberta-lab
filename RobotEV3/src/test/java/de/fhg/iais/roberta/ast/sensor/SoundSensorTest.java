@@ -21,7 +21,7 @@ public class SoundSensorTest extends AstTest {
 
     @Test
     public void getPort() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/sensors/sensor_getSampleSound.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/sensors/sensor_getSampleSound.xml");
 
         SoundSensor<Void> cs = (SoundSensor<Void>) forest.get(0).get(1);
 

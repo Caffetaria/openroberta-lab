@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.ast.syntax.stmt;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class IfStmtTest extends AstTest {
+public class IfStmtTest extends NxtAstTest {
 
     @Test
     public void ifStmt() throws Exception {
@@ -39,14 +39,16 @@ public class IfStmtTest extends AstTest {
                 + "    ___item = (3 * 9);\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a,  "/syntax/stmt/if_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt.xml",
+                                                                                   false);
     }
 
     @Test
     public void ifStmt1() throws Exception {
         final String a = "\nif((((5+7))==((5+7)))>=((((5+7))==((5+7)))&&(((5+7))<=((5+7))))){\n}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a,  "/syntax/stmt/if_stmt1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt1.xml",
+                                                                                   false);
     }
 
     //
@@ -67,7 +69,8 @@ public class IfStmtTest extends AstTest {
                 + "    ;\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a,  "/syntax/stmt/if_stmt2.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt2.xml",
+                                                                                   false);
     }
 
     //
@@ -84,7 +87,8 @@ public class IfStmtTest extends AstTest {
                 + "    ___item = 3 * 9;\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a,  "/syntax/stmt/if_stmt3.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt3.xml",
+                                                                                   false);
     }
 
     @Test

@@ -2,8 +2,10 @@ package de.fhg.iais.roberta.ast.syntax.actors;
 
 import org.junit.Test;
 
-public class MotorDriveStopActionTest {
-    
+import de.fhg.iais.roberta.NxtAstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
+
+public class MotorDriveStopActionTest extends NxtAstTest {
 
     @Test
     public void stop() throws Exception {
@@ -11,6 +13,8 @@ public class MotorDriveStopActionTest {
             "#defineWHEELDIAMETER5.6#defineTRACKWIDTH11.0#defineMAXLINES8#include\"NEPODefs.h\"//containsNEPOdeclarationsfortheNXCNXTAPIresources"
                 + "\nOff(OUT_BC);}";
 
-        this.h.assertWrappedCodeIsOk(a, "/ast/actions/action_Stop.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_Stop.xml",
+                                                                                   brickConfigurationBC,
+                                                                                   true);
     }
 }

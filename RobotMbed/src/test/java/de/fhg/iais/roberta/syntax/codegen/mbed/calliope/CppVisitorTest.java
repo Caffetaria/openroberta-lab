@@ -1,15 +1,14 @@
 package de.fhg.iais.roberta.syntax.codegen.mbed.calliope;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.CalliopeConfiguration;
 import de.fhg.iais.roberta.components.ConfigurationAst;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class CppVisitorTest {
-    
+public class CppVisitorTest extends CalliopeAstTest {
 
     private static final String IMPORTS = //
         "#define_GNU_SOURCE\n\n"
@@ -26,11 +25,11 @@ public class CppVisitorTest {
 
     private static ConfigurationAst brickConfiguration;
 
-    @BeforeClass
-    public static void setupConfigurationForAllTests() {
-        CalliopeConfiguration.Builder configuration = new CalliopeConfiguration.Builder();
-        brickConfiguration = configuration.build();
-    }
+//    @BeforeClass
+//    public static void setupConfigurationForAllTests() {
+//        CalliopeConfiguration.Builder configuration = new CalliopeConfiguration.Builder();
+//        brickConfiguration = configuration.build();
+//    }
 
     @Test
     public void visitMainTask_ByDefault_ReturnsEmptyCppProgram() throws Exception {
@@ -40,7 +39,10 @@ public class CppVisitorTest {
                 + MAIN
                 + END;
 
-        assertCodeIsOk(expectedResult, "/task/main_task_no_variables_empty.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory,
+                                                                                   expectedResult, "/task/main_task_no_variables_empty.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -55,7 +57,9 @@ public class CppVisitorTest {
                 + "___item = ( _uBit.systemTime() - _initTime );"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/timer_used.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/timer_used.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -68,7 +72,9 @@ public class CppVisitorTest {
                 + "_uBit.display.print(ManagedString(\"H\"));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/display_text_show_hello.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_text_show_hello.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -83,7 +89,9 @@ public class CppVisitorTest {
                 + "___Element2 = MicroBitImage(\"255,255,255,255,255\\n255,255,0,255,255\\n0,0,0,0,0\\n0,255,0,255,0\\n0,255,255,255,0\\n\");"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/expr/image_get_image_defined_as_global_variables.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/image_get_image_defined_as_global_variables.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -103,7 +111,9 @@ public class CppVisitorTest {
                 + "_uBit.display.animateImages(_animation, 200);"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/display_image_show_imag_and_animation.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_image_show_imag_and_animation.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -116,7 +126,9 @@ public class CppVisitorTest {
                 + END;
         //
 
-        assertCodeIsOk(expectedResult, "/action/display_image_missing_image_name.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_image_missing_image_name.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -129,7 +141,9 @@ public class CppVisitorTest {
                 + "_uBit.display.clear();"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/display_clear.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_clear.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -143,7 +157,9 @@ public class CppVisitorTest {
                 + "_uBit.display.print(MicroBitImage(\"255,0,0,0,255\\n0,0,0,0,0\\n255,255,255,255,255\\n0,0,255,0,255\\n0,0,255,255,255\\n\").shiftImageDown(2));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/image_shift_up_down.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_shift_up_down.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -156,7 +172,9 @@ public class CppVisitorTest {
                 + "_uBit.display.print(MicroBitImage().shiftImageUp(0));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/image_shift_missing_image_and_position.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_shift_missing_image_and_position.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -169,7 +187,9 @@ public class CppVisitorTest {
                 + "_uBit.display.print(MicroBitImage(\"0,255,0,255,0\\n255,255,255,255,255\\n255,255,255,255,255\\n0,255,255,255,0\\n0,0,255,0,0\\n\").invert());"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/image_invert_heart_image.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_invert_heart_image.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -182,7 +202,9 @@ public class CppVisitorTest {
                 + "_uBit.display.print(MicroBitImage().invert());"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/image_invert_missing_image.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_invert_missing_image.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -194,7 +216,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.buttonA.isPressed()));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/check_if_key_A_is_pressed.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/check_if_key_A_is_pressed.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -207,7 +231,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.compass.heading()));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/get_compass_orientation_value.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_compass_orientation_value.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -220,7 +246,9 @@ public class CppVisitorTest {
                 + "_uBit.display.print(MicroBitImage(\"255,255,0,0,0\\n0,0,0,0,255\\n0,85,0,0,0\\n0,0,0,255,0\\n0,56,0,0,0\\n\"));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/expr/image_create.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/image_create.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Ignore("Test is ignored until next commit")
@@ -236,7 +264,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString((_uBit.accelerometer.getGesture()==MICROBIT_ACCELEROMETER_EVT_TILT_LEFT)));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/check_gesture.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/check_gesture.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -248,7 +278,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.thermometer.getTemperature()));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/get_temperature.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_temperature.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -262,7 +294,9 @@ public class CppVisitorTest {
                 + "_uBit.rgb.setColour(MicroBitColor(153, 153, 255, 255));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/led_on_three_colors.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_on_three_colors.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -274,7 +308,9 @@ public class CppVisitorTest {
                 + "_uBit.rgb.setColour(MicroBitColor());\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/led_on_missing_color.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_on_missing_color.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -294,7 +330,9 @@ public class CppVisitorTest {
                 + "_fdd.show(1234,0,true);\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/fourdigitdisplay_show.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/fourdigitdisplay_show.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -314,7 +352,9 @@ public class CppVisitorTest {
                 + "_fdd.clear();\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/fourdigitdisplay_clear.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/fourdigitdisplay_clear.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -334,7 +374,9 @@ public class CppVisitorTest {
                 + "_ledBar.setLed(0,5);\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/ledbar_set.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/ledbar_set.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -346,7 +388,9 @@ public class CppVisitorTest {
                 + "_uBit.rgb.off();\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/led_off.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_off.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -361,7 +405,9 @@ public class CppVisitorTest {
                 + "_uBit.soundmotor.motorBOn(30);\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/motor_on.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/motor_on.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -374,7 +420,9 @@ public class CppVisitorTest {
                 + "_uBit.soundmotor.motorOn(14);\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/single_motor_on.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/single_motor_on.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -388,7 +436,9 @@ public class CppVisitorTest {
                 + "_uBit.soundmotor.soundOff();\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/play_tone.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/play_tone.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -402,7 +452,9 @@ public class CppVisitorTest {
                 + "_uBit.soundmotor.soundOff();\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/play_note.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/play_note.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -414,7 +466,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(round(_uBit.display.readLightLevel() * _GET_LIGHTLEVEL_MULTIPLIER)));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/get_ambient_light.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_ambient_light.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -427,7 +481,9 @@ public class CppVisitorTest {
                 + "_uBit.radio.setTransmitPower(0); _uBit.radio.datagram.send(ManagedString((ManagedString(\"Hallo\"))));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/radio_send_message.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_send_message.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -440,7 +496,9 @@ public class CppVisitorTest {
                 + "_uBit.radio.setTransmitPower(0); _uBit.radio.datagram.send(ManagedString((\"\")));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/radio_send_missing_message.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_send_missing_message.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -453,7 +511,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(ManagedString(_uBit.radio.datagram.recv())));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/radio_receive_message.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_receive_message.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -466,7 +526,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.radio.getRSSI()));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/radio_rssi.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/radio_rssi.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -479,7 +541,9 @@ public class CppVisitorTest {
                 + "_uBit.soundmotor.motorBOff();\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/motor_stop.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/motor_stop.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -493,7 +557,9 @@ public class CppVisitorTest {
                 + "_uBit.soundmotor.motorSleep();\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/single_motor_stop.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/single_motor_stop.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -505,7 +571,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString((_uBit.random(200 - 1 + 1) + 1)));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/random_int_generator.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/random_int_generator.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -517,7 +585,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(isWholeD(2)));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/is_whole_number.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/is_whole_number.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -529,7 +599,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(isPrimeD(2)));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/is_prime_number.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/is_prime_number.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -541,7 +613,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString((_uBit.random(0 - 0 + 1) + 0)));\n"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/function/random_int_generator_missing_param.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/random_int_generator_missing_param.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Ignore("Test is ignored until we have a solution for the wait statement")
@@ -575,7 +649,9 @@ public class CppVisitorTest {
                 + "while(1){if(_uBit.thermometer.getTemperature()>20){break;}_uBit.sleep(1);}while(1){if(_uBit.display.readLightLevel()>50){break;}_uBit.sleep(1);}"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/get_sample_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_sample_sensor.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -601,7 +677,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(\"Hallo\"));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/wait_stmt_two_cases.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/wait_stmt_two_cases.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Ignore // display color is not allowed anymore
@@ -614,7 +692,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(20, 25, 30, 30));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/expr/create_color.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/create_color.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Ignore("Test is ignored until we have a solution for the pin mapping")
@@ -629,7 +709,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.io.P16.isTouched()));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/pin3_is_touched.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/pin3_is_touched.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -645,7 +727,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.accelerometer.getStrength()));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/acceleration_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/acceleration_sensor.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -660,7 +744,9 @@ public class CppVisitorTest {
 
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/gyro_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/gyro_sensor.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -673,7 +759,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.io.P12.getDigitalValue()));"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/sensor/read_value_from_pin.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/read_value_from_pin.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -686,7 +774,9 @@ public class CppVisitorTest {
                 + "_uBit.io.P19.setDigitalValue(1);"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/write_value_to_pin.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/write_value_to_pin.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -700,7 +790,9 @@ public class CppVisitorTest {
                 + "_uBit.io.P1.setPull(PullNone);"
                 + END;
 
-        assertCodeIsOk(expectedResult, "/action/pin_set_pull.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/pin_set_pull.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -720,7 +812,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_sht31.readHumidity()));"
                 + "_uBit.display.scroll(ManagedString(_sht31.readTemperature()));"
                 + END;
-        assertCodeIsOk(expectedResult, "/sensor/humidity_sensor.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/humidity_sensor.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -732,7 +826,9 @@ public class CppVisitorTest {
                 + "_uBit.display.disable();\n"
                 + "_uBit.display.enable();\n"
                 + END;
-        assertCodeIsOk(expectedResult, "/action/switch_led_matrix.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/switch_led_matrix.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -751,7 +847,9 @@ public class CppVisitorTest {
                 + "_uBit.display.scroll(ManagedString(_getListStandardDeviation(___item)));\n"
                 + "_uBit.display.scroll(ManagedString((___item)));"
                 + END;
-        assertCodeIsOk(expectedResult, "/action/math_on_list.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/math_on_list.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -769,7 +867,9 @@ public class CppVisitorTest {
                 + "for(MicroBitImage&image:___x){_uBit.display.print(image,0,0,255,200);_uBit.display.clear();}"
                 + "}";
 
-        assertCodeIsOk(expectedResult, "/function/user_defined_function.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/user_defined_function.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Ignore("Test is ignored currently")
@@ -789,7 +889,9 @@ public class CppVisitorTest {
                 + "}"
                 + END;
 
-        assertCodeIsOk(a, "/stmts/no_loops.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/no_loops.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Ignore("Test is ignored until next commit")
@@ -814,7 +916,9 @@ public class CppVisitorTest {
                 + "_uBit.sleep(1);"
                 + "}"
                 + END;
-        assertCodeIsOk(a, "/stmts/nested_loops.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/nested_loops.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -866,7 +970,9 @@ public class CppVisitorTest {
                 + "_uBit.sleep(_ITERATION_SLEEP_TIMEOUT);"
                 + "}"
                 + END;
-        assertCodeIsOk(a, "/stmts/loops_with_break_and_continue.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loops_with_break_and_continue.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Ignore("Test is ignored currently")
@@ -894,7 +1000,9 @@ public class CppVisitorTest {
                 + "}"
                 + "break_loop1:"
                 + END;
-        assertCodeIsOk(a, "/stmts/loop_with_break_and_continue_inside_wait.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loop_with_break_and_continue_inside_wait.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -927,7 +1035,10 @@ public class CppVisitorTest {
                 + "}"
                 + END;
 
-        assertCodeIsOk(a, "/stmts/two_loop_with_break_and_continue_one_inside_wait_another_not.xml");
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/two_loop_with_break_and_continue_one_inside_wait_another_not.xml",
+                                                                         configuration, true);
+        ;
     }
 
     @Test
@@ -959,7 +1070,9 @@ public class CppVisitorTest {
                 + "}"
                 + "break_loop1:"
                 + END;
-        assertCodeIsOk(a, "/stmts/two_nested_loops_first_with_break_in_wait_second_not.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/two_nested_loops_first_with_break_in_wait_second_not.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -998,7 +1111,9 @@ public class CppVisitorTest {
                 + "break_loop1:"
                 + END;
 
-        assertCodeIsOk(a, "/stmts/loop_with_nested_two_loops_inside_wait.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loop_with_nested_two_loops_inside_wait.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -1046,7 +1161,9 @@ public class CppVisitorTest {
                 + "}"
                 + "break_loop1:"
                 + END;
-        assertCodeIsOk(a, "/stmts/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                                                                                   configuration, true);
+        ;
     }
 
     @Test
@@ -1116,10 +1233,9 @@ public class CppVisitorTest {
                 + "}"
                 + "break_loop5:"
                 + END;
-        assertCodeIsOk(a, "/stmts/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml");
-    }
-
-    private void assertCodeIsOk(String a, String fileName) throws Exception {
-        Assert.assertEquals(a.replaceAll("\\s+", ""), this.h.generateCpp(fileName, brickConfiguration).replaceAll("\\s+", ""));
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                                                                         configuration, true);
+        ;
     }
 }

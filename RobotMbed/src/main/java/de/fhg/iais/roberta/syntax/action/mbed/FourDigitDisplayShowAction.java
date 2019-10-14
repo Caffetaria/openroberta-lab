@@ -94,12 +94,13 @@ public class FourDigitDisplayShowAction<V> extends Action<V> {
         Phrase<V> value = helper.extractValue(values, new ExprParam(BlocklyConstants.VALUE, BlocklyType.NUMBER_INT));
         Phrase<V> position = helper.extractValue(values, new ExprParam(BlocklyConstants.POSITION, BlocklyType.NUMBER_INT));
         Phrase<V> colon = helper.extractValue(values, new ExprParam(BlocklyConstants.COLON, BlocklyType.BOOLEAN));
-        return FourDigitDisplayShowAction.make(
-            helper.convertPhraseToExpr(value),
-            helper.convertPhraseToExpr(position),
-            helper.convertPhraseToExpr(colon),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return FourDigitDisplayShowAction
+            .make(
+                helper.convertPhraseToExpr(value),
+                helper.convertPhraseToExpr(position),
+                helper.convertPhraseToExpr(colon),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

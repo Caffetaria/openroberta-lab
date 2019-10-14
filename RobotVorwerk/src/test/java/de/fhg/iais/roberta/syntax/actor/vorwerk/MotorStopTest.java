@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.actor.vorwerk;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.VorwerkAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MotorStopTest extends AstTest {
+public class MotorStopTest extends VorwerkAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfAnimationClass() throws Exception {
@@ -13,7 +13,6 @@ public class MotorStopTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/actors/motor_stop.xml");
 
-        
     }
 
     @Test

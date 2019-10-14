@@ -7,10 +7,11 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
+import de.fhg.iais.roberta.syntax.codegen.arduino.arduino.ArduinoAstTest;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ActionTest extends AstTest {
+public class ActionTest extends ArduinoAstTest {
 
     @Test
     public void clearDisplay() throws Exception {

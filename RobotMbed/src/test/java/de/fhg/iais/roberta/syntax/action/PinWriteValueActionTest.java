@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class PinWriteValueActionTest extends AstTest {
+public class PinWriteValueActionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfPinValueSensorClass() throws Exception {
@@ -16,7 +16,6 @@ public class PinWriteValueActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/write_value_to_pin.xml");
 
-        
     }
 
     @Test

@@ -17,7 +17,6 @@ public class HumiditySensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/humidity_sensor.xml");
 
-        
     }
 
     @Test

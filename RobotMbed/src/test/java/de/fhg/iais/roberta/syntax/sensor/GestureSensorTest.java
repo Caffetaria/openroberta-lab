@@ -20,7 +20,6 @@ public class GestureSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/check_gesture.xml");
 
-        
     }
 
     @Ignore("Test is ignored until next commit")

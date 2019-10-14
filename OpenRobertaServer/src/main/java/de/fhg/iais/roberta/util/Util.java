@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import de.fhg.iais.roberta.factory.IRobotFactory;
 import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientAdmin;
 import de.fhg.iais.roberta.javaServer.restServices.all.controller.ClientInit;
 import de.fhg.iais.roberta.persistence.AbstractProcessor;
@@ -29,6 +30,7 @@ import de.fhg.iais.roberta.persistence.util.HttpSessionState;
 import de.fhg.iais.roberta.robotCommunication.RobotCommunicationData;
 import de.fhg.iais.roberta.robotCommunication.RobotCommunicationData.State;
 import de.fhg.iais.roberta.robotCommunication.RobotCommunicator;
+import de.fhg.iais.roberta.transformer.Project;
 
 public class Util {
     private static final Logger LOG = LoggerFactory.getLogger(Util.class);
@@ -365,5 +367,18 @@ public class Util {
             listOfFileNames.add(file.getName());
         }
         return listOfFileNames;
+    }
+
+    public static Project.Builder setupWithExportXML(IRobotFactory factory, String exportXmlAsString) {
+        String[] parts = exportXmlAsString.split("\\s*</program>\\s*<config>\\s*");
+        String[] programParts = parts[0].split("<program>");
+        String program = programParts[1];
+        String[] configurationParts = parts[1].split("</config>");
+        String configuration = configurationParts[0];
+        return setupWithConfigurationAndProgramXML(factory, program, configuration);
+    }
+
+    public static Project.Builder setupWithConfigurationAndProgramXML(IRobotFactory factory, String programXmlAsString, String configurationXmlAsString) {
+        return new Project.Builder().setConfigurationXml(configurationXmlAsString).setProgramXml(programXmlAsString).setFactory(factory);
     }
 }

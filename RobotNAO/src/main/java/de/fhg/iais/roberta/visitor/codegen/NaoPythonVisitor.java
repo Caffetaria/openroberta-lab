@@ -70,7 +70,6 @@ import de.fhg.iais.roberta.syntax.sensor.nao.ElectricCurrentSensor;
 import de.fhg.iais.roberta.syntax.sensor.nao.FsrSensor;
 import de.fhg.iais.roberta.syntax.sensor.nao.NaoMarkInformation;
 import de.fhg.iais.roberta.syntax.sensor.nao.RecognizeWord;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.hardware.INaoVisitor;
@@ -99,38 +98,6 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
         super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
 
         this.language = language;
-    }
-
-    /**
-     * factory method to generate Python code from an AST.<br>
-     *
-     * @param programName name of the program
-     * @param brickConfiguration hardware configuration of the brick
-     * @param phrases to generate the code from
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
-        boolean withWrapping,
-        ILanguage language) {
-        Assert.notNull(brickConfiguration);
-
-        NaoPythonVisitor astVisitor = new NaoPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, phrasesSet, language);
-        astVisitor.generateCode(withWrapping);
-
-        return astVisitor.sb.toString();
-    }
-
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
-        boolean withWrapping) {
-        NaoPythonVisitor astVisitor = new NaoPythonVisitor(usedHardwareBean, codeGeneratorSetupBean, null, phrasesSet, null);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
     }
 
     @Override
@@ -1001,7 +968,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
         nlIndent();
         generateSensors();
 
-        if ( !this.loopsLabels.isEmpty() ) {
+        if ( !usedHardwareBean.getLoopsLabelContainer().isEmpty() ) {
             nlIndent();
             this.sb.append("class BreakOutOfALoop(Exception): pass");
             nlIndent();

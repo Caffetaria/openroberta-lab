@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MessageTest extends AstTest {
+public class MessageTest extends EdisonAstTest {
 
     private String insertIntoResult(String s) {
         return "BlockAST [project=" + s + "]";

@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensor.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TouchSensorTest extends AstTest {
+public class TouchSensorTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfLearnFaceClass() throws Exception {
@@ -23,7 +23,6 @@ public class TouchSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/touch.xml");
 
-        
     }
 
     @Test

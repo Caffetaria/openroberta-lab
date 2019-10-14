@@ -19,7 +19,6 @@ public class AccelerometerSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/acceleration_sensor.xml");
 
-        
     }
 
     @Test

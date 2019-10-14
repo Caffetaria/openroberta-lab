@@ -75,7 +75,6 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractPythonVisitor.class);
 
     protected Set<String> usedGlobalVarInFunctions = new HashSet<>();
-    protected boolean isProgramEmpty = false;
 
     /**
      * initialize the Python code generator visitor.
@@ -248,8 +247,8 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
 
     @Override
     public Void visitStmtFlowCon(StmtFlowCon<Void> stmtFlowCon) {
-        if ( this.loopsLabels.get(this.currenLoop.getLast()) != null ) {
-            if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+        if ( usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) != null ) {
+            if ( usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) ) {
                 this.sb.append("raise " + (stmtFlowCon.getFlow() == Flow.BREAK ? "BreakOutOfALoop" : "ContinueLoop"));
                 return null;
             }
@@ -765,7 +764,7 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
     }
 
     protected void addPassIfProgramIsEmpty() {
-        if ( this.isProgramEmpty ) {
+        if ( this.usedHardwareBean.isProgramEmpty() ) {
             nlIndent();
             this.sb.append("pass");
         }
@@ -816,7 +815,7 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
     protected void appendTry() {
         increaseLoopCounter();
 
-        if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+        if ( usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) ) {
             incrIndentation();
             nlIndent();
             this.sb.append("try:");
@@ -824,7 +823,7 @@ public abstract class AbstractPythonVisitor extends AbstractLanguageVisitor {
     }
 
     protected void appendExceptionHandling() {
-        if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+        if ( usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) ) {
             decrIndentation();
             nlIndent();
             this.sb.append("except BreakOutOfALoop:");

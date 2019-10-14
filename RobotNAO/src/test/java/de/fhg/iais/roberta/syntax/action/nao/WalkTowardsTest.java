@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class WalkTowardsTest extends AstTest {
+public class WalkTowardsTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfWalkToClass() throws Exception {
@@ -16,7 +16,6 @@ public class WalkTowardsTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/walk_to_missing_coordinates.xml");
 
-        
     }
 
     @Test

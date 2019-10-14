@@ -20,10 +20,10 @@ public final class ProjectService {
 
     public static void executeWorkflow(String workflowName, IRobotFactory robotFactory, Project project) throws JSONException, JAXBException {
         List<IWorker> workflowPipe = robotFactory.getWorkerPipe(workflowName);
-        if (project.hasSucceeded()) {
+        if ( project.hasSucceeded() ) {
             for ( IWorker worker : workflowPipe ) {
                 worker.execute(project);
-                if (!project.hasSucceeded()) {
+                if ( !project.hasSucceeded() ) {
                     break;
                 }
                 // TODO: here separators in the worker list should be used and not such a hard condition

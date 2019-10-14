@@ -7,20 +7,15 @@ import org.slf4j.LoggerFactory;
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
+import de.fhg.iais.roberta.visitor.lang.codegen.AbstractStackMachineGeneratorWorker;
+import de.fhg.iais.roberta.visitor.lang.codegen.AbstractStackMachineVisitor;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
-public final class WedoCodeGeneratorWorker implements IWorker {
-    private static final Logger LOG = LoggerFactory.getLogger(WedoCodeGeneratorWorker.class);
-
+public final class WedoCodeGeneratorWorker extends AbstractStackMachineGeneratorWorker {
     @Override
-    public void execute(Project project) {
-        Object usedHardwareBean = project.getWorkerResult("CollectedHardware");
-        WeDoStackMachineVisitor<Void> visitor =
-            new WeDoStackMachineVisitor<>((UsedHardwareBean) usedHardwareBean, project.getConfigurationAst(), project.getProgramAst().getTree());
-        visitor.generateCodeFromPhrases(project.getProgramAst().getTree());
-        JSONObject generatedCode = new JSONObject();
-        generatedCode.put(C.OPS, visitor.getOpArray()).put(C.FUNCTION_DECLARATION, visitor.getFctDecls());
-        project.setSourceCode(generatedCode.toString(2));
-        project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
+    protected AbstractStackMachineVisitor<Void> getVisitor(UsedHardwareBean usedHardwareBean,
+                                                           Project project) {
+        return new WeDoStackMachineVisitor<>(usedHardwareBean, project.getConfigurationAst(), project.getProgramAst().getTree());
+
     }
 }

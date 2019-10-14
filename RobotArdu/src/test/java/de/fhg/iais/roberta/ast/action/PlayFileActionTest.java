@@ -11,7 +11,6 @@ import de.fhg.iais.roberta.syntax.action.sound.PlayFileAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class PlayFileActionTest extends AstTest {
-    
 
     @Test
     public void make() throws Exception {
@@ -21,7 +20,7 @@ public class PlayFileActionTest extends AstTest {
 
     @Test
     public void getFileName() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_PlayFile.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_PlayFile.xml");
         PlayFileAction<Void> pfa = (PlayFileAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("1", pfa.getFileName());
     }

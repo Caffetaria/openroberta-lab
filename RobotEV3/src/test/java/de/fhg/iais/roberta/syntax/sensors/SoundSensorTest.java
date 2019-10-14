@@ -2,15 +2,18 @@ package de.fhg.iais.roberta.syntax.sensors;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
 
-public class SoundSensorTest extends AstTest {
+public class SoundSensorTest extends Ev3LejosAstTest {
 
     @Test
     public void getSampleSound() throws Exception {
         String a = "\nhal.getSoundLevel(SensorPort.S1)}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_getSampleSound.xml");
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/sensors/sensor_getSampleSound.xml",
+                                                                                   new Ev3JavaGeneratorWorker());
     }
 }

@@ -6,14 +6,15 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class NxtActorTest {
+public class NxtActorTest extends NxtAstTest {
 
     private static ConfigurationAst makeOtherConsumerConfiguration() {
-        Map<String, String> otherPowerConsumerproperties =
-            HelperNxtForXmlTest.createMap("MOTOR_REGULATION", "FALSE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "NONE");
+        Map<String, String> otherPowerConsumerproperties = createMap("MOTOR_REGULATION", "FALSE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "NONE");
         ConfigurationComponent otherPowerConsumer = new ConfigurationComponent("LARGE", true, "A", "A", otherPowerConsumerproperties);
 
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
@@ -32,8 +33,9 @@ public class NxtActorTest {
 
     @Test
     public void nxtOtherPowerConsumerTest() throws Exception {
-        this.nxtHelper
-            .compareExistingAndGeneratedNxcSource(
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXml(
+                testFactory,
                 "/ast/actions/nxt_other_consumer_test.nxc",
                 "/ast/actions/nxt_other_consumer_test.xml",
                 makeOtherConsumerConfiguration());
@@ -41,8 +43,9 @@ public class NxtActorTest {
 
     @Test
     public void nxtDisplayTest() throws Exception {
-        this.nxtHelper
-            .compareExistingAndGeneratedNxcSource(
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXml(
+                testFactory,
                 "/ast/actions/nxt_display_all_datatypes_test.nxc",
                 "/ast/actions/nxt_display_all_datatypes_test.xml",
                 makeDisplayConfiguration());

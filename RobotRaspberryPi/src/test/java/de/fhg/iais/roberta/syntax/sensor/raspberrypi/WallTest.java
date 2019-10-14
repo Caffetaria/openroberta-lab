@@ -3,11 +3,11 @@ package de.fhg.iais.roberta.syntax.sensor.raspberrypi;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.codegen.raspberrypi.RaspberryPiAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 @Ignore
-public class WallTest extends AstTest {
+public class WallTest extends RaspberryPiAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfAnimationClass() throws Exception {
@@ -19,8 +19,6 @@ public class WallTest extends AstTest {
                 + "]]]";
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensors/wall.xml");
-
-        
     }
 
     @Test

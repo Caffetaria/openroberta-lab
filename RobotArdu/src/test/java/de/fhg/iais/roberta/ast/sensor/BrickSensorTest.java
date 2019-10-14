@@ -22,7 +22,7 @@ public class BrickSensorTest extends AstTest {
 
     @Test
     public void getKey() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/sensors/sensor_brick1.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/sensors/sensor_brick1.xml");
         KeysSensor<Void> bs = (KeysSensor<Void>) forest.get(0).get(1);
         Assert.assertEquals("2", bs.getPort());
     }

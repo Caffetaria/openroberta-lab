@@ -252,8 +252,8 @@ public abstract class AbstractJavaVisitor extends AbstractLanguageVisitor {
 
     @Override
     public Void visitStmtFlowCon(StmtFlowCon<Void> stmtFlowCon) {
-        if ( this.loopsLabels.get(this.currenLoop.getLast()) != null ) {
-            if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+        if ( usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) != null ) {
+            if ( usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) ) {
                 this.sb.append("if (true) " + stmtFlowCon.getFlow().toString().toLowerCase() + " loop" + this.currenLoop.getLast() + ";");
                 return null;
             }
@@ -433,7 +433,7 @@ public abstract class AbstractJavaVisitor extends AbstractLanguageVisitor {
             Expr<Void> expr = iterator.next();
             expr.visit(this);
             this.sb.append(")");
-            if (iterator.hasNext()) {
+            if ( iterator.hasNext() ) {
                 this.sb.append(" + ");
             }
         }
@@ -700,7 +700,7 @@ public abstract class AbstractJavaVisitor extends AbstractLanguageVisitor {
 
     private void addLabelToLoop() {
         increaseLoopCounter();
-        if ( this.loopsLabels.get(this.currenLoop.getLast()) ) {
+        if ( usedHardwareBean.getLoopsLabelContainer().get(this.currenLoop.getLast()) ) {
             this.sb.append("loop" + this.currenLoop.getLast() + ":");
             nlIndent();
         }
@@ -708,19 +708,23 @@ public abstract class AbstractJavaVisitor extends AbstractLanguageVisitor {
 
     @Override
     protected void generateProgramSuffix(boolean withWrapping) {
-        if ( !this.codeGeneratorSetupBean.getUsedFunctions().isEmpty() ) {
-            incrIndentation();
-            String helperMethodImpls =
-                this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodDefinitions(this.codeGeneratorSetupBean.getUsedFunctions());
-            Iterator<String> it = Arrays.stream(helperMethodImpls.split("\n")).iterator();
-            while (it.hasNext()) {
-                this.sb.append(it.next());
-                if (it.hasNext()) {
-                    nlIndent();
+        if (withWrapping) {
+            if (!this.codeGeneratorSetupBean.getUsedFunctions().isEmpty()) {
+                incrIndentation();
+                String helperMethodImpls = this.codeGeneratorSetupBean.getHelperMethodGenerator()
+                                                                      .getHelperMethodDefinitions(
+                                                                              this.codeGeneratorSetupBean
+                                                                                      .getUsedFunctions());
+                Iterator<String> it = Arrays.stream(helperMethodImpls.split("\n")).iterator();
+                while (it.hasNext()) {
+                    this.sb.append(it.next());
+                    if (it.hasNext()) {
+                        nlIndent();
+                    }
                 }
+                decrIndentation();
+                nlIndent();
             }
-            decrIndentation();
-            nlIndent();
         }
 
         this.sb.append("}");

@@ -87,12 +87,13 @@ public final class WalkTo<V> extends Action<V> {
         Phrase<V> walkToY = helper.extractValue(values, new ExprParam(BlocklyConstants.Y, BlocklyType.NUMBER_INT));
         Phrase<V> walkToTheta = helper.extractValue(values, new ExprParam(BlocklyConstants.THETA, BlocklyType.NUMBER_INT));
 
-        return WalkTo.make(
-            helper.convertPhraseToExpr(walkToX),
-            helper.convertPhraseToExpr(walkToY),
-            helper.convertPhraseToExpr(walkToTheta),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return WalkTo
+            .make(
+                helper.convertPhraseToExpr(walkToX),
+                helper.convertPhraseToExpr(walkToY),
+                helper.convertPhraseToExpr(walkToTheta),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

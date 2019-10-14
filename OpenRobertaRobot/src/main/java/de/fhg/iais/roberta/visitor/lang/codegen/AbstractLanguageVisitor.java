@@ -2,7 +2,6 @@ package de.fhg.iais.roberta.visitor.lang.codegen;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,6 @@ public abstract class AbstractLanguageVisitor implements ILanguageVisitor<Void> 
     private static final String INDENT = "    ";
     private int loopCounter = 0;
     protected LinkedList<Integer> currenLoop = new LinkedList<>();
-    protected Map<Integer, Boolean> loopsLabels = new HashMap<>();
 
     protected StringBuilder sb = new StringBuilder();
     protected final List<Phrase<Void>> programPhrases;

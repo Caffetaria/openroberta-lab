@@ -56,7 +56,10 @@ import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
  */
 public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IMbedVisitor<Void> {
 
-    public MbedUsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst robotConfiguration) {
+    public MbedUsedHardwareCollectorVisitor(
+        UsedHardwareBean.Builder builder,
+        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
+        ConfigurationAst robotConfiguration) {
         super(builder, robotConfiguration);
     }
 

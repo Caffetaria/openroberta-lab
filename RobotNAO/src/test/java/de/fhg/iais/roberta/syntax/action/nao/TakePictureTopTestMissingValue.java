@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TakePictureTopTestMissingValue extends AstTest {
+public class TakePictureTopTestMissingValue extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfTakePictureClass() throws Exception {
@@ -18,7 +18,7 @@ public class TakePictureTopTestMissingValue extends AstTest {
     /*
     @Test
     public void astToBlock_XMLtoJAXBtoASTtoXML_ReturnsSameXML() throws Exception {
-
+    
         UnitTestHelper.checkProgramReverseTransformation(testFactory, "/action/takePicture_top_missingValue.xml");
     }*/
 }

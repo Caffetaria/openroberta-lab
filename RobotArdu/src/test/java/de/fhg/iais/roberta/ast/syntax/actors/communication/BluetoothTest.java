@@ -12,24 +12,28 @@ public class BluetoothTest extends AstTest {
     @Test
     public void connection() throws Exception {
         String a = "NXTConnectionvariablenName=hal.establishConnectionTo(\"101010\");publicvoidrun(){}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_BluetoothConnection.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_BluetoothConnection.xml",
+                                                                                   false);
     }
 
     @Test
     public void connectionWait() throws Exception {
         String a = "NXTConnectionvariablenName=hal.waitForConnection();publicvoidrun(){}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_BluetoothConnectionWait.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_BluetoothConnectionWait.xml",
+                                                                                   false);
     }
 
     @Test
     public void send() throws Exception {
         String a = "NXTConnectionvariablenName2=hal.establishConnectionTo(\"\");publicvoidrun(){hal.sendMessage(\"\", variablenName2);}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_BluetoothSend.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_BluetoothSend.xml",
+                                                                                   false);
     }
 
     @Test
     public void recive() throws Exception {
         String a = "NXTConnectionvariablenName2=hal.waitForConnection();publicvoidrun(){hal.drawText(String.valueOf(hal.readMessage(variablenName2)),0,0);}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/ast/actions/action_BluetoothReceive.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_BluetoothReceive.xml",
+                                                                                   false);
     }
 }

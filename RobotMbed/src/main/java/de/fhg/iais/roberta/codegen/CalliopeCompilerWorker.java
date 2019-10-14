@@ -28,9 +28,9 @@ public class CalliopeCompilerWorker implements IWorker {
         // TODO: check how to do this sensibly, without having the UsedHardwareWorker beforehand
         UsedHardwareBean usedHardwareBean = (UsedHardwareBean) project.getWorkerResult("CollectedHardware");
         EnumSet<CalliopeCompilerFlag> compilerFlags =
-            (usedHardwareBean == null) ?
-            EnumSet.noneOf(CalliopeCompilerFlag.class) :
-            (usedHardwareBean.isRadioUsed() ? EnumSet.of(CalliopeCompilerFlag.RADIO_USED) : EnumSet.noneOf(CalliopeCompilerFlag.class));
+            (usedHardwareBean == null)
+                ? EnumSet.noneOf(CalliopeCompilerFlag.class)
+                : (usedHardwareBean.isRadioUsed() ? EnumSet.of(CalliopeCompilerFlag.RADIO_USED) : EnumSet.noneOf(CalliopeCompilerFlag.class));
         boolean isRadioUsed = compilerFlags.contains(CalliopeCompilerFlag.RADIO_USED);
 
         Pair<Key, String> workflowResult = runBuild(project, isRadioUsed);
@@ -58,24 +58,24 @@ public class CalliopeCompilerWorker implements IWorker {
         String bluetooth = radioUsed ? "" : "-b";
         Path pathToSrcFile = Paths.get(tempDir + project.getToken() + "/" + project.getProgramName());
 
-        String[] executableWithParameters = {
-            scriptName,
-            compilerBinDir,
-            project.getProgramName(),
-            Paths.get("").resolve(pathToSrcFile).toAbsolutePath().normalize() + "/",
-            compilerResourcesDir,
-            bluetooth
-        };
+        String[] executableWithParameters =
+            {
+                scriptName,
+                compilerBinDir,
+                project.getProgramName(),
+                Paths.get("").resolve(pathToSrcFile).toAbsolutePath().normalize() + "/",
+                compilerResourcesDir,
+                bluetooth
+            };
 
         Pair<Boolean, String> result = AbstractCompilerWorkflow.runCrossCompiler(executableWithParameters);
-        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS
-                                          : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
-        if (result.getFirst()) {
+        Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+        if ( result.getFirst() ) {
             project.setCompiledHex(AbstractCompilerWorkflow.getBase64EncodedHex(pathToSrcFile + "/target/" + project.getProgramName() + ".hex"));
             if ( project.getCompiledHex() != null ) {
-                resultKey =  Key.COMPILERWORKFLOW_SUCCESS;
+                resultKey = Key.COMPILERWORKFLOW_SUCCESS;
             } else {
-                resultKey =  Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
+                resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
             }
         }
         return Pair.of(resultKey, result.getSecond());

@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class SingleMotorOnActionTest extends AstTest {
+public class SingleMotorOnActionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfSingleMotorOnActionClass() throws Exception {
@@ -17,7 +17,6 @@ public class SingleMotorOnActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/single_motor_on.xml");
 
-        
     }
 
     @Test
@@ -26,7 +25,6 @@ public class SingleMotorOnActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/single_motor_on_missing_power.xml");
 
-        
     }
 
     @Test

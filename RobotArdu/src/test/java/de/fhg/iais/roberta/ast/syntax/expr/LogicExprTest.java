@@ -1,12 +1,12 @@
 package de.fhg.iais.roberta.ast.syntax.expr;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.codegen.arduino.arduino.ArduinoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.ArduinoCxxGeneratorWorker;
 
-public class LogicExprTest extends AstTest {
+public class LogicExprTest extends ArduinoAstTest {
 
     @Test
     public void test1() throws Exception {
@@ -21,28 +21,29 @@ public class LogicExprTest extends AstTest {
                 + "((5 + 7)==(5 + 7) )>= (((5 + 7)== (5 + 7)) && ((5 + 7) <= (5 + 7)))\n"
                 + "!((5 + 7)==(5 + 7) )== true";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_expr.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/expr/logic_expr.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void logicNegate() throws Exception {
         final String a = "\n!((0!= 0)&&false)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_negate.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/expr/logic_negate.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void logicNull() throws Exception {
         final String a = "\nNULL";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_null.xml");
-    }
-
-    // The ternary was removed
-    @Ignore
-    public void logicTernary() throws Exception {
-        final String a = "\n( 0 == 0 ) ? false : true";
-
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_ternary.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/expr/logic_null.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 }

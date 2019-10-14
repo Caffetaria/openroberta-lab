@@ -96,7 +96,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.codegen.utilities.TTSLanguageMapper;
 import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
@@ -137,32 +136,6 @@ public class Ev3C4ev3Visitor extends AbstractCppVisitor implements IEv3Visitor<V
 
     private static String getPrefixedInputPort(String port) {
         return PREFIX_IN_PORT + port;
-    }
-
-    /**
-     * factory method to generate EV3 c4ev3 code from an AST.<br>
-     *
-     * @param programName
-     * @param brickConfiguration
-     * @param phrasesSet
-     * @param withWrapping
-     * @param language
-     * @return
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        String programName,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
-        boolean withWrapping,
-        ILanguage language) {
-        Assert.notNull(programName);
-        Assert.notNull(brickConfiguration);
-
-        Ev3C4ev3Visitor astVisitor = new Ev3C4ev3Visitor(usedHardwareBean, codeGeneratorSetupBean, programName, brickConfiguration, phrasesSet, language);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
     }
 
     @Override

@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensor.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class GetSampleSensorTest extends AstTest {
+public class GetSampleSensorTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfNaoGetSampleAccelerometer() throws Exception {
@@ -22,7 +22,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilAccelerometer.xml");
 
-        
     }
 
     @Test
@@ -91,7 +90,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilElectricCurrent.xml");
 
-        
     }
 
     @Test
@@ -123,7 +121,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilTouch.xml");
 
-        
     }
 
     @Test
@@ -143,7 +140,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilDetectFace.xml");
 
-        
     }
 
     @Test
@@ -162,7 +158,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilDetectMarks.xml");
 
-        
     }
 
     @Test
@@ -181,7 +176,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilSonar.xml");
 
-        
     }
 
     @Test
@@ -203,7 +197,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilGyro.xml");
 
-        
     }
 
     @Test
@@ -224,7 +217,6 @@ public class GetSampleSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/waitUntilFSR.xml");
 
-        
     }
 
     @Test

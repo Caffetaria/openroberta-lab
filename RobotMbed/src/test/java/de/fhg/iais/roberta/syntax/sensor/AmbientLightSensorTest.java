@@ -16,7 +16,6 @@ public class AmbientLightSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/get_ambient_light.xml");
 
-        
     }
 
     @Test

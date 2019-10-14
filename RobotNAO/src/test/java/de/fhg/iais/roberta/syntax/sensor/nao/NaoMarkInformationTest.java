@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensor.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class NaoMarkInformationTest extends AstTest {
+public class NaoMarkInformationTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfNaoMarkInformationClass() throws Exception {
@@ -17,7 +17,6 @@ public class NaoMarkInformationTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/markinformation.xml");
 
-        
     }
 
     @Test

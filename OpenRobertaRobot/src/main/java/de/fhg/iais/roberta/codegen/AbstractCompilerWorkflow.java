@@ -92,9 +92,9 @@ public abstract class AbstractCompilerWorkflow implements ICompilerWorkflow {
             LOG.error(crosscompilerResponse, e);
             ecode = -1;
         }
-        LOG.error("DEBUG INFO: " + crosscompilerResponse);
+        LOG.debug("DEBUG INFO: " + crosscompilerResponse);
         if ( ecode != 0 ) {
-            LOG.error("compilation of program failed with message: \n" + crosscompilerResponse);
+            LOG.info("compilation of program failed with message: \n" + crosscompilerResponse);
         }
         return Pair.of(ecode == 0, crosscompilerResponse);
     }

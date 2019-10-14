@@ -100,12 +100,13 @@ public class DisplaySetPixelAction<V> extends Action<V> {
         Phrase<V> brightness = helper.extractValue(values, new ExprParam(BlocklyConstants.BRIGHTNESS, BlocklyType.NUMBER_INT));
         Phrase<V> x = helper.extractValue(values, new ExprParam(BlocklyConstants.X, BlocklyType.NUMBER_INT));
         Phrase<V> y = helper.extractValue(values, new ExprParam(BlocklyConstants.Y, BlocklyType.NUMBER_INT));
-        return DisplaySetPixelAction.make(
-            helper.convertPhraseToExpr(x),
-            helper.convertPhraseToExpr(y),
-            helper.convertPhraseToExpr(brightness),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return DisplaySetPixelAction
+            .make(
+                helper.convertPhraseToExpr(x),
+                helper.convertPhraseToExpr(y),
+                helper.convertPhraseToExpr(brightness),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
 
     }
 

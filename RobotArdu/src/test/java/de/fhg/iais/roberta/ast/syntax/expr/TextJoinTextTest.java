@@ -11,7 +11,8 @@ public class TextJoinTextTest extends AstTest {
     public void Test() throws Exception {
         String a = "BlocklyMethods.textJoin(0, 0, \"a\", \"b\", true, hal.isPressed(SensorPort.S1))";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/text/text_join.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/text/text_join.xml",
+                                                                                   false);
     }
 
 }

@@ -3,51 +3,70 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.codegen.arduino.arduino.ArduinoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.ArduinoCxxGeneratorWorker;
 
-public class MathOnListsTest extends AstTest {
+public class MathOnListsTest extends ArduinoAstTest {
 
     @Test
     public void mathOnListSum() throws Exception {
         final String a = "_getListSum({5,3,2})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_sum.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_on_list_sum.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void mathOnListMin() throws Exception {
         final String a = "_getListMin({5,3,2})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_min.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_on_list_min.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void mathOnListMax() throws Exception {
         final String a = "_getListMax({5,3,2})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_max.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_on_list_max.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void mathOnListAverage() throws Exception {
         final String a = "_getListAverage({5,3,2})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_average.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_on_list_average.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void mathOnListMedian() throws Exception {
         final String a = "_getListMedian({5,3,2})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_median.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_on_list_median.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
     public void mathOnListStandardDeviation() throws Exception {
         final String a = "_getListStandardDeviation({5,3,2})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_std_dev.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_on_list_std_dev.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
@@ -55,15 +74,9 @@ public class MathOnListsTest extends AstTest {
     public void mathOnListRandom() throws Exception {
         final String a = "null";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_random.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/math/math_on_list_random.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
-
-    @Test
-    @Ignore
-    public void mathOnListMode() throws Exception {
-        final String a = "null";
-
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_on_list_mode.xml");
-    }
-
 }

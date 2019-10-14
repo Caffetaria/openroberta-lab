@@ -33,39 +33,35 @@ import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
 /**
  * This class stores the AST representation of the program and the configuration
  */
-public class Project {
+public final class Project {
 
     private static final Logger LOG = LoggerFactory.getLogger(Project.class);
-
-    private IRobotFactory robotFactory;
-    private Key result = Key.COMPILERWORKFLOW_PROJECT_BUILD_SUCCESS;
-    private final Map<String, String> resultParams = new HashMap<>();
-    private ProgramAst<Void> program = null;
-    private ConfigurationAst configuration = null;
-    Map<String, Object> workerResults = new HashMap<>();
-    private StringBuilder sourceCodeBuilder = new StringBuilder();
-    private final StringBuilder indentationBuilder = new StringBuilder();
-    private String compiledHex = "";
 
     private String token;
     private String robot;
     private String programName;
-    private String fileExtension;
     private String SSID;
     private String password;
     private ILanguage language;
     private RobotCommunicator robotCommunicator;
+    private IRobotFactory robotFactory;
+    private boolean withWrapping = true;
+
+    private ProgramAst<Void> program = null;
+    private ConfigurationAst configuration = null;
+
+    private final Map<String, Object> workerResults = new HashMap<>();
+
+    private StringBuilder sourceCodeBuilder = new StringBuilder();
+    private final StringBuilder indentationBuilder = new StringBuilder();
+
+    private String compiledHex = "";
+
+    private Key result = Key.COMPILERWORKFLOW_PROJECT_BUILD_SUCCESS;
+    private final Map<String, String> resultParams = new HashMap<>();
+    private int errorCounter = 0;
 
     private Project() {
-
-    }
-
-    public String getCompiledHex() {
-        return this.compiledHex;
-    }
-
-    public void setCompiledHex(String compiledHex) {
-        this.compiledHex = compiledHex;
     }
 
     public String getToken() {
@@ -81,7 +77,7 @@ public class Project {
     }
 
     public String getFileExtension() {
-        return this.fileExtension;
+        return this.robotFactory.getFileExtension();
     }
 
     public String getSSID() {
@@ -96,53 +92,16 @@ public class Project {
         return this.language;
     }
 
-    public StringBuilder getSourceCode() {
-        return this.sourceCodeBuilder;
-    }
-
-    public void setSourceCode(String sourceCode) {
-        this.sourceCodeBuilder = new StringBuilder(sourceCode);
-    }
-
-    public StringBuilder getIndentation() {
-        return this.indentationBuilder;
-    }
-
-    public IRobotFactory getRobotFactory() {
-        return robotFactory;
-    }
-
     public RobotCommunicator getRobotCommunicator() {
         return this.robotCommunicator;
     }
 
-    public Object getWorkerResult(String beanName) {
-        return this.workerResults.get(beanName);
+    public IRobotFactory getRobotFactory() {
+        return this.robotFactory;
     }
 
-    public void addWorkerResult(String beanName, Object bean) {
-        this.workerResults.put(beanName, bean);
-    }
-
-    public Map<String, String> getResultParams() {
-        return Collections.unmodifiableMap(this.resultParams);
-    }
-
-    public void addResultParam(String key, String value) {
-        this.resultParams.put(key, value);
-    }
-
-    public Key getResult() {
-        return this.result;
-    }
-
-    public void setResult(Key result) {
-        this.result = result;
-    }
-
-    public boolean hasSucceeded() {
-        Assert.notNull(this.result);
-        return this.result.isSuccess();
+    public boolean isWithWrapping() {
+        return this.withWrapping;
     }
 
     /**
@@ -159,12 +118,69 @@ public class Project {
         return this.configuration;
     }
 
+    public Object getWorkerResult(String beanName) {
+        return this.workerResults.get(beanName);
+    }
+
+    public void addWorkerResult(String beanName, Object bean) {
+        this.workerResults.put(beanName, bean);
+    }
+
+    public StringBuilder getSourceCode() {
+        return this.sourceCodeBuilder;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCodeBuilder = new StringBuilder(sourceCode);
+    }
+
+    public StringBuilder getIndentation() {
+        return this.indentationBuilder;
+    }
+
+    public String getCompiledHex() {
+        return this.compiledHex;
+    }
+
+    public void setCompiledHex(String compiledHex) {
+        this.compiledHex = compiledHex;
+    }
+
+    public Key getResult() {
+        return this.result;
+    }
+
+    public void setResult(Key result) {
+        this.result = result;
+    }
+
+    public boolean hasSucceeded() {
+        Assert.notNull(this.result);
+        return this.result.isSuccess();
+    }
+
+    public Map<String, String> getResultParams() {
+        return Collections.unmodifiableMap(this.resultParams);
+    }
+
+    public void addResultParam(String key, String value) {
+        this.resultParams.put(key, value);
+    }
+
+    public void addToErrorCounter(int nErrors) {
+        this.errorCounter += nErrors;
+    }
+
+    public int getErrorCounter() {
+        return this.errorCounter;
+    }
+
     public String getAnnotatedProgramAsXml() {
         String programXML = "";
         try {
             programXML = jaxbToXml(astToJaxb(this.program));
         } catch ( JAXBException e ) {
-            throw new DbcException("Transformation of program AST into blockset and into XML failed.");
+            throw new DbcException("Transformation of program AST into blockset and into XML failed.", e);
         }
         return programXML;
     }
@@ -174,7 +190,7 @@ public class Project {
         try {
             configurationXML = jaxbToXml(this.configuration.generateBlockSet());
         } catch ( JAXBException e ) {
-            throw new DbcException("Transformation of configuration AST into blockset and into XML failed.");
+            throw new DbcException("Transformation of configuration AST into blockset and into XML failed.", e);
         }
         return configurationXML;
     }
@@ -189,6 +205,7 @@ public class Project {
     }
 
     private static BlockSet astToJaxb(ProgramAst<Void> program) {
+        Assert.notNull(program);
         ArrayList<ArrayList<Phrase<Void>>> astProgram = program.getTree();
         final BlockSet blockSet = new BlockSet();
         blockSet.setDescription(program.getDescription());
@@ -211,14 +228,11 @@ public class Project {
     }
 
     public static class Builder {
-        private Project project = new Project();
+        private final Project project = new Project();
 
         private String configurationXml;
         private String programXml;
         private String programNativeSource;
-
-        public Builder() {
-        }
 
         public Builder setToken(String token) {
             this.project.token = token;
@@ -232,26 +246,6 @@ public class Project {
 
         public Builder setProgramName(String programName) {
             this.project.programName = programName;
-            return this;
-        }
-
-        public Builder setProgramXml(String programXml) {
-            this.programXml = programXml;
-            return this;
-        }
-
-        public Builder setConfigurationXml(String configurationXml) {
-            this.configurationXml = configurationXml;
-            return this;
-        }
-
-        public Builder setProgramNativeSource(String programNativeSource) {
-            this.programNativeSource = programNativeSource;
-            return this;
-        }
-
-        public Builder setFileExtension(String fileExtension) {
-            this.project.fileExtension = fileExtension;
             return this;
         }
 
@@ -270,8 +264,8 @@ public class Project {
             return this;
         }
 
-        public Builder setConfigurationAst(ConfigurationAst configurationAst) {
-            this.project.configuration = configurationAst;
+        public Builder setRobotCommunicator(RobotCommunicator robotCommunicator) {
+            this.project.robotCommunicator = robotCommunicator;
             return this;
         }
 
@@ -280,8 +274,28 @@ public class Project {
             return this;
         }
 
-        public Builder setRobotCommunicator(RobotCommunicator robotCommunicator) {
-            this.project.robotCommunicator = robotCommunicator;
+        public Builder setWithWrapping(boolean withWrapping) {
+            this.project.withWrapping = withWrapping;
+            return this;
+        }
+
+        public Builder setProgramXml(String programXml) {
+            this.programXml = programXml;
+            return this;
+        }
+
+        public Builder setConfigurationXml(String configurationXml) {
+            this.configurationXml = configurationXml;
+            return this;
+        }
+
+        public Builder setConfigurationAst(ConfigurationAst configurationAst) {
+            this.project.configuration = configurationAst;
+            return this;
+        }
+
+        public Builder setProgramNativeSource(String programNativeSource) {
+            this.programNativeSource = programNativeSource;
             return this;
         }
 

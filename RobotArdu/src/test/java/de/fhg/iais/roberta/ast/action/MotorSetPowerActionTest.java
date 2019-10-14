@@ -11,7 +11,6 @@ import de.fhg.iais.roberta.syntax.action.motor.MotorSetPowerAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class MotorSetPowerActionTest extends AstTest {
-    
 
     @Test
     public void make() throws Exception {
@@ -21,14 +20,14 @@ public class MotorSetPowerActionTest extends AstTest {
 
     @Test
     public void getPort() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_MotorSetPower.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_MotorSetPower.xml");
         MotorSetPowerAction<Void> mgp = (MotorSetPowerAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("B", mgp.getUserDefinedPort());
     }
 
     @Test
     public void getPower() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_MotorSetPower.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_MotorSetPower.xml");
         MotorSetPowerAction<Void> mgp = (MotorSetPowerAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("NumConst [30]", mgp.getPower().toString());
     }

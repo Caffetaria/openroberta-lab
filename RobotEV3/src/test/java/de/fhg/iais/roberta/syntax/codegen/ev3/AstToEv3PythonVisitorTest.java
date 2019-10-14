@@ -2,20 +2,18 @@ package de.fhg.iais.roberta.syntax.codegen.ev3;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3DevAstTest;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
-import de.fhg.iais.roberta.util.test.ev3.HelperEv3ForXmlTest;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class AstToEv3PythonVisitorTest {
-    
+public class AstToEv3PythonVisitorTest extends Ev3DevAstTest {
 
     private static final String IMPORTS =
         "" //
@@ -90,6 +88,10 @@ public class AstToEv3PythonVisitorTest {
         "" //
             + "        '4':Hal.makeInfraredSensor(ev3dev.INPUT_4),\n";
 
+    private static final String CFG_INFRARED_SENSOR_3 =
+            "" //
+            + "        '3':Hal.makeInfraredSensor(ev3dev.INPUT_3),\n";
+
     private static final String MAIN_METHOD =
         "" //
             + "def main():\n"
@@ -105,14 +107,6 @@ public class AstToEv3PythonVisitorTest {
             + "if __name__ == \"__main__\":\n"
             + "    main()";
     private static ConfigurationAst brickConfiguration;
-
-    private static Map<String, String> createMap(String... args) {
-        Map<String, String> m = new HashMap<>();
-        for ( int i = 0; i < args.length; i += 2 ) {
-            m.put(args[i], args[i + 1]);
-        }
-        return m;
-    }
 
     @BeforeClass
     public static void setupConfigurationForAllTests() {
@@ -146,7 +140,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    hal.drawText(\"Hallo\", 0, 3)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -160,7 +156,9 @@ public class AstToEv3PythonVisitorTest {
                 + "        hal.drawText(\"Hallo\", 0, 3)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator1.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -186,7 +184,9 @@ public class AstToEv3PythonVisitorTest {
                 + "        hal.rotateRegulatedMotor('B', 30, 'rotations', 1)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator2.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator2.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -212,7 +212,9 @@ public class AstToEv3PythonVisitorTest {
                 + "                hal.turnOnRegulatedMotor('B', 30)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator3.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator3.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -224,7 +226,8 @@ public class AstToEv3PythonVisitorTest {
                 + "    'OLDGLASSES': "
                 + IMG_OLDGLASSES
                 + ",\n}\n"
-                + make_globals(CFG_MOTORS, CFG_TOUCH_SENSOR + CFG_COLOR_SENSOR + CFG_ULTRASONIC_SENSOR)
+                + make_globals(CFG_MOTORS,
+                               CFG_TOUCH_SENSOR + CFG_INFRARED_SENSOR_3 + CFG_ULTRASONIC_SENSOR)
                 + "def run():\n"
                 + "    if 5 < hal.getRegulatedMotorSpeed('B'):\n"
                 + "        hal.turnOnRegulatedMotor('B', 30)\n"
@@ -240,7 +243,9 @@ public class AstToEv3PythonVisitorTest {
                 + "        hal.ledOn('green', 'on')\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator4.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator4.xml",
+                                                                                   makeLargeLargeTouchGyroInfraredUltrasonic(),
+                                                                                   true);
     }
 
     @Test
@@ -257,7 +262,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    hal.playTone(0, 0)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator5.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator5.xml",
+                                                                                   makeLargeLargeTouchGyroInfraredUltrasonic(),
+                                                                                   true);
     }
 
     // Skip "{6,7}.xml" since they only test various different statements
@@ -279,7 +286,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    item3 = False\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator8.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator8.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -299,7 +308,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    hal.drawPicture(predefinedImages['OLDGLASSES'], 0, 0)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/java_code_generator9.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator9.xml",
+                                                                                   makeLargeLargeTouchGyroInfraredUltrasonic(),
+                                                                                   true);
     }
 
     @Test
@@ -319,12 +330,14 @@ public class AstToEv3PythonVisitorTest {
                 + "    rgb = hal.getColorSensorRgb('3')\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/java/read_color_sensor_in_different_modes.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/read_color_sensor_in_different_modes.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
     public void testReadHiTecColorSensorV2InDifferentModes() throws Exception {
-        ConfigurationAst configuration = HelperEv3ForXmlTest.makeHiTecColorSensorConfiguration();
+        ConfigurationAst configuration = makeHiTecColorSensorConfiguration();
         String a =
             "" //
                 + IMPORTS
@@ -340,12 +353,17 @@ public class AstToEv3PythonVisitorTest {
                 + "    rgb = hal.getHiTecColorSensorV2Rgb('3')\n\n"
                 + MAIN_METHOD;
 
-        assertCodeWithConfigIsOk(a, "/syntax/code_generator/java/read_hitec_color_sensor_v2_in_different_modes.xml", configuration);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/read_hitec_color_sensor_v2_in_different_modes.xml",
+                configuration, true);
     }
 
     @Test
     public void testRotateRegulatedUnregulatedForwardBackwardMotors() throws Exception {
-        ConfigurationAst configuration = HelperEv3ForXmlTest.makeRotateRegulatedUnregulatedForwardBackwardMotors();
+        ConfigurationAst configuration = makeRotateRegulatedUnregulatedForwardBackwardMotors();
         String a =
             "" //
                 + IMPORTS
@@ -361,7 +379,12 @@ public class AstToEv3PythonVisitorTest {
                 + "    hal.rotateUnregulatedMotor('D', 30, 'rotations', 1)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeWithConfigIsOk(a, "/syntax/code_generator/java/rotate_regulated_unregulated_forward_backward_motors.xml", configuration);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/rotate_regulated_unregulated_forward_backward_motors.xml",
+                configuration, true);
     }
 
     @Test
@@ -377,7 +400,9 @@ public class AstToEv3PythonVisitorTest {
                 + "2 - ( 2 * 2 )\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/expr/expr1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/expr1.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -397,7 +422,9 @@ public class AstToEv3PythonVisitorTest {
                 + "not (( 5 + 7 ) == ( 5 + 7 )) == True\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/expr/logic_expr.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_expr.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -409,7 +436,9 @@ public class AstToEv3PythonVisitorTest {
                 + "not (( 0 != 0 ) and False)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/expr/logic_negate.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_negate.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -421,7 +450,9 @@ public class AstToEv3PythonVisitorTest {
                 + "None\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/expr/logic_null.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_null.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -433,7 +464,9 @@ public class AstToEv3PythonVisitorTest {
                 + "False if ( 0 == 0 ) else True\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/expr/logic_ternary.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_ternary.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -447,7 +480,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\"\".join(str(arg) for arg in [0, [\"16561\", \"16561\"]])\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/functions/text_concat.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/functions/text_concat.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     // TODO: add tests for files from "/syntax/{lists,math}/*.xml"
@@ -466,7 +501,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_if_return_1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_1.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -487,7 +524,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_if_return_2.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_2.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -507,7 +546,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_return_1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_1.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -527,7 +568,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_return_2.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_2.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Ignore
@@ -546,7 +589,8 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_return_3.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_3.xml",
+                                                                                   true);
     }
 
     @Test
@@ -567,7 +611,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_void_1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_1.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -582,7 +628,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    test()\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_void_2.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_2.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -606,9 +654,13 @@ public class AstToEv3PythonVisitorTest {
                 + "    test2()\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_void_3.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_3.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
+    // TODO incorrect test
+    @Ignore
     @Test
     public void testMethodVoid4() throws Exception {
         String a =
@@ -625,7 +677,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    macheEtwas(hal.getInfraredSensorDistance('4'))\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/methods/method_void_4.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_4.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -644,7 +698,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    break\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/flowControl_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/flowControl_stmt.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -664,7 +720,9 @@ public class AstToEv3PythonVisitorTest {
                 + "        print(\"15\")\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/for_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/for_stmt.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -679,7 +737,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    print(\"\")\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/forCount_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/forCount_stmt.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -695,7 +755,9 @@ public class AstToEv3PythonVisitorTest {
                 + "        hal.drawText(str(variablenName2), 0, 0)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/forEach_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/forEach_stmt.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -730,7 +792,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    item = 3 * 9\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/if_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -743,7 +807,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    pass\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/if_stmt1.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt1.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -766,7 +832,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    print(0)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/if_stmt2.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt2.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -785,7 +853,9 @@ public class AstToEv3PythonVisitorTest {
                 + "    item = 3 * 9\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/if_stmt3.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt3.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -801,9 +871,13 @@ public class AstToEv3PythonVisitorTest {
                 + "        hal.drawText(\"done\", 0, 0)\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/if_stmt4.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt4.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
+    // TODO Invalid test
+    @Ignore
     @Test
     public void testStmtWhileUntil() throws Exception {
         String a =
@@ -823,7 +897,9 @@ public class AstToEv3PythonVisitorTest {
                 + "        variablenName += 1\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/stmt/whileUntil_stmt.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/whileUntil_stmt.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -838,7 +914,8 @@ public class AstToEv3PythonVisitorTest {
                 + "    pass\n\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/syntax/code_generator/empty_program_with_empty_procedure.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/empty_program_with_empty_procedure.xml",
+                                                                                   makeStandard3(), true);
     }
 
     @Test
@@ -858,7 +935,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/visitors/python_global_variables_check_one_used_variables.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/visitors/python_global_variables_check_one_used_variables.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -882,7 +961,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(a, "/visitors/python_global_variables_check_two_used_variables.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/visitors/python_global_variables_check_two_used_variables.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -895,7 +976,9 @@ public class AstToEv3PythonVisitorTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        assertCodeIsOk(expectedResult, "/ast/actions/action_PlayTone.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayTone.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     @Test
@@ -907,7 +990,9 @@ public class AstToEv3PythonVisitorTest {
                 + "hal.playTone(float(261.626), float(2000))\n"
                 + "\n"
                 + MAIN_METHOD;
-        assertCodeIsOk(expectedResult, "/ast/actions/action_PlayNote.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayNote.xml",
+                                                                                   makeStandard3(),
+                                                                                   true);
     }
 
     // TODO: add tests for files from "/syntax/text/*.xml"
@@ -927,15 +1012,5 @@ public class AstToEv3PythonVisitorTest {
                     + "hal = Hal(_brickConfiguration)\n\n",
                 motors,
                 sensors);
-    }
-
-    private void assertCodeIsOk(String a, String fileName) throws Exception {
-        assertCodeWithConfigIsOk(a, fileName, brickConfiguration);
-    }
-
-    private void assertCodeWithConfigIsOk(String a, String fileName, ConfigurationAst configuration) throws Exception {
-        String b = this.h.generatePython(fileName, configuration);
-        Assert.assertEquals(a, b);
-        //Assert.assertEquals(a.replaceAll("\\s+", ""), b.replaceAll("\\s+", ""));
     }
 }

@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class AutonomousLifeOnTest extends AstTest {
+public class AutonomousLifeOnTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfAutonomousClass() throws Exception {
@@ -13,7 +13,6 @@ public class AutonomousLifeOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/autonomousOn.xml");
 
-        
     }
 
     @Test

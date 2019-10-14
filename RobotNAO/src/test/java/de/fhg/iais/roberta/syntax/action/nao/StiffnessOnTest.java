@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class StiffnessOnTest extends AstTest {
+public class StiffnessOnTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfStiffnessBodyOnClass() throws Exception {
@@ -13,7 +13,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfBodyOn.xml");
 
-        
     }
 
     @Test
@@ -22,7 +21,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfArmsOn.xml");
 
-        
     }
 
     @Test
@@ -31,7 +29,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfLeftArmOn.xml");
 
-        
     }
 
     @Test
@@ -40,7 +37,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfHeadOn.xml");
 
-        
     }
 
     @Test
@@ -49,7 +45,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfRightArmOn.xml");
 
-        
     }
 
     @Test
@@ -58,7 +53,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfLegsOn.xml");
 
-        
     }
 
     @Test
@@ -67,7 +61,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfLeftLegOn.xml");
 
-        
     }
 
     @Test
@@ -76,7 +69,6 @@ public class StiffnessOnTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/stiffnessOfRightLegOn.xml");
 
-        
     }
 
     @Test

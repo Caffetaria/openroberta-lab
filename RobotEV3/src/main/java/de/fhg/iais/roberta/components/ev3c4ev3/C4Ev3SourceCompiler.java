@@ -57,11 +57,16 @@ public class C4Ev3SourceCompiler {
         return new String[] {
             compilerExecutableFileName,
             sourceCodeFileName,
-            "-o", binaryOutputFile,
-            "-I", compilerResourcesDir + "c4ev3/include/NEPO",
-            "-I", compilerResourcesDir + "c4ev3/include/c4ev3",
-            "-L", compilerResourcesDir + "c4ev3/" + staticLibraryFolderName,
-            "-l", "ev3api",
+            "-o",
+            binaryOutputFile,
+            "-I",
+            compilerResourcesDir + "c4ev3/include/NEPO",
+            "-I",
+            compilerResourcesDir + "c4ev3/include/c4ev3",
+            "-L",
+            compilerResourcesDir + "c4ev3/" + staticLibraryFolderName,
+            "-l",
+            "ev3api",
             "-static-libstdc++",
             "-std=c++11",
             "-pthread",
@@ -99,4 +104,3 @@ public class C4Ev3SourceCompiler {
         return processBuilder;
     }
 }
-

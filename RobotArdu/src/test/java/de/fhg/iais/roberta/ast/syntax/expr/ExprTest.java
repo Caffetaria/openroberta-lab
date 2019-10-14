@@ -2,16 +2,20 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.codegen.arduino.arduino.ArduinoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.ArduinoCxxGeneratorWorker;
 
-public class ExprTest extends AstTest {
+public class ExprTest extends ArduinoAstTest {
 
     @Test
     public void test1() throws Exception {
         final String a = "\n8 + (-3 + 5)88 - ( 8 + (-3 + 5))(88 - ( 8 + (-3 + 5)))  - ( 88 - ( 8 + (-3 + 5) ))2 * ( 2 - 2 )\n" + "2 - (2 * 2)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/expr1.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/expr/expr1.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 
     @Test
@@ -19,6 +23,9 @@ public class ExprTest extends AstTest {
         final String a =
             "\n2 * ( 2 - 2 )\n" + "2 - (2 * 2)(88 - ( 8 + (-3 + 5))) - (2 * 2)((88 - ( 8 + (-3 + 5))) - (2 * 2) )/((float) ((88 -( 8 + (-3 + 5)))-(2 * 2) ))";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/expr2.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/expr/expr2.xml",
+                                    new ArduinoCxxGeneratorWorker());
     }
 }

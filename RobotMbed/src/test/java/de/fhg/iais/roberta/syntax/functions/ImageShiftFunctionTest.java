@@ -3,10 +3,10 @@ package de.fhg.iais.roberta.syntax.functions;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ImageShiftFunctionTest extends AstTest {
+public class ImageShiftFunctionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfImageShiftFunctionClass() throws Exception {
@@ -18,7 +18,6 @@ public class ImageShiftFunctionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/function/image_shift_up_down.xml");
 
-        
     }
 
     @Test
@@ -30,7 +29,6 @@ public class ImageShiftFunctionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/function/image_shift_missing_image_and_position.xml");
 
-        
     }
 
     @Test

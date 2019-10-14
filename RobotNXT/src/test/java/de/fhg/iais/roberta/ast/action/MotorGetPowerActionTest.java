@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.motor.MotorGetPowerAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MotorGetPowerActionTest extends AstTest {
+public class MotorGetPowerActionTest extends NxtAstTest {
 
     @Test
     public void make() throws Exception {
@@ -20,7 +20,7 @@ public class MotorGetPowerActionTest extends AstTest {
 
     @Test
     public void getPort() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_MotorGetPower.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_MotorGetPower.xml");
         MotorGetPowerAction<Void> mgp = (MotorGetPowerAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("B", mgp.getUserDefinedPort());
     }

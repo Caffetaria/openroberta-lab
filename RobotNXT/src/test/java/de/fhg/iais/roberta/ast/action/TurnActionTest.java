@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.mode.action.TurnDirection;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.motor.differential.TurnAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TurnActionTest extends AstTest {
+public class TurnActionTest extends NxtAstTest {
 
     @Test
     public void make() throws Exception {
@@ -22,14 +22,14 @@ public class TurnActionTest extends AstTest {
 
     @Test
     public void getDirection() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_MotorDiffTurnFor.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_MotorDiffTurnFor.xml");
         TurnAction<Void> ta = (TurnAction<Void>) forest.get(0).get(1);
         Assert.assertEquals(TurnDirection.RIGHT, ta.getDirection());
     }
 
     @Test
     public void getParam() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_MotorDiffTurnFor.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_MotorDiffTurnFor.xml");
         TurnAction<Void> ta = (TurnAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("MotionParam [speed=NumConst [50], duration=MotorDuration [type=DEGREE, value=NumConst [20]]]", ta.getParam().toString());
     }

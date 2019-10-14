@@ -68,7 +68,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.visitor.hardware.actor.IAllActorsVisitor;
 import de.fhg.iais.roberta.visitor.hardware.sensor.ISensorVisitor;
 
@@ -82,25 +81,6 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     public AbstractProgramValidatorVisitor(UsedHardwareBean.Builder builder, ConfigurationAst robotConfiguration) {
         super(builder);
         this.robotConfiguration = robotConfiguration;
-    }
-
-    @Override
-    public void check(ArrayList<ArrayList<Phrase<Void>>> phrasesSet) {
-        Assert.isTrue(!phrasesSet.isEmpty());
-        collectGlobalVariables(phrasesSet);
-        for ( ArrayList<Phrase<Void>> phrases : phrasesSet ) {
-            for ( Phrase<Void> phrase : phrases ) {
-                phrase.visit(this);
-            }
-        }
-        this.checkedProgram = phrasesSet;
-    }
-
-    /**
-     * @return the checkedProgram
-     */
-    public ArrayList<ArrayList<Phrase<Void>>> getCheckedProgram() {
-        return this.checkedProgram;
     }
 
     /**

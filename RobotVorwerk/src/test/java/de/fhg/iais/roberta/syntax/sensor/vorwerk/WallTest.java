@@ -18,7 +18,6 @@ public class WallTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensors/wall.xml");
 
-        
     }
 
     @Test

@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ActionTest extends AstTest {
+public class ActionTest extends NxtAstTest {
 
     @Test
     public void clearDisplay() throws Exception {

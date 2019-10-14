@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensor.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class DetectFaceTest extends AstTest {
+public class DetectFaceTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfLearnFaceClass() throws Exception {
@@ -18,7 +18,6 @@ public class DetectFaceTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/facedetection.xml");
 
-        
     }
 
     @Test

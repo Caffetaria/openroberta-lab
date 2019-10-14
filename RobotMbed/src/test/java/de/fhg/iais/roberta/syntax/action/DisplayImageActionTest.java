@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class DisplayImageActionTest extends AstTest {
+public class DisplayImageActionTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfDisplayImageActionClass() throws Exception {
@@ -18,7 +18,6 @@ public class DisplayImageActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/display_image_show_imag_and_animation.xml");
 
-        
     }
 
     @Test
@@ -27,7 +26,6 @@ public class DisplayImageActionTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/display_image_missing_image_name.xml");
 
-        
     }
 
     @Test

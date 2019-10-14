@@ -38,7 +38,6 @@ public class BluetoothReceiveAction<V> extends Action<V> {
         setReadOnly();
     }
 
-
     public static <V> BluetoothReceiveAction<V> make(
         Expr<V> bluetoothRecieveConnection,
         String channel,
@@ -47,7 +46,6 @@ public class BluetoothReceiveAction<V> extends Action<V> {
         BlocklyComment comment) {
         return new BluetoothReceiveAction<V>(bluetoothRecieveConnection, channel, dataType, properties, comment);
     }
-
 
     public Expr<V> getConnection() {
         return this.connection;

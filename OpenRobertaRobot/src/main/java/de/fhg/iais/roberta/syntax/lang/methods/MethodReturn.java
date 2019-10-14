@@ -126,14 +126,15 @@ public class MethodReturn<V> extends Method<V> {
         StmtList<V> statement = helper.extractStatement(statements, BlocklyConstants.STACK);
         Phrase<V> expr = helper.extractValue(values, new ExprParam(BlocklyConstants.RETURN, BlocklyType.NULL));
 
-        return MethodReturn.make(
-            name,
-            exprList,
-            statement,
-            BlocklyType.get(helper.extractField(fields, BlocklyConstants.TYPE)),
-            helper.convertPhraseToExpr(expr),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return MethodReturn
+            .make(
+                name,
+                exprList,
+                statement,
+                BlocklyType.get(helper.extractField(fields, BlocklyConstants.TYPE)),
+                helper.convertPhraseToExpr(expr),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

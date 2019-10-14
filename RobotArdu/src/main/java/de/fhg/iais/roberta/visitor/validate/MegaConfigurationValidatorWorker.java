@@ -3,12 +3,9 @@ package de.fhg.iais.roberta.visitor.validate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import de.fhg.iais.roberta.transformer.Project;
-
 public class MegaConfigurationValidatorWorker extends ArduinoConfigurationValidatorWorker {
-    @Override
-    public void execute(Project project) {
-        super.setFreePins(
+    public MegaConfigurationValidatorWorker() {
+        super(
             Stream
                 .of(
                     "0",
@@ -82,6 +79,5 @@ public class MegaConfigurationValidatorWorker extends ArduinoConfigurationValida
                     "A14",
                     "A15")
                 .collect(Collectors.toList()));
-        super.execute(project);
     }
 }

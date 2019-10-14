@@ -60,6 +60,7 @@ public class RbfBuilder {
 
     /**
      * Return a new array that contains the same bytes of the rbfToPatch parameter except the 4 bytes of the size and the placeholder
+     * 
      * @param rbfToPatch
      * @param executableFileName
      * @return
@@ -113,7 +114,6 @@ public class RbfBuilder {
     }
 
     /**
-     *
      * @param rbf
      * @param postfix
      * @param prefix used to compute the offset

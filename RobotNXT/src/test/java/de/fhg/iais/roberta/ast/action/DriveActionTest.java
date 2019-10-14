@@ -3,12 +3,12 @@ package de.fhg.iais.roberta.ast.action;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.mode.action.DriveDirection;
 import de.fhg.iais.roberta.syntax.action.motor.differential.DriveAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class DriveActionTest extends AstTest {
+public class DriveActionTest extends NxtAstTest {
 
     @Test
     public void make() throws Exception {

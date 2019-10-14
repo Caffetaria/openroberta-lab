@@ -17,7 +17,6 @@ public class GyroSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/gyro_sensor.xml");
 
-        
     }
 
     @Test

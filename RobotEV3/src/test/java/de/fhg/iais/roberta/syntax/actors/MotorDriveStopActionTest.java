@@ -2,15 +2,19 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
 
-public class MotorDriveStopActionTest extends AstTest {
+public class MotorDriveStopActionTest extends Ev3LejosAstTest {
 
     @Test
     public void stop() throws Exception {
         String a = "\nhal.stopRegulatedDrive();}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/actions/action_Stop.xml");
+        UnitTestHelper.checkWorkers(testFactory,
+                                    a,
+                                    "/syntax/actions/action_Stop.xml",
+                                    new Ev3JavaGeneratorWorker());
     }
 }

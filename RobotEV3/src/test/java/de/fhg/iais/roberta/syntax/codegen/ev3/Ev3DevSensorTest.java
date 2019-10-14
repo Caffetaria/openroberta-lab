@@ -5,10 +5,12 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3DevAstTest;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class Ev3DevSensorTest {
+public class Ev3DevSensorTest extends Ev3DevAstTest {
 
     private final ConfigurationAst configuration = makeConfigurationWithHTSensors();
 
@@ -26,7 +28,11 @@ public class Ev3DevSensorTest {
 
     @Test
     public void ev3DevGetListsTest() throws Exception {
-        this.ev3DevHelper
-            .compareExistingAndGeneratedPythonSource("/ast/sensors/ev3dev_htsensors_test.py", "/ast/sensors/ev3dev_htsensors_test.xml", this.configuration);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXml(
+                testFactory,
+                "/ast/sensors/ev3dev_htsensors_test.py",
+                "/ast/sensors/ev3dev_htsensors_test.xml",
+                this.configuration);
     }
 }

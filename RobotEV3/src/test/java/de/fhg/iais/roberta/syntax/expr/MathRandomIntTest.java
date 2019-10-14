@@ -2,15 +2,17 @@ package de.fhg.iais.roberta.syntax.expr;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class MathRandomIntTest extends AstTest {
+public class MathRandomIntTest extends Ev3LejosAstTest {
 
     @Test
     public void Test() throws Exception {
-        String a = "BlocklyMethods.randInt(1,100)}";
+        String a = "Math.round(Math.random()*(100-1))+1}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/math/math_random_int.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_random_int.xml",
+                                                                                   false);
     }
 }

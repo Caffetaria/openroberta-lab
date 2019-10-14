@@ -107,13 +107,14 @@ public class RgbColor<V> extends Expr<V> {
         Phrase<V> green = helper.extractValue(values, new ExprParam(BlocklyConstants.GREEN, BlocklyType.NUMBER_INT));
         Phrase<V> blue = helper.extractValue(values, new ExprParam(BlocklyConstants.BLUE, BlocklyType.NUMBER_INT));
         Phrase<V> alpha = helper.extractValue(values, new ExprParam(BlocklyConstants.ALPHA, BlocklyType.NUMBER_INT));
-        return RgbColor.make(
-            helper.convertPhraseToExpr(red),
-            helper.convertPhraseToExpr(green),
-            helper.convertPhraseToExpr(blue),
-            helper.convertPhraseToExpr(alpha),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return RgbColor
+            .make(
+                helper.convertPhraseToExpr(red),
+                helper.convertPhraseToExpr(green),
+                helper.convertPhraseToExpr(blue),
+                helper.convertPhraseToExpr(alpha),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

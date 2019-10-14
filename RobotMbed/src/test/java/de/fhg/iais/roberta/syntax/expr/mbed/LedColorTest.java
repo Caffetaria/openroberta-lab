@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.expr.mbed;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LedColorTest extends AstTest {
+public class LedColorTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstancesOfLedColorClass() throws Exception {
@@ -17,7 +17,6 @@ public class LedColorTest extends AstTest {
                 + "exprStmt VarDeclaration [COLOR, Element3, ColorConst [#f7d117], false, true]]]]]";
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/expr/led_color.xml");
 
-        
     }
 
     @Test

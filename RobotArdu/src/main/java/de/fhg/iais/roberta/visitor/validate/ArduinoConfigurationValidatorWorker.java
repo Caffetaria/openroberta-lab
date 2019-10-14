@@ -1,74 +1,74 @@
 package de.fhg.iais.roberta.visitor.validate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
-import de.fhg.iais.roberta.bean.UsedHardwareBean.Builder;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
-import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.typecheck.NepoInfo;
 import de.fhg.iais.roberta.util.Key;
 
-public class ArduinoConfigurationValidatorWorker extends AbstractConfigurationValidatorVisitor {
+public class ArduinoConfigurationValidatorWorker extends AbstractValidatorWorker {
 
-    private List<String> freePins;
+    private final List<String> freePins;
+    private List<String> currentFreePins;
     private String incorrectPin;
     private String failingBlock;
     private Key resultKey;
-    int errorCount;
+    private int errorCount;
+
+    public ArduinoConfigurationValidatorWorker(List<String> freePins) {
+        this.freePins = Collections.unmodifiableList(freePins);
+    }
 
     @Override
     public void execute(Project project) {
+        this.currentFreePins = new ArrayList<>(this.freePins);
         this.incorrectPin = null;
         this.failingBlock = null;
         this.resultKey = null;
-        project.getConfigurationAst().getConfigurationComponents().forEach((k, v) -> {
-            checkConfigurationBlock(v);
-        });
+        this.errorCount = 0;
+        project.getConfigurationAst().getConfigurationComponents().forEach((k, v) -> checkConfigurationBlock(v));
 
-        Map<String, String> result = new HashMap<>();
-        if ( this.incorrectPin != null && this.failingBlock != null ) {
-            result.put(this.failingBlock, this.incorrectPin);
-        }
-        Map<Key, Map<String, String>> validationResults = new HashMap<>();
         if ( this.resultKey != null ) {
-            validationResults.put(this.resultKey, result);
+            project.setResult(this.resultKey);
+            project.addResultParam("BLOCK", this.failingBlock);
+            project.addResultParam("PIN", this.incorrectPin);
+            project.addToErrorCounter(this.errorCount);
         }
-        //TODO: set the results somewhere
-        //project.setVisitorResults(validationResults);
-
-        UsedHardwareBean.Builder builder = new Builder();
-        ArduinoBrickValidatorVisitor visitor = new ArduinoBrickValidatorVisitor(builder, project.getConfigurationAst());
-        ArrayList<ArrayList<Phrase<Void>>> tree = project.getProgramAst().getTree();
-        for ( ArrayList<Phrase<Void>> phrases : tree ) {
-            for ( Phrase<Void> phrase : phrases ) {
-                phrase.visit(visitor); // TODO: REALLY REALLY BAD NAME !!!
-            }
-        }
+        super.execute(project);
     }
 
-    public void setFreePins(List<String> freePins) {
-        this.freePins = freePins;
+    @Override
+    protected AbstractProgramValidatorVisitor getVisitor(UsedHardwareBean.Builder builder, Project project) {
+        return new ArduinoBrickValidatorVisitor(builder, project.getConfigurationAst());
     }
 
-    public void checkConfigurationBlock(ConfigurationComponent configurationComponent) {
+    @Override
+    protected String getBeanName() {
+        return "ProgramValidator";
+    }
+
+    private void checkConfigurationBlock(ConfigurationComponent configurationComponent) {
         Map<String, String> componentProperties = configurationComponent.getComponentProperties();
         String blockType = configurationComponent.getComponentType();
         List<String> blockPins = new ArrayList<>();
         componentProperties.forEach((k, v) -> {
-            if ( !this.freePins.contains(v) ) {
-                this.errorCount++;
-                this.incorrectPin = v;
-                this.failingBlock = blockType;
-                this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
-                configurationComponent.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
-            } else {
-                blockPins.add(v);
-                this.freePins.removeIf(s -> s.equals(v));
+            if (k.equals("INPUT") || k.equals("OUTPUT")) {
+                if (!this.currentFreePins.contains(v)) {
+                    this.errorCount++;
+                    this.incorrectPin = v;
+                    this.failingBlock = blockType;
+                    this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
+                    configurationComponent.addInfo(NepoInfo.error(
+                            "CONFIGURATION_ERROR_ACTOR_MISSING"));
+                } else {
+                    blockPins.add(v);
+                    this.currentFreePins.removeIf(s -> s.equals(v));
+                }
             }
         });
         if ( blockPins.stream().distinct().count() != blockPins.size() ) {

@@ -41,34 +41,35 @@ public class CalliopeConfiguration extends ConfigurationAst {
         ConfigurationComponent AB = new ConfigurationComponent("AB", false, "AB", "AB", Collections.emptyMap());
 
         ArrayList<ConfigurationComponent> components =
-            Lists.newArrayList(
-                pin0,
-                pin1,
-                pin2,
-                C16,
-                C04,
-                C05,
-                C12,
-                C11,
-                C17,
-                C10,
-                C06,
-                C07,
-                C08,
-                C09,
-                pin3,
-                C19,
-                C18,
-                pin4,
-                pin5,
-                X,
-                Y,
-                Z,
-                STRENGTH,
-                NO_PORT,
-                A,
-                B,
-                AB);
+            Lists
+                .newArrayList(
+                    pin0,
+                    pin1,
+                    pin2,
+                    C16,
+                    C04,
+                    C05,
+                    C12,
+                    C11,
+                    C17,
+                    C10,
+                    C06,
+                    C07,
+                    C08,
+                    C09,
+                    pin3,
+                    C19,
+                    C18,
+                    pin4,
+                    pin5,
+                    X,
+                    Y,
+                    Z,
+                    STRENGTH,
+                    NO_PORT,
+                    A,
+                    B,
+                    AB);
         configuration = new ConfigurationAst.Builder().addComponents(components).build();
     }
 

@@ -1,16 +1,23 @@
 package de.fhg.iais.roberta.syntax.codegen.arduino.botnroll;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import org.junit.Test;
 
 import de.fhg.iais.roberta.components.ConfigurationAst;
+import de.fhg.iais.roberta.components.ConfigurationComponent;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class BotnrollSensorTest {
-
-    ConfigurationAst configuration = HelperBotNrollForXmlTest.makeConfiguration();
+public class BotnrollSensorTest extends BotnrollAstTest {
 
     @Test
     public void botnrollSensorTest() throws Exception {
-        this.botnrollHelper
-            .compareExistingAndGeneratedSource("/ast/sensors/botnroll_sensors_test.ino", "/ast/sensors/botnroll_sensors_test.xml", this.configuration);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXml(
+                testFactory,
+                "/ast/sensors/botnroll_sensors_test.ino",
+                "/ast/sensors/botnroll_sensors_test.xml",
+                makeConfiguration());
     }
 }

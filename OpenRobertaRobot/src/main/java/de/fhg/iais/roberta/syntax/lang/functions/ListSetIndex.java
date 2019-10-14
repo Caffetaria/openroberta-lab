@@ -128,12 +128,13 @@ public class ListSetIndex<V> extends Function<V> {
             exprParams.add(new ExprParam(BlocklyConstants.AT, BlocklyType.NUMBER_INT));
         }
         List<Expr<V>> params = helper.extractExprParameters(block, exprParams);
-        return ListSetIndex.make(
-            factory.getListElementOpertaion(op),
-            factory.getIndexLocation(helper.extractField(fields, BlocklyConstants.WHERE)),
-            params,
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return ListSetIndex
+            .make(
+                factory.getListElementOpertaion(op),
+                factory.getIndexLocation(helper.extractField(fields, BlocklyConstants.WHERE)),
+                params,
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

@@ -105,27 +105,6 @@ public final class NxtNxcVisitor extends AbstractCppVisitor implements INxtVisit
         this.brickConfiguration = brickConfiguration;
     }
 
-    /**
-     * factory method to generate NXC code from an AST.<br>
-     *
-     * @param brickConfiguration hardware configuration of the brick
-     * @param programPhrases to generate the code from
-     * @param withWrapping if false the generated code will be without the surrounding configuration code
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        boolean withWrapping) //
-    {
-        Assert.notNull(brickConfiguration);
-
-        NxtNxcVisitor astVisitor = new NxtNxcVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
-    }
-
     @Override
     public Void visitColorConst(ColorConst<Void> colorConst) {
         String color = "";

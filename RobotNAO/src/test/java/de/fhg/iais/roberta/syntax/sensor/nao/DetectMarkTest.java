@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.sensor.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class DetectMarkTest extends AstTest {
+public class DetectMarkTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfNaoMarkClass() throws Exception {

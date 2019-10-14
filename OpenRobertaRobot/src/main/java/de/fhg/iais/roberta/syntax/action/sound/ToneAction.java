@@ -72,7 +72,7 @@ public class ToneAction<V> extends Action<V> {
     /**
      * @return port of the buzzer.
      */
-    public String  getPort() {
+    public String getPort() {
         return this.port;
     }
 

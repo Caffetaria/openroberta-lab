@@ -95,7 +95,6 @@ import de.fhg.iais.roberta.syntax.sensor.generic.TimerSensor;
 import de.fhg.iais.roberta.syntax.sensor.generic.UltrasonicSensor;
 import de.fhg.iais.roberta.syntax.sensor.mbed.RadioRssiSensor;
 import de.fhg.iais.roberta.typecheck.BlocklyType;
-import de.fhg.iais.roberta.util.dbc.Assert;
 import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.visitor.IVisitor;
 import de.fhg.iais.roberta.visitor.hardware.IMbedVisitor;
@@ -123,25 +122,6 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
         super(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
         this.robotConfiguration = robotConfiguration;
 
-    }
-
-    /**
-     * factory method to generate C++ code from an AST.<br>
-     *
-     * @param brickConfiguration hardware configuration of the brick
-     * @param programPhrases to generate the code from
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        boolean withWrapping) {
-        Assert.notNull(brickConfiguration);
-
-        final CalliopeCppVisitor astVisitor = new CalliopeCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
     }
 
     @Override
@@ -1244,7 +1224,7 @@ public final class CalliopeCppVisitor extends AbstractCppVisitor implements IMbe
 
     @Override
     protected void generateSignaturesOfUserDefinedMethods() {
-        for ( final Method<Void> phrase : this.userDefinedMethods ) {
+        for ( final Method<Void> phrase : this.usedHardwareBean.getUserDefinedMethods() ) {
             nlIndent();
             this.sb.append(getLanguageVarTypeFromBlocklyType(phrase.getReturnType()));
             this.sb.append(" " + phrase.getMethodName() + "(");

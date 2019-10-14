@@ -41,27 +41,8 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
      *
      * @param phrases to generate the code from
      */
-    Bob3CppVisitor(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ArrayList<ArrayList<Phrase<Void>>> phrases) {
+    Bob3CppVisitor(UsedHardwareBean usedHardwareBean, CodeGeneratorSetupBean codeGeneratorSetupBean, ArrayList<ArrayList<Phrase<Void>>> phrases) {
         super(usedHardwareBean, codeGeneratorSetupBean, new ConfigurationAst.Builder().build(), phrases);
-    }
-
-    /**
-     * factory method to generate C++ code from an AST.<br>
-     *
-     * @param programPhrases to generate the code from
-     * @param withWrapping if false the generated code will be without the surrounding configuration code
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        boolean withWrapping) {
-        Bob3CppVisitor astVisitor = new Bob3CppVisitor(usedHardwareBean, codeGeneratorSetupBean, programPhrases);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
     }
 
     @Override
@@ -147,11 +128,15 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
         if ( !withWrapping ) {
             return;
         }
+        boolean isListUsed = false;
         for ( VarDeclaration<Void> var : this.usedHardwareBean.getVisitedVars() ) {
             if ( var.getVarType().toString().contains("ARRAY") ) {
-                this.sb.append("#include <ArduinoSTL.h>\n");
-                this.sb.append("#include <list>\n");
+                isListUsed = true;
             }
+        }
+        if (isListUsed) {
+            this.sb.append("#include <ArduinoSTL.h>\n");
+            this.sb.append("#include <list>\n");
         }
         this.sb.append("#include <math.h> \n");
         this.sb.append("#include <BOB3.h> \n");

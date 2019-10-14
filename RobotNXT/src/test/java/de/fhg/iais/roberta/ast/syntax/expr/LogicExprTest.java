@@ -3,10 +3,10 @@ package de.fhg.iais.roberta.ast.syntax.expr;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LogicExprTest extends AstTest {
+public class LogicExprTest extends NxtAstTest {
 
     @Test
     public void test1() throws Exception {
@@ -21,21 +21,24 @@ public class LogicExprTest extends AstTest {
                 + "(( (5 + 7) ) ==((5 + 7) )) >= (  (( (5 + 7)) == ((5 + 7)) ) && ( ((5 + 7)) <= ((5 + 7)) )  )\n"
                 + "!(((5 + 7))==((5 + 7)) )== true";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_expr.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_expr.xml",
+                                                                                   false);
     }
 
     @Test
     public void logicNegate() throws Exception {
         final String a = "\n!((0!= 0)&&false)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_negate.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_negate.xml",
+                                                                                   false);
     }
 
     @Test
     public void logicNull() throws Exception {
         final String a = "\nNULL";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_null.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_null.xml",
+                                                                                   false);
     }
 
     // The ternary was removed
@@ -43,6 +46,7 @@ public class LogicExprTest extends AstTest {
     public void logicTernary() throws Exception {
         final String a = "\n( 0 == 0 ) ? false : true";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/expr/logic_ternary.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_ternary.xml",
+                                                                                   false);
     }
 }

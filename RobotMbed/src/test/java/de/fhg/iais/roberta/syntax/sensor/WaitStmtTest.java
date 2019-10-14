@@ -19,7 +19,6 @@ public class WaitStmtTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/wait_stmt_two_cases.xml");
 
-        
     }
 
     // TODO: add generation of empty slot in xml

@@ -2,10 +2,12 @@ package de.fhg.iais.roberta.syntax.sensors;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
+import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
 
-public class MotorTachoTest extends AstTest {
+public class MotorTachoTest extends Ev3LejosAstTest {
 
     @Test
     public void setMotorTacho() throws Exception {
@@ -13,13 +15,15 @@ public class MotorTachoTest extends AstTest {
             "\nhal.getRegulatedMotorTachoValue(ActorPort.A, MotorTachoMode.ROTATION)"
                 + "hal.getUnregulatedMotorTachoValue(ActorPort.D, MotorTachoMode.DEGREE)}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_setEncoder.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/sensors/sensor_setEncoder.xml",
+                                                                                   makeRotateRegulatedUnregulatedForwardBackwardMotors(), false);
     }
 
     @Test
     public void resetMotorTacho() throws Exception {
         String a = "\nhal.resetRegulatedMotorTacho(ActorPort.A);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithSourceAsString(testFactory, a, "/syntax/sensors/sensor_resetEncoder.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/sensors/sensor_resetEncoder.xml",
+                                                                                   makeRotateRegulatedUnregulatedForwardBackwardMotors(), false);
     }
 }

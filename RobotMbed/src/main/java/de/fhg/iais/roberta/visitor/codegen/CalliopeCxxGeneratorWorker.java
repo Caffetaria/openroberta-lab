@@ -4,22 +4,20 @@ import de.fhg.iais.roberta.bean.CodeGeneratorSetupBean;
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
+import de.fhg.iais.roberta.visitor.lang.codegen.AbstractLanguageGeneratorWorker;
+import de.fhg.iais.roberta.visitor.lang.codegen.AbstractLanguageVisitor;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
-public class CalliopeCxxGeneratorWorker implements IWorker {
+public class CalliopeCxxGeneratorWorker extends AbstractLanguageGeneratorWorker {
 
     @Override
-    public void execute(Project project) {
-        Object usedHardwareBean = project.getWorkerResult("CollectedHardware");
-        Object codeGeneratorSetupBean = project.getWorkerResult("CodeGeneratorSetup");
-        CalliopeCppVisitor visitor =
-            new CalliopeCppVisitor(
-                (UsedHardwareBean) usedHardwareBean,
-                (CodeGeneratorSetupBean) codeGeneratorSetupBean,
+    protected AbstractLanguageVisitor getVisitor(UsedHardwareBean usedHardwareBean,
+                                                 CodeGeneratorSetupBean codeGeneratorSetupBean,
+                                                 Project project) {
+        return new CalliopeCppVisitor(
+                usedHardwareBean,
+                codeGeneratorSetupBean,
                 project.getConfigurationAst(),
                 project.getProgramAst().getTree());
-        visitor.setStringBuilders(project.getSourceCode(), project.getIndentation());
-        visitor.generateCode(true);
-        project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
     }
 }

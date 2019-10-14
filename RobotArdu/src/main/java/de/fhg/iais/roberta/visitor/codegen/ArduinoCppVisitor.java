@@ -65,25 +65,6 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
 
     }
 
-    /**
-     * factory method to generate C++ code from an AST.<br>
-     *
-     * @param brickConfiguration
-     * @param programPhrases to generate the code from
-     * @param withWrapping if false the generated code will be without the surrounding configuration code
-     */
-    public static String generate(
-        UsedHardwareBean usedHardwareBean,
-        CodeGeneratorSetupBean codeGeneratorSetupBean,
-        ConfigurationAst brickConfiguration,
-        ArrayList<ArrayList<Phrase<Void>>> programPhrases,
-        boolean withWrapping) {
-        ArduinoCppVisitor astVisitor =
-            new ArduinoCppVisitor(usedHardwareBean, codeGeneratorSetupBean, brickConfiguration, programPhrases);
-        astVisitor.generateCode(withWrapping);
-        return astVisitor.sb.toString();
-    }
-
     @Override
     public Void visitShowTextAction(ShowTextAction<Void> showTextAction) {
         this.sb.append("_lcd_" + showTextAction.getPort() + ".setCursor(");

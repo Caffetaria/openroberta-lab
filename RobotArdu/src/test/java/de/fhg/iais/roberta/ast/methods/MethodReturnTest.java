@@ -6,7 +6,6 @@ import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class MethodReturnTest extends AstTest {
-    
 
     @Test
     public void methodReturn1() throws Exception {

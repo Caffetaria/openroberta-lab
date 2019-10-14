@@ -22,20 +22,11 @@ import de.fhg.iais.roberta.visitor.hardware.IEv3Visitor;
  * @author kcvejoski
  */
 public final class Ev3UsedHardwareCollectorVisitor extends AbstractUsedHardwareCollectorVisitor implements IEv3Visitor<Void> {
-    private final Set<String> usedImages = new HashSet<>();
-
-    private boolean isSayTextUsed = false;
-
-    public Ev3UsedHardwareCollectorVisitor(UsedHardwareBean.Builder builder, ArrayList<ArrayList<Phrase<Void>>> phrasesSet, ConfigurationAst brickConfiguration) {
+    public Ev3UsedHardwareCollectorVisitor(
+        UsedHardwareBean.Builder builder,
+        ArrayList<ArrayList<Phrase<Void>>> phrasesSet,
+        ConfigurationAst brickConfiguration) {
         super(builder, brickConfiguration);
-    }
-
-    public Set<String> getUsedImages() {
-        return this.usedImages;
-    }
-
-    public boolean isSayTextUsed() {
-        return this.isSayTextUsed;
     }
 
     @Override
@@ -49,7 +40,7 @@ public final class Ev3UsedHardwareCollectorVisitor extends AbstractUsedHardwareC
     @Override
     public Void visitSayTextAction(SayTextAction<Void> sayTextAction) {
         super.visitSayTextAction(sayTextAction);
-        this.isSayTextUsed = true;
+        this.builder.setSayTextUsed(true);
         return null;
     }
 
@@ -60,7 +51,7 @@ public final class Ev3UsedHardwareCollectorVisitor extends AbstractUsedHardwareC
 
     @Override
     public Void visitShowPictureAction(ShowPictureAction<Void> showPictureAction) {
-        this.usedImages.add(showPictureAction.getPicture().toString());
+        this.builder.addUsedImage(showPictureAction.getPicture().toString());
         return null;
     }
 

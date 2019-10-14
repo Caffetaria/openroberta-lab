@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LedBarSetTest extends AstTest {
+public class LedBarSetTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfLedBarSetActionClass() throws Exception {
@@ -13,7 +13,6 @@ public class LedBarSetTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/ledbar_set.xml");
 
-        
     }
 
     @Test

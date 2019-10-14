@@ -133,15 +133,16 @@ public final class PointLookAt<V> extends Action<V> {
         Phrase<V> pointZ = helper.extractValue(values, new ExprParam(BlocklyConstants.Z, BlocklyType.NUMBER_INT));
         Phrase<V> speed = helper.extractValue(values, new ExprParam(BlocklyConstants.SPEED, BlocklyType.NUMBER_INT));
 
-        return PointLookAt.make(
-            Frame.get(frame),
-            PointLook.get(pointLook),
-            helper.convertPhraseToExpr(pointX),
-            helper.convertPhraseToExpr(pointY),
-            helper.convertPhraseToExpr(pointZ),
-            helper.convertPhraseToExpr(speed),
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return PointLookAt
+            .make(
+                Frame.get(frame),
+                PointLook.get(pointLook),
+                helper.convertPhraseToExpr(pointX),
+                helper.convertPhraseToExpr(pointY),
+                helper.convertPhraseToExpr(pointZ),
+                helper.convertPhraseToExpr(speed),
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

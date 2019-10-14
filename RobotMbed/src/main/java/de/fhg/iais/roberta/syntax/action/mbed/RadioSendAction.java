@@ -51,7 +51,7 @@ public class RadioSendAction<V> extends Action<V> {
     public String getPower() {
         return this.power;
     }
-    
+
     public BlocklyType getType() {
         return this.type;
     }
@@ -79,10 +79,11 @@ public class RadioSendAction<V> extends Action<V> {
         Phrase<V> message = helper.extractValue(values, new ExprParam(BlocklyConstants.MESSAGE, BlocklyType.STRING));
         String power = helper.extractField(fields, BlocklyConstants.POWER);
         String type = helper.extractField(fields, BlocklyConstants.TYPE);
-        
-        return RadioSendAction.make(helper.convertPhraseToExpr(message), BlocklyType.get(type), power, helper.extractBlockProperties(block), helper.extractComment(block));
+
+        return RadioSendAction
+            .make(helper.convertPhraseToExpr(message), BlocklyType.get(type), power, helper.extractBlockProperties(block), helper.extractComment(block));
     }
-    
+
     @Override
     public Block astToBlock() {
         Block jaxbDestination = new Block();

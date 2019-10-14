@@ -5,10 +5,12 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
+import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class Ev3LejosSensorTest {
+public class Ev3LejosSensorTest extends Ev3LejosAstTest {
 
     ConfigurationAst configuration = makeConfigurationWithHTSensors();
 
@@ -26,7 +28,11 @@ public class Ev3LejosSensorTest {
 
     @Test
     public void ev3HtSensorTest() throws Exception {
-        this.ev3lejosHelper
-            .compareExistingAndGeneratedJavaSource("/ast/sensors/ev3_htsensors_test.java", "/ast/sensors/ev3_htsensors_test.xml", this.configuration);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXml(
+                testFactory,
+                "/ast/sensors/ev3_htsensors_test.java",
+                "/ast/sensors/ev3_htsensors_test.xml",
+                this.configuration);
     }
 }

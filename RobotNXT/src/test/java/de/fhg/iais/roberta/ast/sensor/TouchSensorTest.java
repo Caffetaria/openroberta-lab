@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.sensor.generic.TouchSensor;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TouchSensorTest extends AstTest {
+public class TouchSensorTest extends NxtAstTest {
 
     @Test
     public void sensorTouch() throws Exception {
@@ -21,7 +21,7 @@ public class TouchSensorTest extends AstTest {
 
     @Test
     public void getPort() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/sensors/sensor_Touch.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/sensors/sensor_Touch.xml");
 
         TouchSensor<Void> cs = (TouchSensor<Void>) forest.get(0).get(1);
 

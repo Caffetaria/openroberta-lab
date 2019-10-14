@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class LookAtTest {
-    
+public class LookAtTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfPointLookAtRobotClass() throws Exception {
@@ -16,7 +16,6 @@ public class LookAtTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/lookAt_robot.xml");
 
-        
     }
 
     @Test
@@ -28,7 +27,6 @@ public class LookAtTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/lookAt_world.xml");
 
-        
     }
 
     @Test
@@ -40,7 +38,6 @@ public class LookAtTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/lookAt_torso.xml");
 
-        
     }
 
     /*

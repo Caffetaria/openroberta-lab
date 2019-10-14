@@ -18,7 +18,6 @@ public class PinTouchSensorTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/sensor/pin_is_touched.xml");
 
-        
     }
 
     @Test

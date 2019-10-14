@@ -123,12 +123,13 @@ public class ImageShiftFunction<V> extends Function<V> {
         IDirection shiftingDirection = factory.getDirection(helper.extractField(fields, BlocklyConstants.OP));
         Phrase<V> image = helper.extractValue(values, new ExprParam(BlocklyConstants.A, BlocklyType.PREDEFINED_IMAGE));
         Phrase<V> numberOfPositions = helper.extractValue(values, new ExprParam(BlocklyConstants.B, BlocklyType.NUMBER_INT));
-        return ImageShiftFunction.make(
-            helper.convertPhraseToExpr(image),
-            helper.convertPhraseToExpr(numberOfPositions),
-            shiftingDirection,
-            helper.extractBlockProperties(block),
-            helper.extractComment(block));
+        return ImageShiftFunction
+            .make(
+                helper.convertPhraseToExpr(image),
+                helper.convertPhraseToExpr(numberOfPositions),
+                shiftingDirection,
+                helper.extractBlockProperties(block),
+                helper.extractComment(block));
     }
 
     @Override

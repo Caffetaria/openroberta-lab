@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class WalkForwardTest extends AstTest {
+public class WalkForwardTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfWalkClass() throws Exception {
@@ -13,7 +13,6 @@ public class WalkForwardTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/walkForwardsTwenty.xml");
 
-        
     }
 
     @Test

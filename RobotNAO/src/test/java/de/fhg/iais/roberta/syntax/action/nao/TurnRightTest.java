@@ -2,10 +2,10 @@ package de.fhg.iais.roberta.syntax.action.nao;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.NaoAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class TurnRightTest extends AstTest {
+public class TurnRightTest extends NaoAstTest {
 
     @Test
     public void make_ByDefault_ReturnInstanceOfTurnClass() throws Exception {
@@ -13,7 +13,6 @@ public class TurnRightTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/action/turnRightSixty.xml");
 
-        
     }
 
     @Test

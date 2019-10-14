@@ -3,10 +3,10 @@ package de.fhg.iais.roberta.syntax.expr;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.syntax.CalliopeAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class PredefinedImageTest extends AstTest {
+public class PredefinedImageTest extends CalliopeAstTest {
 
     @Test
     public void make_ByDefault_ReturnTwoInstancesOfPredefinedImageClass() throws Exception {
@@ -17,7 +17,6 @@ public class PredefinedImageTest extends AstTest {
 
         UnitTestHelper.checkProgramAstEquality(testFactory, expectedResult, "/expr/image_get_image_defined_as_global_variables.xml");
 
-        
     }
 
     @Ignore

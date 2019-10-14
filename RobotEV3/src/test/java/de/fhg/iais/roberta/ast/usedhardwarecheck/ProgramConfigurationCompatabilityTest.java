@@ -1,23 +1,22 @@
 package de.fhg.iais.roberta.ast.usedhardwarecheck;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3AstTest;
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
-import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
-import de.fhg.iais.roberta.syntax.Phrase;
+import de.fhg.iais.roberta.transformer.Project;
+import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
-import de.fhg.iais.roberta.visitor.validate.AbstractBrickValidatorVisitor;
-import de.fhg.iais.roberta.visitor.validate.Ev3BrickValidatorVisitor;
+import de.fhg.iais.roberta.visitor.validate.Ev3BrickValidatorWorker;
 
-public class ProgramConfigurationCompatabilityTest extends AstTest {
+public class ProgramConfigurationCompatabilityTest extends Ev3LejosAstTest {
 
     @Test
     public void ev3program_configuration_compatibility_4_errors() throws Exception {
@@ -34,22 +33,14 @@ public class ProgramConfigurationCompatabilityTest extends AstTest {
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, ultrasonicSensor));
 
-        ConfigurationAst brickConfiguration = builder.build();
-        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/visitors/program_config_compatibility.xml");
-        UsedHardwareBean.Builder beanBuilder = new UsedHardwareBean.Builder();
-        AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(beanBuilder, brickConfiguration);
-        programChecker.check(phrases);
+        Project.Builder builder1 = UnitTestHelper.setupWithProgramXML(testFactory,
+                                                                      Util1.readResourceContent("/visitors/program_config_compatibility.xml"));
+        builder1.setConfigurationAst(builder.build());
+        Ev3BrickValidatorWorker worker = new Ev3BrickValidatorWorker();
+        Project project = builder1.build();
+        worker.execute(project);
+        Assert.assertEquals(4, project.getErrorCounter());
 
-        Assert.assertEquals(4, programChecker.getErrorCount());
-
-    }
-
-    private static Map<String, String> createMap(String... args) {
-        Map<String, String> m = new HashMap<>();
-        for ( int i = 0; i < args.length; i += 2 ) {
-            m.put(args[i], args[i + 1]);
-        }
-        return m;
     }
 
     @Test
@@ -69,13 +60,14 @@ public class ProgramConfigurationCompatabilityTest extends AstTest {
 
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, colorSensor, gyroSensor, ultrasonicSensor));
 
-        ConfigurationAst brickConfiguration = builder.build();
-        ArrayList<ArrayList<Phrase<Void>>> phrases = UnitTestHelper.getAst(testFactory, "/visitors/program_config_compatibility_gyro_touch_ultra_color.xml");
-        UsedHardwareBean.Builder beanBuilder = new UsedHardwareBean.Builder();
-        AbstractBrickValidatorVisitor programChecker = new Ev3BrickValidatorVisitor(beanBuilder, brickConfiguration);
-        programChecker.check(phrases);
-
-        Assert.assertEquals(0, programChecker.getErrorCount());
-
+        Project.Builder builder1 = UnitTestHelper.setupWithProgramXML(testFactory,
+                                                                      Util1.readResourceContent(
+                                                                              "/visitors" +
+                                                                              "/program_config_compatibility_gyro_touch_ultra_color.xml"));
+        builder1.setConfigurationAst(builder.build());
+        Ev3BrickValidatorWorker worker = new Ev3BrickValidatorWorker();
+        Project project = builder1.build();
+        worker.execute(project);
+        Assert.assertEquals(0, project.getErrorCounter());
     }
 }

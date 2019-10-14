@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
+import de.fhg.iais.roberta.NxtAstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.sensor.generic.SoundSensor;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class SoundSensorTest extends AstTest {
+public class SoundSensorTest extends NxtAstTest {
 
     @Test
     public void sensorSound() throws Exception {
@@ -21,7 +21,7 @@ public class SoundSensorTest extends AstTest {
 
     @Test
     public void getPort() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/sensors/sensor_Sound.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/sensors/sensor_Sound.xml");
 
         SoundSensor<Void> cs = (SoundSensor<Void>) forest.get(0).get(1);
 

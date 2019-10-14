@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.fhg.iais.roberta.Ev3AstTest;
+import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.ev3.ShowPictureAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-public class ShowPictureActionTest extends AstTest {
+public class ShowPictureActionTest extends Ev3LejosAstTest {
 
     @Test
     public void make() throws Exception {
@@ -20,21 +22,21 @@ public class ShowPictureActionTest extends AstTest {
 
     @Test
     public void getPicture() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_ShowPicture.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_ShowPicture.xml");
         ShowPictureAction<Void> spa = (ShowPictureAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("EYESOPEN", spa.getPicture().toString());
     }
 
     @Test
     public void getX() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_ShowPicture.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_ShowPicture.xml");
         ShowPictureAction<Void> spa = (ShowPictureAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("NumConst [0]", spa.getX().toString());
     }
 
     @Test
     public void getY() throws Exception {
-        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory,"/ast/actions/action_ShowPicture.xml");
+        ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/actions/action_ShowPicture.xml");
         ShowPictureAction<Void> spa = (ShowPictureAction<Void>) forest.get(0).get(1);
         Assert.assertEquals("NumConst [0]", spa.getY().toString());
     }
