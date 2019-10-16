@@ -13,7 +13,6 @@ public class BrickSensorTest extends AstTest {
     public void isPressed() throws Exception {
         String a = "\nbnr.buttonIsPressed(2)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_brick1.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_brick1.xml", false);
     }
 }

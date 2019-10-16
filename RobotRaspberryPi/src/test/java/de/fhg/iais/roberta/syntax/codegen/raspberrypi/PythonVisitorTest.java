@@ -57,8 +57,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/touch.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/touch.xml", false);
         ;
     }
 
@@ -83,8 +82,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/ultrasonic.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/ultrasonic.xml", false);
         ;
     }
 
@@ -103,8 +101,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/accelerometer.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/accelerometer.xml", false);
         ;
     }
 
@@ -122,8 +119,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/drop_off.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/drop_off.xml", false);
         ;
     }
 
@@ -140,8 +136,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/wall.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/wall.xml", false);
         ;
     }
 
@@ -157,8 +152,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/drive.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/drive.xml", false);
         ;
     }
 
@@ -173,8 +167,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/stop.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/stop.xml", false);
         ;
     }
 
@@ -192,8 +185,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/play_sound.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/play_sound.xml", false);
         ;
     }
 
@@ -208,8 +200,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_on.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_on.xml", false);
         ;
     }
 
@@ -224,8 +215,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_off.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_off.xml", false);
         ;
     }
 
@@ -240,8 +230,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/vacuum_on.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/vacuum_on.xml", false);
         ;
     }
 
@@ -256,8 +245,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/vacuum_off.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/vacuum_off.xml", false);
         ;
     }
 
@@ -273,8 +261,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_on.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_on.xml", false);
         ;
     }
 
@@ -289,8 +276,7 @@ public class PythonVisitorTest extends RaspberryPiAstTest {
                 + "    hal.right_motor_stop()\n"
                 + "\n"
                 + MAIN_METHOD;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_stop.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_stop.xml", false);
         ;
     }
 }

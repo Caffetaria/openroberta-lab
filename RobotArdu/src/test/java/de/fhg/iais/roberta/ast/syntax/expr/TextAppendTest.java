@@ -11,7 +11,6 @@ public class TextAppendTest extends AstTest {
     public void Test() throws Exception {
         final String a = "item+String(SENSOR_1)item+String(0)item+String(\"aaa\")";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/text/text_append.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/text/text_append.xml", false);
     }
 }

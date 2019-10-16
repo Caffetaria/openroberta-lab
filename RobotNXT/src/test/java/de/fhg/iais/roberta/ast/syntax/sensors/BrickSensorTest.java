@@ -11,7 +11,6 @@ public class BrickSensorTest extends NxtAstTest {
     public void isPressed() throws Exception {
         String a = "\nButtonPressed(BTNCENTER,false)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_brick1.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_brick1.xml", false);
     }
 }

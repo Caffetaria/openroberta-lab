@@ -11,7 +11,6 @@ public class MotorDriveStopActionTest extends BotnrollAstTest {
     public void stop() throws Exception {
         final String a = "\none.stop();";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_Stop.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_Stop.xml", false);
     }
 }

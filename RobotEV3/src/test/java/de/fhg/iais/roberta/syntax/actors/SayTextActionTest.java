@@ -11,9 +11,12 @@ public class SayTextActionTest extends Ev3LejosAstTest {
     public void sayText() throws Exception {
         String a = "\nhal.sayText(\"Hello world\");}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory,
-                                                                                   a,
-                                                                                   "/syntax/actions/action_SayText.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/actions/action_SayText.xml",
+                makeStandardConfiguration(),
+                false);
     }
 }

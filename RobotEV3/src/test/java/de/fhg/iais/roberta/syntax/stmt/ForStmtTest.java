@@ -4,7 +4,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class ForStmtTest extends Ev3LejosAstTest {
@@ -25,8 +24,7 @@ public class ForStmtTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/for_stmt.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/for_stmt.xml", false);
     }
 
     // TODO Invalid test
@@ -36,8 +34,7 @@ public class ForStmtTest extends Ev3LejosAstTest {
         String a =
             "for ( float k0 = 0; k0 < 10; k0+=1 ) {item3 += String.valueOf(\"Proba\");item3 += String.valueOf(\"Proba1\");for ( float k1 = 0; k1 < 10; k1+=1 ) {}}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/control/repeat_stmt.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/control/repeat_stmt.xml", false);
     }
 
     @Test

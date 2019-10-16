@@ -11,23 +11,20 @@ public class MathSingleTest extends NxtAstTest {
     public void Test() throws Exception {
         final String a = "sqrt(0)abs(0)-(0)MathLn(0)MathLog(0)MathPow(E,0)MathPow(10,0)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_single.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_single.xml", false);
     }
 
     @Test
     public void Test1() throws Exception {
         final String a = "volume=(sqrt(0))*4/100.0;";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_single1.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_single1.xml", false);
     }
 
     @Test
     public void Test2() throws Exception {
         final String a = "___item=sqrt(0);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_single2.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_single2.xml", false);
     }
 }

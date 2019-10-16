@@ -1,16 +1,9 @@
 package de.fhg.iais.roberta.syntax.codegen.nxt;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.NxtAstTest;
-import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class NxcVisitorTest extends NxtAstTest {
@@ -40,8 +33,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -60,8 +58,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator1.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator1.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -92,8 +95,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + SUFFIX
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator2.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator2.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -125,8 +133,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator3.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator3.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -159,8 +172,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator4.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator4.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -180,8 +198,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator5.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator5.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -199,8 +222,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator6.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator6.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -217,8 +245,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator7.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator7.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -239,8 +272,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator8.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator8.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -259,8 +297,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator9.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator9.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -302,8 +345,8 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "SetSensorColorRed(3);"
                 + "    }";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_2.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_2.xml", brickConfiguration, true);
         ;
     }
 
@@ -325,8 +368,8 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "SetSensorColorGreen(3);"
                 + "    }";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_1.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_1.xml", brickConfiguration, true);
         ;
     }
 
@@ -356,8 +399,8 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "SetSensorColorNone(3);"
                 + "    }";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_3.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_3.xml", brickConfiguration, true);
         ;
     }
 
@@ -378,8 +421,8 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "    }"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_1.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_1.xml", brickConfiguration, true);
         ;
     }
 
@@ -433,8 +476,7 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt4.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt4.xml", brickConfiguration, true);
         ;
     }
 
@@ -449,8 +491,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "    ___item2=\"cc\";\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator11.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator11.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -480,8 +527,13 @@ public class NxcVisitorTest extends NxtAstTest {
 
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator12.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator12.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -499,8 +551,7 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/forEach_stmt.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/forEach_stmt.xml", brickConfiguration, true);
         ;
     }
 
@@ -513,8 +564,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "Wait(500);"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayTone.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/ast/actions/action_PlayTone.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -527,8 +583,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "Wait(2000);"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayNote.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/ast/actions/action_PlayNote.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -548,8 +609,7 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "   }"
                 + "}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/no_loops.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/no_loops.xml", brickConfiguration, true);
         ;
     }
 
@@ -573,8 +633,7 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "}"
                 + "}"
                 + "}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/nested_loops.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/nested_loops.xml", brickConfiguration, true);
         ;
     }
 
@@ -635,8 +694,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "     Wait(15);"
                 + "}"
                 + "}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/loops_with_break_and_continue.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/stmt/loops_with_break_and_continue.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -663,8 +727,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "}"
                 + "break_loop1:"
                 + "}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/loop_with_break_and_continue_inside_wait.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/stmt/loop_with_break_and_continue_inside_wait.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -698,8 +767,12 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "}";
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/two_loop_with_break_and_continue_one_inside_wait_another_not.xml",
-                                                                         brickConfiguration, true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/stmt/two_loop_with_break_and_continue_one_inside_wait_another_not.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -731,8 +804,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "}"
                 + "break_loop1:"
                 + "}";
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/two_nested_loops_first_with_break_in_wait_second_not.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/stmt/two_nested_loops_first_with_break_in_wait_second_not.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -770,8 +848,13 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "break_loop1:"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/loop_with_nested_two_loops_inside_wait.xml",
-                                                                                   brickConfiguration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/stmt/loop_with_nested_two_loops_inside_wait.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -819,8 +902,12 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "break_loop1:"
                 + "}";
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml",
-                                                                         brickConfiguration, true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/stmt/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                brickConfiguration,
+                true);
         ;
     }
 
@@ -889,10 +976,11 @@ public class NxcVisitorTest extends NxtAstTest {
                 + "}";
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                    testFactory,
-                    a,
-                    "/syntax/stmt/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml",
-                    brickConfiguration, true);
+                testFactory,
+                a,
+                "/syntax/stmt/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                brickConfiguration,
+                true);
         ;
     }
 }

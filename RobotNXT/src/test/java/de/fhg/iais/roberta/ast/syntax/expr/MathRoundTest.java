@@ -11,7 +11,6 @@ public class MathRoundTest extends NxtAstTest {
     public void Test() throws Exception {
         final String a = "MathRound(0)MathRoundUp(0)MathFloor(0)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_round.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_round.xml", false);
     }
 }

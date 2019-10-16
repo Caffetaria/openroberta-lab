@@ -11,7 +11,6 @@ public class UltrasonicSensorTest extends BotnrollAstTest {
     public void setUltrasonic() throws Exception {
         final String a = "\nbnr.ultrasonicDistance(4)bnr.ultrasonicDistance(2)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_setUltrasonic.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_setUltrasonic.xml", false);
     }
 }

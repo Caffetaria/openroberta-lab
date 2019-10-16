@@ -11,18 +11,25 @@ public class MotorOnActionTest extends Ev3LejosAstTest {
     public void motorOn() throws Exception {
         String a = "hal.turnOnRegulatedMotor(ActorPort.B, 30);" + "hal.turnOnUnregulatedMotor(ActorPort.C, 50);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory,
-                                    a,
-                                    "/syntax/actions/action_MotorOn.xml", makeRotateRegulatedUnregulatedForwardBackwardMotors(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/actions/action_MotorOn.xml",
+                makeRotateRegulatedUnregulatedForwardBackwardMotors(),
+                false);
     }
 
     @Test
     public void motorOnFor() throws Exception {
         String a = "hal.rotateRegulatedMotor(ActorPort.B, 30, MotorMoveMode.ROTATIONS, 1);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory,
-                                                                                   a,
-                                                                                   "/syntax/actions/action_MotorOnFor.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/actions/action_MotorOnFor.xml",
+                makeStandardConfiguration(),
+                false);
     }
 }

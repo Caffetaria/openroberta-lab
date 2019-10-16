@@ -134,7 +134,7 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
                 isListUsed = true;
             }
         }
-        if (isListUsed) {
+        if ( isListUsed ) {
             this.sb.append("#include <ArduinoSTL.h>\n");
             this.sb.append("#include <list>\n");
         }

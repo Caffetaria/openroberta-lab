@@ -11,17 +11,20 @@ public class TurnActionTest extends BotnrollAstTest {
     public void turn() throws Exception {
         final String a = "\none.movePID(50,-50);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorDiffTurn.xml",
-                                                                                   makeConfiguration(),
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorDiffTurn.xml", makeConfiguration(), false);
     }
 
     @Test
     public void turnFor() throws Exception {
         final String a = "\nbnr.moveTimePID(50,-50,20);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a
-                , "/ast/actions/action_MotorDiffTurnFor.xml", makeConfiguration(),
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/ast/actions/action_MotorDiffTurnFor.xml",
+                makeConfiguration(),
+                false);
     }
 }

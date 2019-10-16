@@ -11,8 +11,7 @@ public class MathConstrainTest extends Ev3LejosAstTest {
     public void Test() throws Exception {
         String a = "Math.min(Math.max(hal.getUltraSonicSensorDistance(SensorPort.S4),1),100)}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_constrain.xml",
-                                                                                   makeStandardConfiguration(),
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_constrain.xml", makeStandardConfiguration(), false);
     }
 }

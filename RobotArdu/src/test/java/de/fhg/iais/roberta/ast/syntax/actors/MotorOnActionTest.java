@@ -14,15 +14,13 @@ public class MotorOnActionTest extends BotnrollAstTest {
     public void motorOn() throws Exception {
         String a = "one.move1mPID(B,30);one.move1mPID(C,50);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOn.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOn.xml", false);
     }
 
     @Test
     public void motorOnFor() throws Exception {
         String a = "one.servo1(30);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOnFor.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOnFor.xml", false);
     }
 }

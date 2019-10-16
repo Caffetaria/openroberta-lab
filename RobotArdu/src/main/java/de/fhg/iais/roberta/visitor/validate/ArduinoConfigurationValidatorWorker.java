@@ -57,14 +57,13 @@ public class ArduinoConfigurationValidatorWorker extends AbstractValidatorWorker
         String blockType = configurationComponent.getComponentType();
         List<String> blockPins = new ArrayList<>();
         componentProperties.forEach((k, v) -> {
-            if (k.equals("INPUT") || k.equals("OUTPUT")) {
-                if (!this.currentFreePins.contains(v)) {
+            if ( k.equals("INPUT") || k.equals("OUTPUT") ) {
+                if ( !this.currentFreePins.contains(v) ) {
                     this.errorCount++;
                     this.incorrectPin = v;
                     this.failingBlock = blockType;
                     this.resultKey = Key.COMPILERWORKFLOW_ERROR_PROGRAM_GENERATION_FAILED_WITH_PARAMETERS;
-                    configurationComponent.addInfo(NepoInfo.error(
-                            "CONFIGURATION_ERROR_ACTOR_MISSING"));
+                    configurationComponent.addInfo(NepoInfo.error("CONFIGURATION_ERROR_ACTOR_MISSING"));
                 } else {
                     blockPins.add(v);
                     this.currentFreePins.removeIf(s -> s.equals(v));

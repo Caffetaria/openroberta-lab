@@ -11,8 +11,7 @@ public class MotorStopActionTest extends NxtAstTest {
     public void stopMotor() throws Exception {
         final String a = "\nFloat(OUT_A);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorStop.xml",
-                                                                                   brickConfiguration,
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorStop.xml", brickConfiguration, false);
     }
 }

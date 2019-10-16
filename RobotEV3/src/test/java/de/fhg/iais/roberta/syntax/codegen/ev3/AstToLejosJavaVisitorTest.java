@@ -136,9 +136,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -160,9 +164,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator1.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator1.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -209,9 +217,12 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "}\n";
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator" +
-                                                                         "/java" +
-                                                                                         "/java_code_generator2.xml", brickConfigurationNew, true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator" + "/java" + "/java_code_generator2.xml",
+                brickConfigurationNew,
+                true);
     }
 
     @Test
@@ -260,9 +271,12 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "}\n";
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a,
-                                                        "/syntax/code_generator/java/java_code_generator3.xml",
-                                                        brickConfigurationNew, true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator3.xml",
+                brickConfigurationNew,
+                true);
     }
 
     @Test
@@ -315,9 +329,12 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a,
-                                                        "/syntax/code_generator/java/java_code_generator4.xml",
-                                                                         brickConfigurationNew, true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator4.xml",
+                brickConfigurationNew,
+                true);
     }
 
     @Test
@@ -342,10 +359,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a,
-                                                                                   "/syntax/code_generator/java/java_code_generator5.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator5.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -367,9 +387,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator6.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator6.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -390,9 +414,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator7.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator7.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -418,9 +446,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator8.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator8.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -444,9 +476,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator9.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator9.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -476,9 +512,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/task/task_mainTask.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/task/task_mainTask.xml", brickConfiguration, true);
     }
 
     @Test
@@ -502,9 +536,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_1.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_1.xml", brickConfiguration, true);
     }
 
     @Test
@@ -526,8 +559,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_2.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_2.xml", brickConfiguration, true);
     }
 
     @Test
@@ -550,8 +583,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_1.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_1.xml", brickConfiguration, true);
     }
 
     @Test
@@ -580,8 +613,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_3.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_void_3.xml", brickConfiguration, true);
     }
 
     @Test
@@ -605,8 +638,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_1.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_1.xml", brickConfiguration, true);
     }
 
     @Test
@@ -630,8 +663,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_2.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_return_2.xml", brickConfiguration, true);
     }
 
     @Test
@@ -656,8 +689,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_2.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/methods/method_if_return_2.xml", brickConfiguration, true);
     }
 
     @Test
@@ -679,8 +712,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt4.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt4.xml", brickConfiguration, true);
     }
 
     @Test
@@ -699,8 +731,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/java_code_generator11.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/java_code_generator11.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -721,8 +758,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/forEach_stmt.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/forEach_stmt.xml", brickConfiguration, true);
     }
 
     @Test
@@ -739,8 +775,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayTone.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/ast/actions/action_PlayTone.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -757,9 +798,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/ast/actions/action_PlayNote.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/ast/actions/action_PlayNote.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -786,9 +831,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "}"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/no_loops.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/no_loops.xml", brickConfiguration, true);
     }
 
     @Test
@@ -818,9 +862,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "hal.closeResources();"
                 + "}"
                 + "}\n";
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/nested_loops.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/nested_loops.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -833,7 +881,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "private Set<UsedSensor> usedSensors = new LinkedHashSet<UsedSensor>(Arrays.asList(new UsedSensor(SensorPort.S1, SensorType.TOUCH, TouchSensorMode.TOUCH)));"
                 + HAL
                 + MAIN_METHOD
-                +"ArrayList<Float>item2=newArrayList<>(Arrays.asList((float)0,(float)0,(float)0));"
+                + "ArrayList<Float>item2=newArrayList<>(Arrays.asList((float)0,(float)0,(float)0));"
                 + "public void run() throwsException {\n"
                 + "hal.startLogging();"
                 + "if(true){"
@@ -842,9 +890,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "break;"
                 + "} else if(30==12){continue;}}}for(floati=1;i<10;i+=1){hal.driveDistance(DriveDirection.FOREWARD,30,20);if(30==20){continue;}elseif(30==12){break;}}for(floatitem:item2){hal.driveDistance(DriveDirection.FOREWARD,30,20);if(30==20){continue;}elseif(30==20){break;}}while(true){if(30==20){continue;}elseif(30==20){break;}}for(floatk0=0;k0<10;k0+=1){if(30==20){break;}elseif(30==20){continue;}}while(true){if(hal.isPressed(SensorPort.S1)==true){break;}if(hal.isPressed(SensorPort.S1)==true){break;}hal.waitFor(15);}hal.closeResources();}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/loops_with_break_and_continue.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/loops_with_break_and_continue.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -881,9 +933,12 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "}\n";
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/loop_with_break_and_continue_inside_wait.xml",
-                                                                         brickConfiguration,
-                                                                         true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/loop_with_break_and_continue_inside_wait.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -925,11 +980,11 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                    testFactory,
-                    a,
-                    "/syntax/code_generator/java/two_loop_with_break_and_continue_one_inside_wait_another_not.xml",
-                    brickConfiguration,
-                    true);
+                testFactory,
+                a,
+                "/syntax/code_generator/java/two_loop_with_break_and_continue_one_inside_wait_another_not.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -967,11 +1022,11 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "}\n";
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                    testFactory,
-                    a,
-                    "/syntax/code_generator/java/two_nested_loops_first_with_break_in_wait_second_not.xml",
-                    brickConfiguration,
-                    true);
+                testFactory,
+                a,
+                "/syntax/code_generator/java/two_nested_loops_first_with_break_in_wait_second_not.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -1012,9 +1067,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "}"
                 + "}\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/loop_with_nested_two_loops_inside_wait.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/loop_with_nested_two_loops_inside_wait.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -1066,11 +1125,11 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                    testFactory,
-                    a,
-                    "/syntax/code_generator/java/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml",
-                    brickConfiguration,
-                    true);
+                testFactory,
+                a,
+                "/syntax/code_generator/java/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -1144,11 +1203,11 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + "}\n";
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                    testFactory,
-                    a,
-                    "/syntax/code_generator/java/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml",
-                    brickConfiguration,
-                    true);
+                testFactory,
+                a,
+                "/syntax/code_generator/java/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -1170,9 +1229,13 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 + " light = hal.getColorSensorAmbient(SensorPort.S3);\n"
                 + " rgb = hal.getColorSensorRgb(SensorPort.S3);\n"
                 + "}}\n";
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/code_generator/java/read_color_sensor_in_different_modes.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/code_generator/java/read_color_sensor_in_different_modes.xml",
+                brickConfiguration,
+                true);
     }
 
     @Test
@@ -1208,7 +1271,8 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
                 testFactory,
                 a,
                 "/syntax/code_generator/java/read_hitec_color_sensor_v2_in_different_modes.xml",
-                brickConfigurationNew, true);
+                brickConfigurationNew,
+                true);
     }
 
     @Test

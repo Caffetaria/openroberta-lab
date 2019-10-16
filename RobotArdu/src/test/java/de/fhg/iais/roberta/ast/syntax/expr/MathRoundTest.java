@@ -12,9 +12,6 @@ public class MathRoundTest extends ArduinoAstTest {
     public void Test() throws Exception {
         final String a = "round(0)ceil(0)floor(0)";
 
-        UnitTestHelper.checkWorkers(testFactory,
-                                    a,
-                                    "/syntax/math/math_round.xml",
-                                    new ArduinoCxxGeneratorWorker());
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/math/math_round.xml", new ArduinoCxxGeneratorWorker());
     }
 }

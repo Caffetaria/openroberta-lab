@@ -1,12 +1,7 @@
 package de.fhg.iais.roberta.syntax.codegen.arduino.botnroll;
 
-import java.util.Arrays;
-import java.util.Map;
-
 import org.junit.Test;
 
-import de.fhg.iais.roberta.components.ConfigurationAst;
-import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class BotnrollSensorTest extends BotnrollAstTest {

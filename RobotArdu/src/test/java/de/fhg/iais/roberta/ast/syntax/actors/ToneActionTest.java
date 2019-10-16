@@ -11,7 +11,6 @@ public class ToneActionTest extends BotnrollAstTest {
     public void playTone() throws Exception {
         final String a = "tone(9,300, 100);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_PlaySound.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_PlaySound.xml", false);
     }
 }

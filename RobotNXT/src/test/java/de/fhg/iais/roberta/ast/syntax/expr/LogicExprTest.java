@@ -21,24 +21,21 @@ public class LogicExprTest extends NxtAstTest {
                 + "(( (5 + 7) ) ==((5 + 7) )) >= (  (( (5 + 7)) == ((5 + 7)) ) && ( ((5 + 7)) <= ((5 + 7)) )  )\n"
                 + "!(((5 + 7))==((5 + 7)) )== true";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_expr.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_expr.xml", false);
     }
 
     @Test
     public void logicNegate() throws Exception {
         final String a = "\n!((0!= 0)&&false)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_negate.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_negate.xml", false);
     }
 
     @Test
     public void logicNull() throws Exception {
         final String a = "\nNULL";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_null.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_null.xml", false);
     }
 
     // The ternary was removed
@@ -46,7 +43,6 @@ public class LogicExprTest extends NxtAstTest {
     public void logicTernary() throws Exception {
         final String a = "\n( 0 == 0 ) ? false : true";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_ternary.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/expr/logic_ternary.xml", false);
     }
 }

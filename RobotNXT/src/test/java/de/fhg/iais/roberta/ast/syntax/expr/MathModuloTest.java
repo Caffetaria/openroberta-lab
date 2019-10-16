@@ -11,8 +11,7 @@ public class MathModuloTest extends NxtAstTest {
     public void Test() throws Exception {
         String a = "float___variablenName;taskmain(){___variablenName=1%0;";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_modulo.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_modulo.xml", false);
     }
 
 }

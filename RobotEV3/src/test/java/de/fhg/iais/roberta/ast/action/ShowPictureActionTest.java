@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.Ev3AstTest;
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.action.ev3.ShowPictureAction;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;

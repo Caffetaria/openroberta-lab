@@ -11,7 +11,6 @@ public class ListsIsEmptyTest extends NxtAstTest {
     public void Test() throws Exception {
         final String a = "ArrIsEmpty({0,0,0})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_is_empty.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_is_empty.xml", false);
     }
 }

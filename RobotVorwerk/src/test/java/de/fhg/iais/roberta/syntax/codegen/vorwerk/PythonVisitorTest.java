@@ -81,8 +81,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/ultrasonic.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/ultrasonic.xml", brickConfiguration, true);
         ;
     }
 
@@ -101,8 +101,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/accelerometer.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/accelerometer.xml", brickConfiguration, true);
         ;
     }
 
@@ -120,8 +120,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/drop_off.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/drop_off.xml", brickConfiguration, true);
         ;
     }
 
@@ -138,8 +138,7 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/wall.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensors/wall.xml", brickConfiguration, true);
         ;
     }
 
@@ -155,8 +154,7 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/drive.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/drive.xml", brickConfiguration, true);
         ;
     }
 
@@ -171,8 +169,7 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/stop.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/stop.xml", brickConfiguration, true);
         ;
     }
 
@@ -190,8 +187,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/play_sound.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/play_sound.xml", brickConfiguration, true);
         ;
     }
 
@@ -206,8 +203,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_on.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_on.xml", brickConfiguration, true);
         ;
     }
 
@@ -222,8 +219,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_off.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/brush_off.xml", brickConfiguration, true);
         ;
     }
 
@@ -238,9 +235,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory,
-                                                                                   expectedResult, "/actors/vacuum_on.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/vacuum_on.xml", brickConfiguration, true);
         ;
     }
 
@@ -255,8 +251,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/vacuum_off.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/vacuum_off.xml", brickConfiguration, true);
         ;
     }
 
@@ -272,8 +268,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_on.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_on.xml", brickConfiguration, true);
     }
 
     @Test
@@ -288,8 +284,8 @@ public class PythonVisitorTest extends VorwerkAstTest {
                 + "\n"
                 + MAIN_METHOD;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_stop.xml",brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/actors/motor_stop.xml", brickConfiguration, true);
         ;
     }
 }

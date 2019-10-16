@@ -2,7 +2,6 @@ package de.fhg.iais.roberta.syntax.codegen.mbed.microbit;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.syntax.MicrobitAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
@@ -19,7 +18,11 @@ public class MicrobitMathTest extends MicrobitAstTest {
 
     @Test
     public void mathOperationsTest() throws Exception {
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXml(testFactory, "/function/microbit_math_operations_test.py", "/function/microbit_math_operations_test.xml");
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXml(
+                testFactory,
+                "/function/microbit_math_operations_test.py",
+                "/function/microbit_math_operations_test.xml");
     }
 
 }

@@ -6,9 +6,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.fhg.iais.roberta.Ev3AstTest;
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 import de.fhg.iais.roberta.transformer.Project;
@@ -33,8 +31,7 @@ public class ProgramConfigurationCompatabilityTest extends Ev3LejosAstTest {
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, ultrasonicSensor));
 
-        Project.Builder builder1 = UnitTestHelper.setupWithProgramXML(testFactory,
-                                                                      Util1.readResourceContent("/visitors/program_config_compatibility.xml"));
+        Project.Builder builder1 = UnitTestHelper.setupWithProgramXML(testFactory, Util1.readResourceContent("/visitors/program_config_compatibility.xml"));
         builder1.setConfigurationAst(builder.build());
         Ev3BrickValidatorWorker worker = new Ev3BrickValidatorWorker();
         Project project = builder1.build();
@@ -60,10 +57,9 @@ public class ProgramConfigurationCompatabilityTest extends Ev3LejosAstTest {
 
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA, motorB, touchSensor, colorSensor, gyroSensor, ultrasonicSensor));
 
-        Project.Builder builder1 = UnitTestHelper.setupWithProgramXML(testFactory,
-                                                                      Util1.readResourceContent(
-                                                                              "/visitors" +
-                                                                              "/program_config_compatibility_gyro_touch_ultra_color.xml"));
+        Project.Builder builder1 =
+            UnitTestHelper
+                .setupWithProgramXML(testFactory, Util1.readResourceContent("/visitors" + "/program_config_compatibility_gyro_touch_ultra_color.xml"));
         builder1.setConfigurationAst(builder.build());
         Ev3BrickValidatorWorker worker = new Ev3BrickValidatorWorker();
         Project project = builder1.build();

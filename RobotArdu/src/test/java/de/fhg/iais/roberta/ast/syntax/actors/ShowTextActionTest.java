@@ -11,8 +11,7 @@ public class ShowTextActionTest extends BotnrollAstTest {
     public void clearDisplay() throws Exception {
         final String a = "\none.lcd1(\"Hallo\");";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_ShowText.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_ShowText.xml", false);
 
     }
 }

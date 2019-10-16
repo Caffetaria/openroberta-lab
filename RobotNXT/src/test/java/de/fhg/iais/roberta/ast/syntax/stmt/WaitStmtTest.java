@@ -13,7 +13,6 @@ public class WaitStmtTest extends NxtAstTest {
     public void test1() throws Exception {
         String a = "publicvoidrun(){if(TRUE){while(true){if(hal.isPressed(BrickKey.ENTER)==true){break;}hal.waitFor(15);}}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/control/wait_stmt2.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/control/wait_stmt2.xml", false);
     }
 }

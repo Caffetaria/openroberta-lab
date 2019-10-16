@@ -11,7 +11,6 @@ public class ListsLengthTest extends NxtAstTest {
     public void Test() throws Exception {
         final String a = "ArrayLen({0.1,0.0,0})";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_length.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_length.xml", false);
     }
 }

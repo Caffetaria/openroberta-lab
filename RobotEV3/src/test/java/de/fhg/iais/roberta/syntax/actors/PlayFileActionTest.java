@@ -2,9 +2,7 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.Ev3AstTest;
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class PlayFileActionTest extends Ev3LejosAstTest {
@@ -13,7 +11,6 @@ public class PlayFileActionTest extends Ev3LejosAstTest {
     public void playFile() throws Exception {
         String a = "\nhal.playFile(1);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_PlayFile.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_PlayFile.xml", false);
     }
 }

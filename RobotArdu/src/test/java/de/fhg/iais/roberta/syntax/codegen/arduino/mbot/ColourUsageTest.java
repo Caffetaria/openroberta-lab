@@ -51,9 +51,13 @@ public class ColourUsageTest extends MbotAstTest {
             .append("_meRgbLed.setColor(1, 0, 0, 0);")
             .append("_meRgbLed.show();")
             .append("}");
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, correctCode.toString(), "/ast/colour/mbot_colours.xml",
-                                                                                   new ConfigurationAst.Builder().build(),
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                correctCode.toString(),
+                "/ast/colour/mbot_colours.xml",
+                new ConfigurationAst.Builder().build(),
+                true);
     }
 
 }

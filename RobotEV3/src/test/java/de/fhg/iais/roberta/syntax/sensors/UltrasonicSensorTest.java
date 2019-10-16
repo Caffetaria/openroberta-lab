@@ -3,7 +3,6 @@ package de.fhg.iais.roberta.syntax.sensors;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
 
@@ -13,7 +12,6 @@ public class UltrasonicSensorTest extends Ev3LejosAstTest {
     public void setUltrasonic() throws Exception {
         String a = "\nhal.getUltraSonicSensorDistance(SensorPort.S4)" + "hal.getUltraSonicSensorPresence(SensorPort.S2)}";
 
-        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/sensors/sensor_setUltrasonic.xml",
-                                                                                   new Ev3JavaGeneratorWorker());
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/sensors/sensor_setUltrasonic.xml", new Ev3JavaGeneratorWorker());
     }
 }

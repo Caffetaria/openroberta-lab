@@ -39,16 +39,14 @@ public class IfStmtTest extends NxtAstTest {
                 + "    ___item = (3 * 9);\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt.xml", false);
     }
 
     @Test
     public void ifStmt1() throws Exception {
         final String a = "\nif((((5+7))==((5+7)))>=((((5+7))==((5+7)))&&(((5+7))<=((5+7))))){\n}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt1.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt1.xml", false);
     }
 
     //
@@ -69,8 +67,7 @@ public class IfStmtTest extends NxtAstTest {
                 + "    ;\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt2.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt2.xml", false);
     }
 
     //
@@ -87,8 +84,7 @@ public class IfStmtTest extends NxtAstTest {
                 + "    ___item = 3 * 9;\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt3.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/if_stmt3.xml", false);
     }
 
     @Test

@@ -11,9 +11,9 @@ public class Ev3DevControlTest extends Ev3DevAstTest {
     public void ev3DevWaitTest() throws Exception {
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXml(
-                    testFactory,
+                testFactory,
                 "/ast/control" + "/ev3dev_wait_test.py",
                 "/ast/control" + "/ev3dev_wait_test.xml",
-                    makeStandardConfiguration());
+                makeStandardConfiguration());
     }
 }

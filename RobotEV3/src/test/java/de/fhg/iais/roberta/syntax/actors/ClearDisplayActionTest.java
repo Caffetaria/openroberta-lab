@@ -2,9 +2,7 @@ package de.fhg.iais.roberta.syntax.actors;
 
 import org.junit.Test;
 
-import de.fhg.iais.roberta.Ev3AstTest;
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class ClearDisplayActionTest extends Ev3LejosAstTest {
@@ -13,7 +11,6 @@ public class ClearDisplayActionTest extends Ev3LejosAstTest {
     public void clearDisplay() throws Exception {
         String a = "publicvoidrun()throwsException{hal.clearDisplay();}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_ClearDisplay.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_ClearDisplay.xml", false);
     }
 }

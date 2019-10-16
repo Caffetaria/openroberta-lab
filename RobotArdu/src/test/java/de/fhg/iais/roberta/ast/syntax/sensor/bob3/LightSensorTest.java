@@ -11,7 +11,6 @@ public class LightSensorTest extends Bob3AstTest {
     public void getAmbientLight() throws Exception {
         final String a = "double ___item; void setup() { ___item=0;} void loop() {___item=rob.getIRLight();}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_bob3AmbientLight.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_bob3AmbientLight.xml", false);
     }
 }

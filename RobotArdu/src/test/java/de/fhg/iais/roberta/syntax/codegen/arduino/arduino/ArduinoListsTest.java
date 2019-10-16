@@ -18,11 +18,7 @@ public class ArduinoListsTest extends ArduinoAstTest {
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(led));
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXml(
-                testFactory,
-                "/ast/lists/arduino_lists_test.ino",
-                "/ast/lists/arduino_lists_test.xml",
-                builder.build());
+            .checkGeneratedSourceEqualityWithProgramXml(testFactory, "/ast/lists/arduino_lists_test.ino", "/ast/lists/arduino_lists_test.xml", builder.build());
     }
 
     @Test

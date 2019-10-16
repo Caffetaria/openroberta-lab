@@ -11,15 +11,13 @@ public class ListsOccurrenceTest extends AstTest {
     public void Test() throws Exception {
         final String a = "";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_occurrence.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_occurrence.xml", false);
     }
 
     @Ignore
     public void Test1() throws Exception {
         final String a = "";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_occurrence1.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/lists/lists_occurrence1.xml", false);
     }
 }

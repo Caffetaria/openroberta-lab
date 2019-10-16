@@ -22,8 +22,7 @@ public class ToneActionFunctionTest extends NxtAstTest {
                 + "PlayToneEx(300, 100, volume, false);\n"
                 + "Wait(100);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_PlaySoundFunc.xml",
-                                                                                   brickConfiguration,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_PlaySoundFunc.xml", brickConfiguration, true);
     }
 }

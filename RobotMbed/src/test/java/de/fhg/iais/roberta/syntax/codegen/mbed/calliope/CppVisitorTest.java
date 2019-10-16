@@ -1,6 +1,5 @@
 package de.fhg.iais.roberta.syntax.codegen.mbed.calliope;
 
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -25,11 +24,11 @@ public class CppVisitorTest extends CalliopeAstTest {
 
     private static ConfigurationAst brickConfiguration;
 
-//    @BeforeClass
-//    public static void setupConfigurationForAllTests() {
-//        CalliopeConfiguration.Builder configuration = new CalliopeConfiguration.Builder();
-//        brickConfiguration = configuration.build();
-//    }
+    //    @BeforeClass
+    //    public static void setupConfigurationForAllTests() {
+    //        CalliopeConfiguration.Builder configuration = new CalliopeConfiguration.Builder();
+    //        brickConfiguration = configuration.build();
+    //    }
 
     @Test
     public void visitMainTask_ByDefault_ReturnsEmptyCppProgram() throws Exception {
@@ -39,9 +38,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + MAIN
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory,
-                                                                                   expectedResult, "/task/main_task_no_variables_empty.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/task/main_task_no_variables_empty.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -57,8 +60,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "___item = ( _uBit.systemTime() - _initTime );"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/timer_used.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/timer_used.xml", configuration, true);
         ;
     }
 
@@ -72,8 +74,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.print(ManagedString(\"H\"));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_text_show_hello.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/action/display_text_show_hello.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -89,8 +96,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "___Element2 = MicroBitImage(\"255,255,255,255,255\\n255,255,0,255,255\\n0,0,0,0,0\\n0,255,0,255,0\\n0,255,255,255,0\\n\");"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/image_get_image_defined_as_global_variables.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/expr/image_get_image_defined_as_global_variables.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -111,8 +123,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.animateImages(_animation, 200);"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_image_show_imag_and_animation.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/action/display_image_show_imag_and_animation.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -126,8 +143,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + END;
         //
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_image_missing_image_name.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/action/display_image_missing_image_name.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -141,8 +163,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.clear();"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_clear.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/display_clear.xml", configuration, true);
         ;
     }
 
@@ -157,8 +179,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.print(MicroBitImage(\"255,0,0,0,255\\n0,0,0,0,0\\n255,255,255,255,255\\n0,0,255,0,255\\n0,0,255,255,255\\n\").shiftImageDown(2));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_shift_up_down.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_shift_up_down.xml", configuration, true);
         ;
     }
 
@@ -172,8 +194,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.print(MicroBitImage().shiftImageUp(0));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_shift_missing_image_and_position.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/function/image_shift_missing_image_and_position.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -187,8 +214,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.print(MicroBitImage(\"0,255,0,255,0\\n255,255,255,255,255\\n255,255,255,255,255\\n0,255,255,255,0\\n0,0,255,0,0\\n\").invert());"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_invert_heart_image.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/function/image_invert_heart_image.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -202,8 +234,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.print(MicroBitImage().invert());"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/image_invert_missing_image.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/function/image_invert_missing_image.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -216,8 +253,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.buttonA.isPressed()));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/check_if_key_A_is_pressed.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/sensor/check_if_key_A_is_pressed.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -231,8 +273,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.compass.heading()));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_compass_orientation_value.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/sensor/get_compass_orientation_value.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -246,8 +293,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.print(MicroBitImage(\"255,255,0,0,0\\n0,0,0,0,255\\n0,85,0,0,0\\n0,0,0,255,0\\n0,56,0,0,0\\n\"));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/image_create.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/image_create.xml", configuration, true);
         ;
     }
 
@@ -264,8 +310,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString((_uBit.accelerometer.getGesture()==MICROBIT_ACCELEROMETER_EVT_TILT_LEFT)));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/check_gesture.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/check_gesture.xml", configuration, true);
         ;
     }
 
@@ -278,8 +324,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.thermometer.getTemperature()));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_temperature.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_temperature.xml", configuration, true);
         ;
     }
 
@@ -294,8 +340,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.rgb.setColour(MicroBitColor(153, 153, 255, 255));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_on_three_colors.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_on_three_colors.xml", configuration, true);
         ;
     }
 
@@ -308,8 +354,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.rgb.setColour(MicroBitColor());\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_on_missing_color.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_on_missing_color.xml", configuration, true);
         ;
     }
 
@@ -330,8 +376,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_fdd.show(1234,0,true);\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/fourdigitdisplay_show.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/fourdigitdisplay_show.xml", configuration, true);
         ;
     }
 
@@ -352,8 +398,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_fdd.clear();\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/fourdigitdisplay_clear.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/action/fourdigitdisplay_clear.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -374,8 +425,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_ledBar.setLed(0,5);\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/ledbar_set.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/ledbar_set.xml", configuration, true);
         ;
     }
 
@@ -388,8 +438,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.rgb.off();\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_off.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/led_off.xml", configuration, true);
         ;
     }
 
@@ -405,8 +454,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.soundmotor.motorBOn(30);\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/motor_on.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/motor_on.xml", configuration, true);
         ;
     }
 
@@ -420,8 +468,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.soundmotor.motorOn(14);\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/single_motor_on.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/single_motor_on.xml", configuration, true);
         ;
     }
 
@@ -436,8 +484,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.soundmotor.soundOff();\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/play_tone.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/play_tone.xml", configuration, true);
         ;
     }
 
@@ -452,8 +499,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.soundmotor.soundOff();\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/play_note.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/play_note.xml", configuration, true);
         ;
     }
 
@@ -466,8 +512,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(round(_uBit.display.readLightLevel() * _GET_LIGHTLEVEL_MULTIPLIER)));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_ambient_light.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_ambient_light.xml", configuration, true);
         ;
     }
 
@@ -481,8 +527,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.radio.setTransmitPower(0); _uBit.radio.datagram.send(ManagedString((ManagedString(\"Hallo\"))));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_send_message.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_send_message.xml", configuration, true);
         ;
     }
 
@@ -496,8 +542,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.radio.setTransmitPower(0); _uBit.radio.datagram.send(ManagedString((\"\")));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_send_missing_message.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/action/radio_send_missing_message.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -511,8 +562,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(ManagedString(_uBit.radio.datagram.recv())));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_receive_message.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/radio_receive_message.xml", configuration, true);
         ;
     }
 
@@ -526,8 +577,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.radio.getRSSI()));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/radio_rssi.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/radio_rssi.xml", configuration, true);
         ;
     }
 
@@ -541,8 +591,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.soundmotor.motorBOff();\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/motor_stop.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/motor_stop.xml", configuration, true);
         ;
     }
 
@@ -557,8 +606,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.soundmotor.motorSleep();\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/single_motor_stop.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/single_motor_stop.xml", configuration, true);
         ;
     }
 
@@ -571,8 +620,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString((_uBit.random(200 - 1 + 1) + 1)));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/random_int_generator.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/function/random_int_generator.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -585,8 +639,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(isWholeD(2)));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/is_whole_number.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/is_whole_number.xml", configuration, true);
         ;
     }
 
@@ -599,8 +653,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(isPrimeD(2)));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/is_prime_number.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/is_prime_number.xml", configuration, true);
         ;
     }
 
@@ -613,8 +667,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString((_uBit.random(0 - 0 + 1) + 0)));\n"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/random_int_generator_missing_param.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/function/random_int_generator_missing_param.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -649,8 +708,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "while(1){if(_uBit.thermometer.getTemperature()>20){break;}_uBit.sleep(1);}while(1){if(_uBit.display.readLightLevel()>50){break;}_uBit.sleep(1);}"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_sample_sensor.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/get_sample_sensor.xml", configuration, true);
         ;
     }
 
@@ -677,8 +736,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(\"Hallo\"));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/wait_stmt_two_cases.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/wait_stmt_two_cases.xml", configuration, true);
         ;
     }
 
@@ -692,8 +751,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(20, 25, 30, 30));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/create_color.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/expr/create_color.xml", configuration, true);
         ;
     }
 
@@ -709,8 +767,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.io.P16.isTouched()));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/pin3_is_touched.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/pin3_is_touched.xml", configuration, true);
         ;
     }
 
@@ -727,8 +785,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.accelerometer.getStrength()));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/acceleration_sensor.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/acceleration_sensor.xml", configuration, true);
         ;
     }
 
@@ -744,8 +802,7 @@ public class CppVisitorTest extends CalliopeAstTest {
 
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/gyro_sensor.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/gyro_sensor.xml", configuration, true);
         ;
     }
 
@@ -759,8 +816,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_uBit.io.P12.getDigitalValue()));"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/read_value_from_pin.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/read_value_from_pin.xml", configuration, true);
         ;
     }
 
@@ -774,8 +831,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.io.P19.setDigitalValue(1);"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/write_value_to_pin.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/write_value_to_pin.xml", configuration, true);
         ;
     }
 
@@ -790,8 +847,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.io.P1.setPull(PullNone);"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/pin_set_pull.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/pin_set_pull.xml", configuration, true);
         ;
     }
 
@@ -812,8 +869,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_sht31.readHumidity()));"
                 + "_uBit.display.scroll(ManagedString(_sht31.readTemperature()));"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/humidity_sensor.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/sensor/humidity_sensor.xml", configuration, true);
         ;
     }
 
@@ -826,8 +883,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.disable();\n"
                 + "_uBit.display.enable();\n"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/switch_led_matrix.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/switch_led_matrix.xml", configuration, true);
         ;
     }
 
@@ -847,8 +904,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.display.scroll(ManagedString(_getListStandardDeviation(___item)));\n"
                 + "_uBit.display.scroll(ManagedString((___item)));"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/math_on_list.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/action/math_on_list.xml", configuration, true);
         ;
     }
 
@@ -867,8 +924,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "for(MicroBitImage&image:___x){_uBit.display.print(image,0,0,255,200);_uBit.display.clear();}"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedResult, "/function/user_defined_function.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedResult,
+                "/function/user_defined_function.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -889,8 +951,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "}"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/no_loops.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/no_loops.xml", configuration, true);
         ;
     }
 
@@ -916,8 +977,7 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.sleep(1);"
                 + "}"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/nested_loops.xml",
-                                                                                   configuration, true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/nested_loops.xml", configuration, true);
         ;
     }
 
@@ -970,8 +1030,8 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "_uBit.sleep(_ITERATION_SLEEP_TIMEOUT);"
                 + "}"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loops_with_break_and_continue.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loops_with_break_and_continue.xml", configuration, true);
         ;
     }
 
@@ -1000,8 +1060,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "}"
                 + "break_loop1:"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loop_with_break_and_continue_inside_wait.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/stmts/loop_with_break_and_continue_inside_wait.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -1036,8 +1101,12 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + END;
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/two_loop_with_break_and_continue_one_inside_wait_another_not.xml",
-                                                                         configuration, true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/stmts/two_loop_with_break_and_continue_one_inside_wait_another_not.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -1070,8 +1139,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "}"
                 + "break_loop1:"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/two_nested_loops_first_with_break_in_wait_second_not.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/stmts/two_nested_loops_first_with_break_in_wait_second_not.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -1111,8 +1185,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "break_loop1:"
                 + END;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loop_with_nested_two_loops_inside_wait.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/stmts/loop_with_nested_two_loops_inside_wait.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -1161,8 +1240,13 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "}"
                 + "break_loop1:"
                 + END;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml",
-                                                                                   configuration, true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/stmts/loop_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                configuration,
+                true);
         ;
     }
 
@@ -1234,8 +1318,12 @@ public class CppVisitorTest extends CalliopeAstTest {
                 + "break_loop5:"
                 + END;
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/stmts/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml",
-                                                                         configuration, true);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/stmts/three_loops_with_nested_two_loops_inside_wait_second_contain_wait.xml",
+                configuration,
+                true);
         ;
     }
 }

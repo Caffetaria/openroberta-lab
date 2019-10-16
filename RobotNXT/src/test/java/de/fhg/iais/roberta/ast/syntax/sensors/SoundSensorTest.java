@@ -11,7 +11,6 @@ public class SoundSensorTest extends NxtAstTest {
     public void setColor() throws Exception {
         final String a = "\nSensorColor(IN_2)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_setLight.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_setLight.xml", false);
     }
 }

@@ -131,11 +131,7 @@ public class ArduinoActorTest extends ArduinoAstTest {
         ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
         builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(led));
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXml(
-                testFactory,
-                "/ast/actions/arduino_led_test.ino",
-                "/ast/actions/arduino_led_test.xml",
-                builder.build());
+            .checkGeneratedSourceEqualityWithProgramXml(testFactory, "/ast/actions/arduino_led_test.ino", "/ast/actions/arduino_led_test.xml", builder.build());
     }
 
     @Test

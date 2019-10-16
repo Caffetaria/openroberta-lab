@@ -12,9 +12,6 @@ public class ListsLengthTest extends ArduinoAstTest {
     public void Test() throws Exception {
         final String a = "NULL";
 
-        UnitTestHelper.checkWorkers(testFactory,
-                                    a,
-                                    "/syntax/lists/lists_length.xml",
-                                    new ArduinoCxxGeneratorWorker());
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/lists/lists_length.xml", new ArduinoCxxGeneratorWorker());
     }
 }

@@ -11,8 +11,12 @@ public class UltrasonicSensorTest extends NxtAstTest {
     public void setUltrasonic() throws Exception {
         final String a = "\nSensorUS(S4)SensorUS(S2)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/sensors/sensor_setUltrasonic.xml",
-                                                                                   brickConfigurationUS2US4,
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/ast/sensors/sensor_setUltrasonic.xml",
+                brickConfigurationUS2US4,
+                false);
     }
 }

@@ -11,7 +11,6 @@ public class LightSensorActionTest extends NxtAstTest {
     public void redOn() throws Exception {
         String a = "";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_LightSensorAction.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_LightSensorAction.xml", false);
     }
 }

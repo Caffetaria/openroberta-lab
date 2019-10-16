@@ -12,14 +12,11 @@ public abstract class AbstractLanguageGeneratorWorker implements IWorker {
     public void execute(Project project) {
         Object usedHardwareBean = project.getWorkerResult("CollectedHardware");
         Object codeGeneratorSetupBean = project.getWorkerResult("CodeGeneratorSetup");
-        AbstractLanguageVisitor visitor = getVisitor((UsedHardwareBean) usedHardwareBean,
-                        (CodeGeneratorSetupBean) codeGeneratorSetupBean, project);
+        AbstractLanguageVisitor visitor = getVisitor((UsedHardwareBean) usedHardwareBean, (CodeGeneratorSetupBean) codeGeneratorSetupBean, project);
         visitor.setStringBuilders(project.getSourceCode(), project.getIndentation());
         visitor.generateCode(project.isWithWrapping());
         project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
     }
 
-    protected abstract AbstractLanguageVisitor getVisitor(UsedHardwareBean usedHardwareBean,
-                                        CodeGeneratorSetupBean codeGeneratorSetupBean,
-                                        Project project);
+    protected abstract AbstractLanguageVisitor getVisitor(UsedHardwareBean usedHardwareBean, CodeGeneratorSetupBean codeGeneratorSetupBean, Project project);
 }

@@ -15,9 +15,13 @@ public class MotorCurveActionTest extends Ev3LejosAstTest {
                 + "hal.driveInCurve(DriveDirection.BACKWARD, 50, 20);"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_MotorCurveOn.xml",
-                                                                                   makeStandardConfiguration(),
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/actions/action_MotorCurveOn.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -28,8 +32,12 @@ public class MotorCurveActionTest extends Ev3LejosAstTest {
                 + "hal.driveInCurve(DriveDirection.BACKWARD, 50, 20, 20);"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_MotorCurveOnFor.xml",
-                                                                                   makeStandardConfiguration(),
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/actions/action_MotorCurveOnFor.xml",
+                makeStandardConfiguration(),
+                false);
     }
 }

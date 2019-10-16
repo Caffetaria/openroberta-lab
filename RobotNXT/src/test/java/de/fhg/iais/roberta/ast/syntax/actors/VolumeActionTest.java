@@ -11,15 +11,13 @@ public class VolumeActionTest extends NxtAstTest {
     public void setVolume() throws Exception {
         String a = "\nvolume=(50)*4/100.0;";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_SetVolume.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_SetVolume.xml", false);
     }
 
     @Test
     public void getVolume() throws Exception {
         String a = "\nvolume*100/4";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_GetVolume.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_GetVolume.xml", false);
     }
 }

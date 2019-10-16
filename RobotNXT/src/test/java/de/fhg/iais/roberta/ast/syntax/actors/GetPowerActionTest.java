@@ -11,8 +11,7 @@ public class GetPowerActionTest extends NxtAstTest {
     public void getSpeed() throws Exception {
         final String a = "\nMotorPower(OUT_B)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorGetPower.xml",
-                                                                                   brickConfiguration,
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorGetPower.xml", brickConfiguration, false);
     }
 }

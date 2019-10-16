@@ -11,8 +11,6 @@ public class MicrobitAstTest extends AstTest {
 
     @BeforeClass
     public static void setup() {
-        testFactory = new MicrobitFactory(new PluginProperties("microbit", "", "",
-                                                               Util1.loadProperties(
-                "classpath:/microbit.properties")));
+        testFactory = new MicrobitFactory(new PluginProperties("microbit", "", "", Util1.loadProperties("classpath:/microbit.properties")));
     }
 }

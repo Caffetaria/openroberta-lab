@@ -12,9 +12,6 @@ public class MotorDriveStopActionTest extends Ev3LejosAstTest {
     public void stop() throws Exception {
         String a = "\nhal.stopRegulatedDrive();}";
 
-        UnitTestHelper.checkWorkers(testFactory,
-                                    a,
-                                    "/syntax/actions/action_Stop.xml",
-                                    new Ev3JavaGeneratorWorker());
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/actions/action_Stop.xml", new Ev3JavaGeneratorWorker());
     }
 }

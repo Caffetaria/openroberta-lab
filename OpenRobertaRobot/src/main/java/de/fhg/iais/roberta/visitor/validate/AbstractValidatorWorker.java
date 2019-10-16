@@ -1,13 +1,11 @@
 package de.fhg.iais.roberta.visitor.validate;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.Key;
-import de.fhg.iais.roberta.visitor.IVisitor;
 
 public abstract class AbstractValidatorWorker implements IWorker {
 

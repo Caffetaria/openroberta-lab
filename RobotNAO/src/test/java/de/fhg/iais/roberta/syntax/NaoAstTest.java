@@ -10,7 +10,6 @@ import de.fhg.iais.roberta.util.Util1;
 public class NaoAstTest extends AstTest {
     @BeforeClass
     public static void setup() {
-        testFactory = new NaoFactory(new PluginProperties("nao", "", "", Util1.loadProperties(
-                "classpath:/nao.properties")));
+        testFactory = new NaoFactory(new PluginProperties("nao", "", "", Util1.loadProperties("classpath:/nao.properties")));
     }
 }

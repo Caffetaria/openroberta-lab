@@ -19,19 +19,16 @@ import de.fhg.iais.roberta.transformer.Project;
 import de.fhg.iais.roberta.util.PluginProperties;
 import de.fhg.iais.roberta.util.Util1;
 import de.fhg.iais.roberta.util.jaxb.JaxbHelper;
-import de.fhg.iais.roberta.visitor.lang.codegen.AbstractLanguageGeneratorWorker;
 import de.fhg.iais.roberta.visitor.validate.IWorker;
 
 public class UnitTestHelper {
 
-    private static boolean executeWorkflow(String workflowName, IRobotFactory robotFactory,
-                                     Project project) {
+    private static boolean executeWorkflow(String workflowName, IRobotFactory robotFactory, Project project) {
         List<IWorker> workflowPipe = robotFactory.getWorkerPipe(workflowName);
         if ( project.hasSucceeded() ) {
             for ( IWorker worker : workflowPipe ) {
                 worker.execute(project);
-                Assert.assertTrue("Worker " + worker.getClass().getSimpleName() + " failed",
-                                  project.hasSucceeded());
+                Assert.assertTrue("Worker " + worker.getClass().getSimpleName() + " failed", project.hasSucceeded());
                 if ( !project.hasSucceeded() ) {
                     break;
                 }
@@ -40,15 +37,12 @@ public class UnitTestHelper {
         return project.hasSucceeded();
     }
 
-    public static void checkWorkers(IRobotFactory factory,
-                                    String expectedSource,
-                                    String programXmlFilename,
-                                    IWorker... workers) {
+    public static void checkWorkers(IRobotFactory factory, String expectedSource, String programXmlFilename, IWorker... workers) {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         builder.setWithWrapping(false);
         Project project = builder.build();
-        for (IWorker worker : workers) {
+        for ( IWorker worker : workers ) {
             worker.execute(project);
         }
 
@@ -109,21 +103,18 @@ public class UnitTestHelper {
         return tree.get(0).get(1);
     }
 
-    public static void checkGeneratedSourceEqualityWithExportXml(IRobotFactory factory, String expectedSourceFilename, String exportedXmlFilename) throws Exception {
+    public static void checkGeneratedSourceEqualityWithExportXml(IRobotFactory factory, String expectedSourceFilename, String exportedXmlFilename)
+        throws Exception {
         String exportedXml = Util1.readResourceContent(exportedXmlFilename);
         Project.Builder builder = setupWithExportXML(factory, exportedXml);
-        checkGeneratedSourceEquality(factory,
-                                     Util1.readResourceContent(expectedSourceFilename),
-                                     builder.build());
+        checkGeneratedSourceEquality(factory, Util1.readResourceContent(expectedSourceFilename), builder.build());
     }
 
     public static void checkGeneratedSourceEqualityWithProgramXml(IRobotFactory factory, String expectedSourceFilename, String programXmlFilename)
-            throws Exception {
+        throws Exception {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
-        checkGeneratedSourceEquality(factory,
-                                     Util1.readResourceContent(expectedSourceFilename),
-                                     builder.build());
+        checkGeneratedSourceEquality(factory, Util1.readResourceContent(expectedSourceFilename), builder.build());
     }
 
     public static void checkGeneratedSourceEqualityWithProgramXml(
@@ -135,41 +126,42 @@ public class UnitTestHelper {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         builder.setConfigurationAst(configurationAst);
-        checkGeneratedSourceEquality(factory,
-                                     Util1.readResourceContent(expectedSourceFilename),
-                                     builder.build());
+        checkGeneratedSourceEquality(factory, Util1.readResourceContent(expectedSourceFilename), builder.build());
     }
 
-    public static void checkGeneratedSourceEqualityWithProgramXml(IRobotFactory factory,
-                                                                  String expectedSourceFilename,
-                                                                  String programXmlFilename,
-                                                                  String configurationXmlFilename)
-            throws Exception {
+    public static void checkGeneratedSourceEqualityWithProgramXml(
+        IRobotFactory factory,
+        String expectedSourceFilename,
+        String programXmlFilename,
+        String configurationXmlFilename)
+        throws Exception {
         String programXml = Util1.readResourceContent(programXmlFilename);
         String configurationXml = Util1.readResourceContent(configurationXmlFilename);
         Project.Builder builder = setupWithConfigurationAndProgramXML(factory, programXml, configurationXml);
         builder.setSSID("mySSID");
         builder.setPassword("myPassw0rd");
-        checkGeneratedSourceEquality(factory,
-                                     Util1.readResourceContent(expectedSourceFilename),
-                                     builder.build());
+        checkGeneratedSourceEquality(factory, Util1.readResourceContent(expectedSourceFilename), builder.build());
     }
 
-    public static void checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(IRobotFactory factory,
-                                                                                   String expectedSource,
-                                                                                   String programXmlFilename,
-                                                                                   boolean withWrapping) throws Exception {
+    public static void checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+        IRobotFactory factory,
+        String expectedSource,
+        String programXmlFilename,
+        boolean withWrapping)
+        throws Exception {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         builder.setWithWrapping(withWrapping);
         checkGeneratedSourceEquality(factory, expectedSource, builder.build());
     }
 
-    public static void checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(IRobotFactory factory,
-                                                                                   String expectedSource,
-                                                                                   String programXmlFilename,
-                                                                                   ConfigurationAst configurationAst,
-                                                                                   boolean withWrapping) throws Exception {
+    public static void checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+        IRobotFactory factory,
+        String expectedSource,
+        String programXmlFilename,
+        ConfigurationAst configurationAst,
+        boolean withWrapping)
+        throws Exception {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         builder.setConfigurationAst(configurationAst);
@@ -177,9 +169,7 @@ public class UnitTestHelper {
         checkGeneratedSourceEquality(factory, expectedSource, builder.build());
     }
 
-    private static void checkGeneratedSourceEquality(IRobotFactory factory,
-                                                     String expectedSource,
-                                                     Project project) {
+    private static void checkGeneratedSourceEquality(IRobotFactory factory, String expectedSource, Project project) {
         executeWorkflow("showsource", factory, project);
 
         String generatedProgramSource = project.getSourceCode().toString().replaceAll("\\s+", "");

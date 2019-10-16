@@ -37,7 +37,7 @@ public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareColl
         this.builder.addUsedMethod(EdisonMethods.SHORTEN); //used inside helper method
         this.builder.addUsedMethod(EdisonMethods.GETDIR);
         return null;
-//        return super.visitMotorOnAction(motorOnAction);
+        //        return super.visitMotorOnAction(motorOnAction);
     }
 
     @Override

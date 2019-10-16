@@ -14,7 +14,6 @@ public class Bob3BodyLEDActionTest extends AstTest {
         //TODO: Figure out hot to cross-test blocks
         final String a = "how do I use blocks from makeblock? JUint says that blockly block is not found";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_Bob3LED.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_Bob3LED.xml", false);
     }
 }

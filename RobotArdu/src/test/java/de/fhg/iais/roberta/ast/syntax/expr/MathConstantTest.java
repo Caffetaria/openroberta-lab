@@ -15,10 +15,7 @@ public class MathConstantTest extends ArduinoAstTest {
         String a = "PIM_EGOLDEN_RATIOM_SQRT2M_SQRT1_2INFINITY";
         //"Float.POSITIVE_INFINITY";
 
-        UnitTestHelper.checkWorkers(testFactory,
-                                    a,
-                                    "/syntax/math/math_constant.xml",
-                                    new ArduinoCxxGeneratorWorker());
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/math/math_constant.xml", new ArduinoCxxGeneratorWorker());
     }
 
     @Ignore
@@ -26,10 +23,7 @@ public class MathConstantTest extends ArduinoAstTest {
 
         final String a = "RotateMotor(B,PI,360.0*((1.0+sqrt(5.0))/2.0)))";
 
-        UnitTestHelper.checkWorkers(testFactory,
-                                    a,
-                                    "/syntax/math/math_constant1.xml",
-                                    new ArduinoCxxGeneratorWorker());
+        UnitTestHelper.checkWorkers(testFactory, a, "/syntax/math/math_constant1.xml", new ArduinoCxxGeneratorWorker());
     }
 
 }

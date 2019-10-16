@@ -1,9 +1,9 @@
 package de.fhg.iais.roberta.syntax.codegen.arduino.botnroll;
 
-import org.junit.BeforeClass;
-
 import java.util.Arrays;
 import java.util.Map;
+
+import org.junit.BeforeClass;
 
 import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.components.ConfigurationAst;
@@ -16,8 +16,7 @@ public class BotnrollAstTest extends AstTest {
 
     public static ConfigurationAst makeConfiguration() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
-        ConfigurationComponent
-                motorA = new ConfigurationComponent("LARGE", true, "A", "A", motorAproperties);
+        ConfigurationComponent motorA = new ConfigurationComponent("LARGE", true, "A", "A", motorAproperties);
 
         Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
         ConfigurationComponent motorB = new ConfigurationComponent("MEDIUM", true, "B", "B", motorBproperties);

@@ -13,8 +13,6 @@ public class MotorDriveStopActionTest extends NxtAstTest {
             "#defineWHEELDIAMETER5.6#defineTRACKWIDTH11.0#defineMAXLINES8#include\"NEPODefs.h\"//containsNEPOdeclarationsfortheNXCNXTAPIresources"
                 + "\nOff(OUT_BC);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_Stop.xml",
-                                                                                   brickConfigurationBC,
-                                                                                   true);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_Stop.xml", brickConfigurationBC, true);
     }
 }

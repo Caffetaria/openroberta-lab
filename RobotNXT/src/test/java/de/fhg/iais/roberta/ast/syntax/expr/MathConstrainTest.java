@@ -11,8 +11,7 @@ public class MathConstrainTest extends NxtAstTest {
     public void Test() throws Exception {
         final String a = "Constrain(SensorUS(S4),1,100)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_constrain.xml",
-                                                                                   brickConfigurationUS2US4,
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_constrain.xml", brickConfigurationUS2US4, false);
     }
 }

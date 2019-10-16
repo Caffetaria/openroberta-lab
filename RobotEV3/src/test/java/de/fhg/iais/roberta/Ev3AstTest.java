@@ -29,26 +29,21 @@ public class Ev3AstTest extends AstTest {
         ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", ultrasonicSensorProperties);
 
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
-        builder.setTrackWidth(18f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB,
-                                                                                      motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
+        builder.setTrackWidth(18f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB, motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
         ConfigurationAst configuration = builder.build();
         configuration.setRobotName("ev3lejosv1");
         return configuration;
     }
 
     protected static ConfigurationAst makeNonStandardConfiguration() {
-        Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE",
-                                                         "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
-        ConfigurationComponent motorA = new ConfigurationComponent("LARGE", true, "A", "A",
-                                                                   motorAproperties);
+        Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
+        ConfigurationComponent motorA = new ConfigurationComponent("LARGE", true, "A", "A", motorAproperties);
 
         Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
         ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "B", "B", motorBproperties);
 
-        Map<String, String> motorDproperties = createMap("MOTOR_REGULATION", "TRUE",
-                                                         "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
-        ConfigurationComponent motorD = new ConfigurationComponent("MEDIUM", true, "D", "D",
-                                                                   motorDproperties);
+        Map<String, String> motorDproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
+        ConfigurationComponent motorD = new ConfigurationComponent("MEDIUM", true, "D", "D", motorDproperties);
 
         Map<String, String> touchSensorProperties = createMap();
         ConfigurationComponent touchSensor = new ConfigurationComponent("TOUCH", false, "S1", "1", touchSensorProperties);
@@ -63,10 +58,10 @@ public class Ev3AstTest extends AstTest {
         ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", ultrasonicSensorProperties);
 
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
-        builder.setTrackWidth(18f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorA,
-                                                                                      motorB,
-                                                                                      motorD,
-                                                                                      touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
+        builder
+            .setTrackWidth(18f)
+            .setWheelDiameter(5.6f)
+            .addComponents(Arrays.asList(motorA, motorB, motorD, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
         ConfigurationAst configuration = builder.build();
         configuration.setRobotName("ev3lejosv1");
         return configuration;
@@ -92,24 +87,18 @@ public class Ev3AstTest extends AstTest {
         ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", ultrasonicSensorProperties);
 
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
-        builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB,
-                                                                                      motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
+        builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB, motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
         ConfigurationAst configuration = builder.build();
         configuration.setRobotName("ev3dev");
         return configuration;
     }
 
     protected static ConfigurationAst makeLargeLargeTouchGyroInfraredUltrasonic() {
-        Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE",
-                                                         "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE",
-                                                         "LEFT");
-        ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "A", "A",
-                                                                   motorBproperties);
+        Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
+        ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "A", "A", motorBproperties);
 
-        Map<String, String> motorCproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE"
-                , "OFF", "MOTOR_DRIVE", "RIGHT");
-        ConfigurationComponent motorC = new ConfigurationComponent("LARGE", true, "B", "B",
-                                                                   motorCproperties);
+        Map<String, String> motorCproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
+        ConfigurationComponent motorC = new ConfigurationComponent("LARGE", true, "B", "B", motorCproperties);
 
         Map<String, String> touchSensorProperties = createMap();
         ConfigurationComponent touchSensor = new ConfigurationComponent("TOUCH", false, "S1", "1", touchSensorProperties);
@@ -118,16 +107,13 @@ public class Ev3AstTest extends AstTest {
         ConfigurationComponent gyroSensor = new ConfigurationComponent("GYRO", false, "S2", "2", gyroSensorProperties);
 
         Map<String, String> infraredSensorProperties = createMap();
-        ConfigurationComponent colourSensor = new ConfigurationComponent("INFRARED", false, "S3",
-                                                                         "3",
-                                                                         infraredSensorProperties);
+        ConfigurationComponent colourSensor = new ConfigurationComponent("INFRARED", false, "S3", "3", infraredSensorProperties);
 
         Map<String, String> ultrasonicSensorProperties = createMap();
         ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", ultrasonicSensorProperties);
 
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
-        builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB,
-                                                                                      motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
+        builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB, motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
         ConfigurationAst configuration = builder.build();
         configuration.setRobotName("ev3dev");
         return configuration;
@@ -135,8 +121,7 @@ public class Ev3AstTest extends AstTest {
 
     protected static ConfigurationAst makeStandard3() {
         Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
-        ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "B", "B",
-                                                                   motorBproperties);
+        ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "B", "B", motorBproperties);
 
         Map<String, String> motorCproperties = createMap("MOTOR_REGULATION", "FALSE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
         ConfigurationComponent motorC = new ConfigurationComponent("LARGE", true, "C", "C", motorCproperties);
@@ -154,8 +139,7 @@ public class Ev3AstTest extends AstTest {
         ConfigurationComponent ultrasonicSensor = new ConfigurationComponent("ULTRASONIC", false, "S4", "4", ultrasonicSensorProperties);
 
         final ConfigurationAst.Builder builder = new ConfigurationAst.Builder();
-        builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB,
-                                                                                      motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
+        builder.setTrackWidth(17f).setWheelDiameter(5.6f).addComponents(Arrays.asList(motorB, motorC, touchSensor, gyroSensor, colourSensor, ultrasonicSensor));
         ConfigurationAst configuration = builder.build();
         configuration.setRobotName("ev3dev");
         return configuration;

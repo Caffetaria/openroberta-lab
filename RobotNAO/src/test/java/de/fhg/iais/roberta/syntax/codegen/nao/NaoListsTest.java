@@ -9,8 +9,7 @@ public class NaoListsTest extends NaoAstTest {
 
     @Test
     public void listsGetSetTest() throws Exception {
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXml(testFactory, "/lists" +
-                                                                      "/nao_lists_get_set_test.py", "/lists/nao_lists_get_set_test.xml");
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXml(testFactory, "/lists" + "/nao_lists_get_set_test.py", "/lists/nao_lists_get_set_test.xml");
     }
 
     @Test
@@ -20,7 +19,8 @@ public class NaoListsTest extends NaoAstTest {
 
     @Test
     public void listsMathOnListTest() throws Exception {
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXml(testFactory, "/lists/nao_lists_math_on_list_test.py", "/lists/nao_lists_math_on_list_test.xml");
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXml(testFactory, "/lists/nao_lists_math_on_list_test.py", "/lists/nao_lists_math_on_list_test.xml");
     }
 
     @Test

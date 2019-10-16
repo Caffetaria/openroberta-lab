@@ -13,7 +13,6 @@ public class MotorStopActionTest extends BotnrollAstTest {
     public void stopMotor() throws Exception {
         final String a = "one.stop1m(2)\n";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorStop.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorStop.xml", false);
     }
 }

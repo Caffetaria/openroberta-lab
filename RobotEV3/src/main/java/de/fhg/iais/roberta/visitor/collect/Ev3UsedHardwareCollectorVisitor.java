@@ -1,8 +1,6 @@
 package de.fhg.iais.roberta.visitor.collect;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import de.fhg.iais.roberta.bean.UsedHardwareBean;
 import de.fhg.iais.roberta.components.ConfigurationAst;

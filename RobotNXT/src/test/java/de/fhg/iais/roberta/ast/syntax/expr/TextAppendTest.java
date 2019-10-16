@@ -11,7 +11,6 @@ public class TextAppendTest extends NxtAstTest {
     public void Test() throws Exception {
         final String a = "item+=String(S1);item+=NumToStr(0);item+=\"aaa\";";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/text/text_append.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/text/text_append.xml", false);
     }
 }

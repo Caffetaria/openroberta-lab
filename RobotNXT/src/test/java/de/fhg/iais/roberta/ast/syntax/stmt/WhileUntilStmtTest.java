@@ -28,8 +28,7 @@ public class WhileUntilStmtTest extends NxtAstTest {
                 + "    }\n"
                 + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/whileUntil_stmt.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/whileUntil_stmt.xml", false);
     }
 
     //
@@ -38,8 +37,7 @@ public class WhileUntilStmtTest extends NxtAstTest {
 
             "while ( true ) {\n" + "    ;\n" + "}" + "\n" + "while ( true ) {\n" + "    ;\n" + "}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/control/repeat_stmt_loopForever.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/control/repeat_stmt_loopForever.xml", false);
     }
 
     @Test

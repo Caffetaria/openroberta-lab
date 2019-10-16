@@ -13,17 +13,15 @@ public class MotorOnActionTest extends NxtAstTest {
             "#defineWHEELDIAMETER5.6#defineTRACKWIDTH11.0#defineMAXLINES8#include\"NEPODefs.h\"//containsNEPOdeclarationsfortheNXCNXTAPIresources"
                 + "OnFwdRegEx(OUT_B,SpeedTest(30),OUT_REGMODE_SPEED,RESET_NONE);OnFwdRegEx(OUT_C, SpeedTest(50), OUT_REGMODE_SPEED,RESET_NONE);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOn.xml",
-                                                                                   brickConfigurationBC,
-                                                                                   true);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOn.xml", brickConfigurationBC, true);
     }
 
     @Test
     public void motorOnFor() throws Exception {
         String a = "RotateMotor(OUT_B,SpeedTest(30), 360 * 1);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOnFor.xml",
-                                                                                   brickConfiguration,
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorOnFor.xml", brickConfiguration, false);
     }
 }

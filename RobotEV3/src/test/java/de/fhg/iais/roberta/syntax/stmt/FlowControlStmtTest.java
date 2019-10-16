@@ -3,7 +3,6 @@ package de.fhg.iais.roberta.syntax.stmt;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class FlowControlStmtTest extends Ev3LejosAstTest {
@@ -22,7 +21,6 @@ public class FlowControlStmtTest extends Ev3LejosAstTest {
                 + "    break;\n"
                 + "}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/flowControl_stmt.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/flowControl_stmt.xml", false);
     }
 }

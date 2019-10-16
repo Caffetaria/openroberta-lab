@@ -11,7 +11,6 @@ public class MathRandomIntTest extends NxtAstTest {
     public void Test() throws Exception {
         final String a = "RandomIntegerInRange(1,100)";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_random_int.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_random_int.xml", false);
     }
 }

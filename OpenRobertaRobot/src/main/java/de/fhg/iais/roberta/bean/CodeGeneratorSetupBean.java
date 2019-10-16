@@ -50,8 +50,7 @@ public class CodeGeneratorSetupBean {
             Util1.loadYAMLRecursive("", helperMethods, this.codeGeneratorBean.helperMethodFile, true);
             Assert.notNull(this.codeGeneratorBean.fileExtension, "File extension has to be set");
             this.codeGeneratorBean.helperMethodGenerator =
-                new HelperMethodGenerator(helperMethods,
-                                          HelperMethodGenerator.getLanguageFromFileExtension(this.codeGeneratorBean.fileExtension));
+                new HelperMethodGenerator(helperMethods, HelperMethodGenerator.getLanguageFromFileExtension(this.codeGeneratorBean.fileExtension));
             return this.codeGeneratorBean;
         }
     }

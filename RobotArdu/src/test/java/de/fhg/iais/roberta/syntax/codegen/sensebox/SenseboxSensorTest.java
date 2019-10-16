@@ -10,9 +10,9 @@ public class SenseboxSensorTest extends SenseboxAstTest {
     public void builtinAndSimpleActorsTest() throws Exception {
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXml(
-                    testFactory,
-                    "/ast/sensors/sensebox_simple_and_builtin_sensor_test.ino",
-                    "/ast/sensors/sensebox_simple_and_builtin_sensor_test.xml",
-                    "/ast/sensors/sensebox_simple_and_builtin_sensor_test_config.xml");
+                testFactory,
+                "/ast/sensors/sensebox_simple_and_builtin_sensor_test.ino",
+                "/ast/sensors/sensebox_simple_and_builtin_sensor_test.xml",
+                "/ast/sensors/sensebox_simple_and_builtin_sensor_test_config.xml");
     }
 }

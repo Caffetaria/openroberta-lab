@@ -4,7 +4,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.fhg.iais.roberta.Ev3LejosAstTest;
-import de.fhg.iais.roberta.ast.AstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class WhileUntilStmtTest extends Ev3LejosAstTest {
@@ -29,8 +28,7 @@ public class WhileUntilStmtTest extends Ev3LejosAstTest {
                 + "    }\n"
                 + "}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/whileUntil_stmt.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/stmt/whileUntil_stmt.xml", false);
     }
 
     @Test
@@ -45,8 +43,7 @@ public class WhileUntilStmtTest extends Ev3LejosAstTest {
                 + "    System.out.println(\"\");\n"
                 + "}}}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/control/repeat_stmt_loopForever.xml",
-                                                                                   false);
+        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/control/repeat_stmt_loopForever.xml", false);
     }
 
     @Test

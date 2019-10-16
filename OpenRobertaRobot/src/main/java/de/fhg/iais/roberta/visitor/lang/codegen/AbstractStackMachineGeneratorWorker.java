@@ -22,6 +22,5 @@ public abstract class AbstractStackMachineGeneratorWorker implements IWorker {
         project.setResult(Key.COMPILERWORKFLOW_PROGRAM_GENERATION_SUCCESS);
     }
 
-    protected abstract AbstractStackMachineVisitor<Void> getVisitor(UsedHardwareBean usedHardwareBean,
-                                                                    Project project);
+    protected abstract AbstractStackMachineVisitor<Void> getVisitor(UsedHardwareBean usedHardwareBean, Project project);
 }

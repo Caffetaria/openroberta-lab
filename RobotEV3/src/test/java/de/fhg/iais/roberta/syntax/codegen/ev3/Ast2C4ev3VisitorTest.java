@@ -80,8 +80,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + BEGIN_MAIN__NULLSORS
                 + "DrawString(ToString(\"Hallo\"), 0, 3);\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -94,8 +99,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "    DrawString(ToString(\"Hallo\"), 0, 3);\n"
                 + "}\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator1.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator1.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -123,7 +133,8 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 testFactory,
                 expectedCode,
                 "/syntax/code_generator/java/java_code_generator2.xml",
-                makeTouchUltrasonicColorConfiguration(), true);
+                makeTouchUltrasonicColorConfiguration(),
+                true);
     }
 
     @Test
@@ -151,7 +162,8 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 testFactory,
                 expectedCode,
                 "/syntax/code_generator/java/java_code_generator3.xml",
-                makeTouchUltrasonicColorUltrasonicConfiguration(), true);
+                makeTouchUltrasonicColorUltrasonicConfiguration(),
+                true);
     }
 
     @Test
@@ -181,7 +193,8 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 testFactory,
                 expectedCode,
                 "/syntax/code_generator/java/java_code_generator4.xml",
-                makeTouchGyroInfraredUltrasonic(), true);
+                makeTouchGyroInfraredUltrasonic(),
+                true);
     }
 
     @Test
@@ -196,8 +209,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "SetVolume(50);\n"
                 + "NEPOPlayTone(0, 0);\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator5.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator5.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -209,8 +227,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "DrawString(ToString(\"Hallo\"), 0, 0);\n"
                 + "NEPOPlayTone(300, 3000);"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator6.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator6.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -223,8 +246,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "RotateMotorForAngle(OUT_B, Speed(30), 360 * 1);\n"
                 + END_MAIN;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator7.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator7.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -242,8 +270,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "___item3 = false;\n"
                 + END_MAIN;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator8.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator8.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     // TODO: Test drawColorName
@@ -259,8 +292,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "LcdPicture(LCD_COLOR_BLACK,0,0,OLDGLASSES);\n"
                 + END_MAIN;
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator9.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator9.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -280,8 +318,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "std::list<BluetoothConnectionHandle> ___item10 = ((std::list<BluetoothConnectionHandle>){NEPOWaitConnection()});\n"
                 + BEGIN_MAIN__NULLSORS
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/task/task_mainTask.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/task/task_mainTask.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -296,8 +339,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "RotateMotorForAngle(OUT_B, Speed(30), 360 * 1);\n"
                 + "macheEtwas(10, 10);\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/methods/method_void_1.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/methods/method_void_1.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -311,8 +359,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + BEGIN_MAIN__NULLSORS
                 + "test();\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/methods/method_void_2.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/methods/method_void_2.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -327,8 +380,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + BEGIN_MAIN__NULLSORS
                 + "test(true);\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/methods/method_if_return_1.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/methods/method_if_return_1.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -349,8 +407,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "test1(0, 0);\n"
                 + "test2();"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/methods/method_void_3.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/methods/method_void_3.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -366,8 +429,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + BEGIN_MAIN__NULLSORS
                 + "DrawString(ToString(test(0, ___variablenName)), 0, 0);\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/methods/method_return_1.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/methods/method_return_1.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -383,8 +451,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + BEGIN_MAIN__NULLSORS
                 + "DrawString(ToString(test()), 0, 0);\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/methods/method_return_2.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/methods/method_return_2.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -401,8 +474,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + BEGIN_MAIN__NULLSORS
                 + "DrawString(ToString(test()), 0, 0);\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/methods/method_if_return_2.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/methods/method_if_return_2.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -416,8 +494,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "    DrawString(ToString(\"done\"), 0, 0);\n"
                 + "}\n"
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/stmt/if_stmt4.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/stmt/if_stmt4.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -429,8 +512,13 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "std::string ___item2 = \"cc\";\n"
                 + BEGIN_MAIN__NULLSORS
                 + END_MAIN;
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/java_code_generator11.xml",
-                                                                                   makeStandardConfiguration(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/java_code_generator11.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -448,8 +536,12 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 + "___rgb = NEPOReadEV3ColorSensorRGB(IN_3);\n"
                 + END_MAIN;
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, expectedCode, "/syntax/code_generator/java/read_color_sensor_in_different_modes.xml",
-                                                                         makeStandardConfiguration(), false);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                expectedCode,
+                "/syntax/code_generator/java/read_color_sensor_in_different_modes.xml",
+                makeStandardConfiguration(),
+                false);
     }
 
     @Test
@@ -472,7 +564,8 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 testFactory,
                 expectedCode,
                 "/syntax/code_generator/java/read_hitec_color_sensor_v2_in_different_modes.xml",
-                configuration, true);
+                configuration,
+                true);
     }
 
     @Test
@@ -496,7 +589,8 @@ public class Ast2C4ev3VisitorTest extends Ev3C4ev3AstTest {
                 testFactory,
                 expectedCode,
                 "/syntax/code_generator/java/rotate_regulated_unregulated_forward_backward_motors.xml",
-                configuration, true);
+                configuration,
+                true);
     }
 
     private static String removeSpaces(String string) {

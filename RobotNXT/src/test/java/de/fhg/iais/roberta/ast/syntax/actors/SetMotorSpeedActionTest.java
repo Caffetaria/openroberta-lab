@@ -11,8 +11,7 @@ public class SetMotorSpeedActionTest extends NxtAstTest {
     public void setMotorSpeed() throws Exception {
         final String a = "OnFwdRegEx(OUT_B,SpeedTest(30),OUT_REGMODE_SPEED,RESET_NONE);";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorSetPower.xml",
-                                                                                   brickConfiguration,
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/ast/actions/action_MotorSetPower.xml", brickConfiguration, false);
     }
 }

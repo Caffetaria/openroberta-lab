@@ -11,8 +11,12 @@ public class SetMotorSpeedActionTest extends Ev3LejosAstTest {
     public void setMotorSpeed() throws Exception {
         String a = "\nhal.setRegulatedMotorSpeed(ActorPort.B, 30);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/actions/action_MotorSetPower.xml",
-                                                                                   makeStandardConfiguration(),
-                                                                                   false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/actions/action_MotorSetPower.xml",
+                makeStandardConfiguration(),
+                false);
     }
 }

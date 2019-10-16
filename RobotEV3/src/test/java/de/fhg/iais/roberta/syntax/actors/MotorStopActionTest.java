@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import de.fhg.iais.roberta.Ev3LejosAstTest;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
-import de.fhg.iais.roberta.visitor.codegen.Ev3JavaGeneratorWorker;
 
 public class MotorStopActionTest extends Ev3LejosAstTest {
 
@@ -12,9 +11,12 @@ public class MotorStopActionTest extends Ev3LejosAstTest {
     public void stopMotor() throws Exception {
         String a = "\nhal.stopRegulatedMotor(ActorPort.A, MotorStopMode.FLOAT);}";
 
-        UnitTestHelper.checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory,
-                                    a,
-                                    "/syntax/actions/action_MotorStop.xml",
-                                                                                   makeRotateRegulatedUnregulatedForwardBackwardMotors(), false);
+        UnitTestHelper
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
+                testFactory,
+                a,
+                "/syntax/actions/action_MotorStop.xml",
+                makeRotateRegulatedUnregulatedForwardBackwardMotors(),
+                false);
     }
 }
