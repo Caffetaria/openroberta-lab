@@ -71,7 +71,7 @@ public class MathConstrainFunct<V> extends Function<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((ILanguageVisitor<V>) visitor).visitMathConstrainFunct(this);
     }
 

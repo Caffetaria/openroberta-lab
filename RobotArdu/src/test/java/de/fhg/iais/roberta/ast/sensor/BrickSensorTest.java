@@ -11,7 +11,6 @@ import de.fhg.iais.roberta.syntax.Phrase;
 import de.fhg.iais.roberta.syntax.sensor.generic.KeysSensor;
 import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
-@Ignore // TODO: reactivate this test REFACTORING
 public class BrickSensorTest extends AstTest {
 
     @Test
@@ -24,7 +23,7 @@ public class BrickSensorTest extends AstTest {
     public void getKey() throws Exception {
         ArrayList<ArrayList<Phrase<Void>>> forest = UnitTestHelper.getAst(testFactory, "/ast/sensors/sensor_brick1.xml");
         KeysSensor<Void> bs = (KeysSensor<Void>) forest.get(0).get(1);
-        Assert.assertEquals("2", bs.getPort());
+        Assert.assertEquals("ENTER", bs.getPort());
     }
 
     @Test

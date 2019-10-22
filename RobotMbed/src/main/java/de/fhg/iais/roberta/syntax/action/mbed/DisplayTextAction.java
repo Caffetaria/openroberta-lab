@@ -70,7 +70,7 @@ public class DisplayTextAction<V> extends Action<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((IMbedVisitor<V>) visitor).visitDisplayTextAction(this);
 
     }

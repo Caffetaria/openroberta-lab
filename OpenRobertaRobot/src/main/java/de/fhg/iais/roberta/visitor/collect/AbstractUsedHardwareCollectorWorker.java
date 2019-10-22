@@ -25,7 +25,7 @@ public abstract class AbstractUsedHardwareCollectorWorker implements IWorker {
                 if ( phrase.getKind().getName().equals("MAIN_TASK") ) {
                     builder.setProgramEmpty(phrases.size() == 2);
                 } else {
-                    phrase.visit(visitor); // TODO: REALLY REALLY BAD NAME !!!
+                    phrase.accept(visitor); // TODO: REALLY REALLY BAD NAME !!!
                 }
             }
         }
@@ -37,7 +37,7 @@ public abstract class AbstractUsedHardwareCollectorWorker implements IWorker {
         for ( List<Phrase<Void>> phrases : phrasesSet ) {
             Phrase<Void> phrase = phrases.get(1);
             if ( phrase.getKind().getName().equals("MAIN_TASK") ) {
-                phrase.visit(visitor); // TODO: REALLY REALLY BAD NAME !!!
+                phrase.accept(visitor); // TODO: REALLY REALLY BAD NAME !!!
             }
         }
     }

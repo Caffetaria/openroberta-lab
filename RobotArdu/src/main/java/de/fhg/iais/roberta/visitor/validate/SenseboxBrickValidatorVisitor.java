@@ -88,7 +88,7 @@ public class SenseboxBrickValidatorVisitor extends AbstractBrickValidatorVisitor
                 sendDataAction.addInfo(NepoInfo.error("ACTION_ERROR_EMPTY_INPUT"));
                 return null;
             }
-            value.getSecond().visit(this);
+            value.getSecond().accept(this);
         }
         return null;
     }

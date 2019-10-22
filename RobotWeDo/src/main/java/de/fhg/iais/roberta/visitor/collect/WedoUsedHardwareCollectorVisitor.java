@@ -12,9 +12,9 @@ public class WedoUsedHardwareCollectorVisitor extends AbstractUsedHardwareCollec
 
     @Override
     public Void visitMotorOnAction(MotorOnAction<Void> motorOnAction) {
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         if ( motorOnAction.getParam().getDuration() != null ) {
-            motorOnAction.getDurationValue().visit(this);
+            motorOnAction.getDurationValue().accept(this);
         }
         return null;
     }

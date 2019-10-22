@@ -71,7 +71,7 @@ public class VolumeAction<V> extends Action<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((ISoundVisitor<V>) visitor).visitVolumeAction(this);
     }
 

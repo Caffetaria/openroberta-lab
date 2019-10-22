@@ -72,7 +72,7 @@ public class ImageInvertFunction<V> extends Function<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((IMbedVisitor<V>) visitor).visitImageInvertFunction(this);
 
     }

@@ -13,10 +13,10 @@ public class SayTextActionTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/actions/action_SayText.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/actions/action_SayText.xml",
+                    makeStandard(),
+                    false);
     }
 }

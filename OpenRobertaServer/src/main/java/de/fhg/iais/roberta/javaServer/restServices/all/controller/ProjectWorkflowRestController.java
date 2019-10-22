@@ -131,7 +131,7 @@ public class ProjectWorkflowRestController {
     }
 
     @POST
-    @Path("/binary") // TODO rename
+    @Path("/run")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response runProgram(@OraData HttpSessionState httpSessionState, JSONObject request) {

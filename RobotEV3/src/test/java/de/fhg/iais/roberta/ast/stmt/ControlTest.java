@@ -40,8 +40,6 @@ public class ControlTest extends AstTest {
         UnitTestHelper.checkProgramAstEquality(testFactory, a, "/ast/control/wait_stmt3.xml");
     }
 
-    // TODO: Add generation of an empty slot and unignore it
-    @Ignore
     public void reverseTransformation() throws Exception {
         UnitTestHelper.checkProgramReverseTransformation(testFactory, "/ast/control/wait_stmt.xml");
     }

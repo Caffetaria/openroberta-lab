@@ -63,7 +63,7 @@ public class MotorSetPowerAction<V> extends MoveAction<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((IMotorVisitor<V>) visitor).visitMotorSetPowerAction(this);
     }
 

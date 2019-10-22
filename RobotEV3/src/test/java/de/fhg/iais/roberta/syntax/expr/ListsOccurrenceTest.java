@@ -14,11 +14,11 @@ public class ListsOccurrenceTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/lists/lists_occurrence.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/lists/lists_occurrence.xml",
+                    makeStandard(),
+                    false);
     }
 
 }

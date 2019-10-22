@@ -13,10 +13,10 @@ public class SetMotorSpeedActionTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/actions/action_MotorSetPower.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/actions/action_MotorSetPower.xml",
+                    makeStandard(),
+                    false);
     }
 }

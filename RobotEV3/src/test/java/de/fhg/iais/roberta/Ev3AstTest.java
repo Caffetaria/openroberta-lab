@@ -9,7 +9,7 @@ import de.fhg.iais.roberta.components.ConfigurationAst;
 import de.fhg.iais.roberta.components.ConfigurationComponent;
 
 public class Ev3AstTest extends AstTest {
-    protected static ConfigurationAst makeStandardConfiguration() {
+    protected static ConfigurationAst makeStandard() {
         Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
         ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "B", "B", motorBproperties);
 
@@ -35,7 +35,7 @@ public class Ev3AstTest extends AstTest {
         return configuration;
     }
 
-    protected static ConfigurationAst makeNonStandardConfiguration() {
+    protected static ConfigurationAst makeLargeLargeMediumTouchGyroColorUltrasonic() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
         ConfigurationComponent motorA = new ConfigurationComponent("LARGE", true, "A", "A", motorAproperties);
 
@@ -67,7 +67,7 @@ public class Ev3AstTest extends AstTest {
         return configuration;
     }
 
-    protected static ConfigurationAst makeStandardEv3DevConfiguration() {
+    protected static ConfigurationAst makeMediumLargeTouchGyroColorUltrasonic() {
         Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
         ConfigurationComponent motorB = new ConfigurationComponent("MEDIUM", true, "B", "B", motorBproperties);
 
@@ -119,7 +119,7 @@ public class Ev3AstTest extends AstTest {
         return configuration;
     }
 
-    protected static ConfigurationAst makeStandard3() {
+    protected static ConfigurationAst makeStandardConfigurationNonRegulated() {
         Map<String, String> motorBproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "RIGHT");
         ConfigurationComponent motorB = new ConfigurationComponent("LARGE", true, "B", "B", motorBproperties);
 
@@ -145,7 +145,7 @@ public class Ev3AstTest extends AstTest {
         return configuration;
     }
 
-    protected static ConfigurationAst makeTouchUltrasonicColorConfiguration() {
+    protected static ConfigurationAst makeMediumLargeTouchUltrasonicColor() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
         ConfigurationComponent motorA = new ConfigurationComponent("MEDIUM", true, "A", "A", motorAproperties);
 
@@ -160,7 +160,7 @@ public class Ev3AstTest extends AstTest {
         return build(motorA, motorB, touchSensor, ultrasonicSensor, colorSensor);
     }
 
-    protected static ConfigurationAst makeTouchUltrasonicColorUltrasonicConfiguration() {
+    protected static ConfigurationAst makeMediumLargeTouchUltrasonicColorUltrasonic() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
         ConfigurationComponent motorA = new ConfigurationComponent("MEDIUM", true, "A", "A", motorAproperties);
 
@@ -175,7 +175,7 @@ public class Ev3AstTest extends AstTest {
         return build(motorA, motorB, touchSensor, ultrasonicSensor, colorSensor, ultrasonicSensor4);
     }
 
-    protected static ConfigurationAst makeTouchGyroInfraredUltrasonic() {
+    protected static ConfigurationAst makeMediumLargeTouchGyroInfraredUltrasonic() {
         Map<String, String> motorAproperties = createMap("MOTOR_REGULATION", "TRUE", "MOTOR_REVERSE", "OFF", "MOTOR_DRIVE", "LEFT");
         ConfigurationComponent motorA = new ConfigurationComponent("MEDIUM", true, "A", "A", motorAproperties);
 
@@ -205,7 +205,7 @@ public class Ev3AstTest extends AstTest {
         return build(motorA, motorB, motorC, motorD);
     }
 
-    protected static ConfigurationAst makeHiTecColorSensorConfiguration() {
+    protected static ConfigurationAst makeHTColor() {
         ConfigurationComponent htColor = new ConfigurationComponent("HT_COLOR", false, "S3", "3", Collections.emptyMap());
         return build(htColor);
     }

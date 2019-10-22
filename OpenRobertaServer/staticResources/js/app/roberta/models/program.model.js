@@ -238,7 +238,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
      *            {String} - WLAN password for WiFi enabled robots
      */
     function runOnBrick(programName, configName, xmlTextProgram, xmlTextConfig, SSID, password, language, successFn) {
-        COMM.json("/projectWorkflow/binary", {
+        COMM.json("/projectWorkflow/run", {
             "programName" : programName,
             "configurationName" : configName,
             "programBlockSet" : xmlTextProgram,
@@ -252,7 +252,7 @@ define([ 'exports', 'comm' ], function(exports, COMM) {
     exports.runOnBrick = runOnBrick;
 
     function runOnBrickBack(programName, configName, xmlTextProgram, xmlTextConfig, SSID, password, language, successFn) {
-        COMM.json("/projectWorkflow/binary", {
+        COMM.json("/projectWorkflow/run", {
             "programName" : programName,
             "configurationName" : configName,
             "programBlockSet" : xmlTextProgram,

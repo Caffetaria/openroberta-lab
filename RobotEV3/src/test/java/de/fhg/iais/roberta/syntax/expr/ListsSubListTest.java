@@ -19,10 +19,10 @@ public class ListsSubListTest extends Ev3LejosAstTest {
                 + "}";
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                code,
-                "/syntax/lists/lists_sub_list.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    code,
+                    "/syntax/lists/lists_sub_list.xml",
+                    makeStandard(),
+                    false);
     }
 }

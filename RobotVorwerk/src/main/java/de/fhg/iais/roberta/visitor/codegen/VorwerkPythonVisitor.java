@@ -75,7 +75,7 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
     @Override
     public Void visitWaitTimeStmt(WaitTimeStmt<Void> waitTimeStmt) {
         this.sb.append("hal.wait(");
-        waitTimeStmt.getTime().visit(this);
+        waitTimeStmt.getTime().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -91,9 +91,9 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
         String userDefinedPort = motorOnAction.getUserDefinedPort();
         String port = this.brickConfiguration.getConfigurationComponent(userDefinedPort).getPortName();
         this.sb.append("hal." + port + "_motor_on(");
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         this.sb.append(", ");
-        motorOnAction.getDurationValue().visit(this);
+        motorOnAction.getDurationValue().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -109,7 +109,7 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
     @Override
     public Void visitBrushOn(BrushOn<Void> brushOn) {
         this.sb.append("hal.brush_on(");
-        brushOn.getSpeed().visit(this);
+        brushOn.getSpeed().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -129,7 +129,7 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
     @Override
     public Void visitVacuumOn(VacuumOn<Void> vacuumOn) {
         this.sb.append("hal.vacuum_on(");
-        vacuumOn.getSpeed().visit(this);
+        vacuumOn.getSpeed().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -143,12 +143,12 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
     @Override
     public Void visitDriveAction(DriveAction<Void> driveAction) {
         this.sb.append("hal.drive_distance(" + quote(driveAction.getDirection().toString()) + ", ");
-        driveAction.getParam().getSpeed().visit(this);
+        driveAction.getParam().getSpeed().accept(this);
         this.sb.append(", ");
         if ( driveAction.getParam().getDuration() == null ) {
             this.sb.append("100");
         } else {
-            driveAction.getParam().getDuration().getValue().visit(this);
+            driveAction.getParam().getDuration().getValue().accept(this);
         }
         this.sb.append(")");
         return null;
@@ -236,7 +236,7 @@ public final class VorwerkPythonVisitor extends AbstractPythonVisitor implements
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
         StmtList<Void> variables = mainTask.getVariables();
-        variables.visit(this);
+        variables.accept(this);
         generateUserDefinedMethods();
         nlIndent();
         this.sb.append("def run():");

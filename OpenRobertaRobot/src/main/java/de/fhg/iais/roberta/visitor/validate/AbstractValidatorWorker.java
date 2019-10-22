@@ -16,7 +16,7 @@ public abstract class AbstractValidatorWorker implements IWorker {
         ArrayList<ArrayList<Phrase<Void>>> tree = project.getProgramAst().getTree();
         for ( ArrayList<Phrase<Void>> phrases : tree ) {
             for ( Phrase<Void> phrase : phrases ) {
-                phrase.visit(visitor); // TODO: REALLY REALLY BAD NAME !!!
+                phrase.accept(visitor); // TODO: REALLY REALLY BAD NAME !!!
             }
         }
 

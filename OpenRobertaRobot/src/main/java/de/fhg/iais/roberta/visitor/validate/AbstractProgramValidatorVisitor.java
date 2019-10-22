@@ -113,7 +113,7 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     public Void visitDriveAction(DriveAction<Void> driveAction) {
         checkDiffDrive(driveAction);
         Expr<Void> speed = driveAction.getParam().getSpeed();
-        speed.visit(this);
+        speed.accept(this);
         MotorDuration<Void> duration = driveAction.getParam().getDuration();
         if ( duration != null ) {
             checkForZeroSpeed(speed, driveAction);
@@ -126,7 +126,7 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     public Void visitTurnAction(TurnAction<Void> turnAction) {
         checkDiffDrive(turnAction);
         Expr<Void> speed = turnAction.getParam().getSpeed();
-        speed.visit(this);
+        speed.accept(this);
         MotorDuration<Void> duration = turnAction.getParam().getDuration();
         if ( duration != null ) {
             checkForZeroSpeed(speed, turnAction);
@@ -143,7 +143,7 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
 
     @Override
     public Void visitMotorOnAction(MotorOnAction<Void> motorOnAction) {
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         checkMotorPort(motorOnAction);
         MotorDuration<Void> duration = motorOnAction.getParam().getDuration();
         if ( duration != null ) {
@@ -156,7 +156,7 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     @Override
     public Void visitMotorSetPowerAction(MotorSetPowerAction<Void> motorSetPowerAction) {
         checkMotorPort(motorSetPowerAction);
-        motorSetPowerAction.getPower().visit(this);
+        motorSetPowerAction.getPower().accept(this);
         return null;
     }
 
@@ -191,8 +191,8 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
     public Void visitCurveAction(CurveAction<Void> driveAction) {
         visitMotorDuration(driveAction.getParamLeft().getDuration());
         visitMotorDuration(driveAction.getParamRight().getDuration());
-        driveAction.getParamLeft().getSpeed().visit(this);
-        driveAction.getParamRight().getSpeed().visit(this);
+        driveAction.getParamLeft().getSpeed().accept(this);
+        driveAction.getParamRight().getSpeed().accept(this);
         checkDiffDrive(driveAction);
         checkForZeroSpeedInCurve(driveAction.getParamLeft().getSpeed(), driveAction.getParamRight().getSpeed(), driveAction);
 
@@ -270,8 +270,8 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
 
     @Override
     public Void visitToneAction(ToneAction<Void> toneAction) {
-        toneAction.getDuration().visit(this);
-        toneAction.getFrequency().visit(this);
+        toneAction.getDuration().accept(this);
+        toneAction.getFrequency().accept(this);
         return null;
     }
 
@@ -282,7 +282,7 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
 
     @Override
     public Void visitVolumeAction(VolumeAction<Void> volumeAction) {
-        volumeAction.getVolume().visit(this);
+        volumeAction.getVolume().accept(this);
         return null;
     }
 
@@ -293,9 +293,9 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
 
     @Override
     public Void visitSayTextAction(SayTextAction<Void> sayTextAction) {
-        sayTextAction.getMsg().visit(this);
-        sayTextAction.getSpeed().visit(this);
-        sayTextAction.getPitch().visit(this);
+        sayTextAction.getMsg().accept(this);
+        sayTextAction.getSpeed().accept(this);
+        sayTextAction.getPitch().accept(this);
         return null;
     }
 
@@ -321,9 +321,9 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
 
     @Override
     public Void visitShowTextAction(ShowTextAction<Void> showTextAction) {
-        showTextAction.getMsg().visit(this);
-        showTextAction.getX().visit(this);
-        showTextAction.getY().visit(this);
+        showTextAction.getMsg().accept(this);
+        showTextAction.getX().accept(this);
+        showTextAction.getY().accept(this);
         return null;
     }
 
@@ -333,13 +333,13 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
             bluetoothReceiveAction.addInfo(NepoInfo.error("CONFIGURATION_ERROR_SENSOR_WRONG"));
             this.errorCount++;
         }
-        bluetoothReceiveAction.getConnection().visit(this);
+        bluetoothReceiveAction.getConnection().accept(this);
         return null;
     }
 
     @Override
     public Void visitBluetoothConnectAction(BluetoothConnectAction<Void> bluetoothConnectAction) {
-        bluetoothConnectAction.getAddress().visit(this);
+        bluetoothConnectAction.getAddress().accept(this);
         return null;
     }
 
@@ -349,8 +349,8 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
             bluetoothSendAction.addInfo(NepoInfo.error("CONFIGURATION_ERROR_SENSOR_WRONG"));
             this.errorCount++;
         }
-        bluetoothSendAction.getConnection().visit(this);
-        bluetoothSendAction.getMsg().visit(this);
+        bluetoothSendAction.getConnection().accept(this);
+        bluetoothSendAction.getMsg().accept(this);
         return null;
     }
 
@@ -361,13 +361,13 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
 
     @Override
     public Void visitBluetoothCheckConnectAction(BluetoothCheckConnectAction<Void> bluetoothCheckConnectAction) {
-        bluetoothCheckConnectAction.getConnection().visit(this);
+        bluetoothCheckConnectAction.getConnection().accept(this);
         return null;
     }
 
     @Override
     public Void visitSerialWriteAction(SerialWriteAction<Void> serialWriteAction) {
-        serialWriteAction.getValue().visit(this);
+        serialWriteAction.getValue().accept(this);
         return null;
     }
 
@@ -464,7 +464,7 @@ public abstract class AbstractProgramValidatorVisitor extends AbstractCollectorV
 
     private void visitMotorDuration(MotorDuration<Void> duration) {
         if ( duration != null ) {
-            duration.getValue().visit(this);
+            duration.getValue().accept(this);
         }
     }
 

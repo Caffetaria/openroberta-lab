@@ -15,6 +15,6 @@ public class TextAppendTest extends Ev3LejosAstTest {
         String a = "item+=String.valueOf(hal.isPressed(SensorPort.S1));item+=String.valueOf(0);item+=String.valueOf(\"aaa\");}";
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/text/text_append.xml", makeStandardConfiguration(), false);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/text/text_append.xml", makeStandard(), false);
     }
 }

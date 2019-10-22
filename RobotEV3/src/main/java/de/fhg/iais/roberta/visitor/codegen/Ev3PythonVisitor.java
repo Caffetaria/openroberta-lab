@@ -112,7 +112,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     @Override
     public Void visitWaitTimeStmt(WaitTimeStmt<Void> waitTimeStmt) {
         this.sb.append("hal.waitFor(");
-        waitTimeStmt.getTime().visit(this);
+        waitTimeStmt.getTime().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -128,7 +128,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
         switch ( volumeAction.getMode() ) {
             case SET:
                 this.sb.append("hal.setVolume(");
-                volumeAction.getVolume().visit(this);
+                volumeAction.getVolume().accept(this);
                 this.sb.append(")");
                 break;
             case GET:
@@ -153,17 +153,17 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
         this.sb.append("hal.sayText(");
         if ( !sayTextAction.getMsg().getKind().hasName("STRING_CONST") ) {
             this.sb.append("str(");
-            sayTextAction.getMsg().visit(this);
+            sayTextAction.getMsg().accept(this);
             this.sb.append(")");
         } else {
-            sayTextAction.getMsg().visit(this);
+            sayTextAction.getMsg().accept(this);
         }
         BlockType emptyBlock = BlockTypeContainer.getByName("EMPTY_EXPR");
         if ( !(sayTextAction.getSpeed().getKind().equals(emptyBlock) && sayTextAction.getPitch().getKind().equals(emptyBlock)) ) {
             this.sb.append(",");
-            sayTextAction.getSpeed().visit(this);
+            sayTextAction.getSpeed().accept(this);
             this.sb.append(",");
-            sayTextAction.getPitch().visit(this);
+            sayTextAction.getPitch().accept(this);
         }
         this.sb.append(")");
         return null;
@@ -199,9 +199,9 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     @Override
     public Void visitShowPictureAction(ShowPictureAction<Void> showPictureAction) {
         this.sb.append("hal.drawPicture(predefinedImages['").append(showPictureAction.getPicture()).append("'], ");
-        showPictureAction.getX().visit(this);
+        showPictureAction.getX().accept(this);
         this.sb.append(", ");
-        showPictureAction.getY().visit(this);
+        showPictureAction.getY().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -211,15 +211,15 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
         this.sb.append("hal.drawText(");
         if ( !showTextAction.getMsg().getKind().hasName("STRING_CONST") ) {
             this.sb.append("str(");
-            showTextAction.getMsg().visit(this);
+            showTextAction.getMsg().accept(this);
             this.sb.append(")");
         } else {
-            showTextAction.getMsg().visit(this);
+            showTextAction.getMsg().accept(this);
         }
         this.sb.append(", ");
-        showTextAction.getX().visit(this);
+        showTextAction.getX().accept(this);
         this.sb.append(", ");
-        showTextAction.getY().visit(this);
+        showTextAction.getY().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -227,9 +227,9 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     @Override
     public Void visitToneAction(ToneAction<Void> toneAction) {
         this.sb.append("hal.playTone(");
-        toneAction.getFrequency().visit(this);
+        toneAction.getFrequency().accept(this);
         this.sb.append(", ");
-        toneAction.getDuration().visit(this);
+        toneAction.getDuration().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -265,11 +265,11 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
                 methodName = isRegulated ? "hal.turnOnRegulatedMotor('" : "hal.turnOnUnregulatedMotor('";
             }
             this.sb.append(methodName + userDefinedPort.toString() + "', ");
-            motorOnAction.getParam().getSpeed().visit(this);
+            motorOnAction.getParam().getSpeed().accept(this);
             if ( duration ) {
                 this.sb.append(", " + getEnumCode(motorOnAction.getDurationMode()));
                 this.sb.append(", ");
-                motorOnAction.getDurationValue().visit(this);
+                motorOnAction.getDurationValue().accept(this);
             }
             this.sb.append(")");
         }
@@ -283,7 +283,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
             boolean isRegulated = this.brickConfiguration.isMotorRegulated(userDefinedPort);
             String methodName = isRegulated ? "hal.setRegulatedMotorSpeed('" : "hal.setUnregulatedMotorSpeed('";
             this.sb.append(methodName + userDefinedPort + "', ");
-            motorSetPowerAction.getPower().visit(this);
+            motorSetPowerAction.getPower().accept(this);
             this.sb.append(")");
         }
         return null;
@@ -322,10 +322,10 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
             this.sb.append("'" + this.brickConfiguration.getFirstMotorPort(SC.LEFT) + "', ");
             this.sb.append("'" + this.brickConfiguration.getFirstMotorPort(SC.RIGHT) + "', False, ");
             this.sb.append(getEnumCode(driveAction.getDirection()) + ", ");
-            driveAction.getParam().getSpeed().visit(this);
+            driveAction.getParam().getSpeed().accept(this);
             if ( isDuration ) {
                 this.sb.append(", ");
-                driveAction.getParam().getDuration().getValue().visit(this);
+                driveAction.getParam().getDuration().getValue().accept(this);
             }
             this.sb.append(")");
         }
@@ -344,10 +344,10 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
             this.sb.append("'" + leftMotorPort + "', ");
             this.sb.append("'" + rightMotorPort + "', False, ");
             this.sb.append(getEnumCode(turnAction.getDirection()) + ", ");
-            turnAction.getParam().getSpeed().visit(this);
+            turnAction.getParam().getSpeed().accept(this);
             if ( isDuration ) {
                 this.sb.append(", ");
-                turnAction.getParam().getDuration().getValue().visit(this);
+                turnAction.getParam().getDuration().getValue().accept(this);
             }
             this.sb.append(")");
         }
@@ -376,12 +376,12 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
             this.sb.append("hal.driveInCurve(");
             this.sb.append(getEnumCode(curveAction.getDirection()) + ", ");
             this.sb.append("'" + leftMotorPort + "', ");
-            curveAction.getParamLeft().getSpeed().visit(this);
+            curveAction.getParamLeft().getSpeed().accept(this);
             this.sb.append(", '" + rightMotorPort + "', ");
-            curveAction.getParamRight().getSpeed().visit(this);
+            curveAction.getParamRight().getSpeed().accept(this);
             if ( duration != null ) {
                 this.sb.append(", ");
-                duration.getValue().visit(this);
+                duration.getValue().accept(this);
             }
             this.sb.append(")");
         }
@@ -566,7 +566,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
         StmtList<Void> variables = mainTask.getVariables();
-        variables.visit(this);
+        variables.accept(this);
         generateUserDefinedMethods();
         nlIndent();
         this.sb.append("def run():");
@@ -583,7 +583,7 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     @Override
     public Void visitBluetoothReceiveAction(BluetoothReceiveAction<Void> bluetoothReadAction) {
         this.sb.append("hal.readMessage(");
-        bluetoothReadAction.getConnection().visit(this);
+        bluetoothReadAction.getConnection().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -593,10 +593,10 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
         this.sb.append("hal.establishConnectionTo(");
         if ( !bluetoothConnectAction.getAddress().getKind().hasName("STRING_CONST") ) {
             this.sb.append("str(");
-            bluetoothConnectAction.getAddress().visit(this);
+            bluetoothConnectAction.getAddress().accept(this);
             this.sb.append(")");
         } else {
-            bluetoothConnectAction.getAddress().visit(this);
+            bluetoothConnectAction.getAddress().accept(this);
         }
         this.sb.append(")");
         return null;
@@ -605,14 +605,14 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     @Override
     public Void visitBluetoothSendAction(BluetoothSendAction<Void> bluetoothSendAction) {
         this.sb.append("hal.sendMessage(");
-        bluetoothSendAction.getConnection().visit(this);
+        bluetoothSendAction.getConnection().accept(this);
         this.sb.append(", ");
         if ( !bluetoothSendAction.getMsg().getKind().hasName("STRING_CONST") ) {
             this.sb.append("str(");
-            bluetoothSendAction.getMsg().visit(this);
+            bluetoothSendAction.getMsg().accept(this);
             this.sb.append(")");
         } else {
-            bluetoothSendAction.getMsg().visit(this);
+            bluetoothSendAction.getMsg().accept(this);
         }
         this.sb.append(")");
         return null;
@@ -643,9 +643,9 @@ public final class Ev3PythonVisitor extends AbstractPythonVisitor implements IEv
     @Override
     public Void visitMathRandomIntFunct(MathRandomIntFunct<Void> mathRandomIntFunct) {
         this.sb.append(this.codeGeneratorSetupBean.getHelperMethodGenerator().getHelperMethodName(FunctionNames.RANDOM)).append("(");
-        mathRandomIntFunct.getParam().get(0).visit(this);
+        mathRandomIntFunct.getParam().get(0).accept(this);
         this.sb.append(", ");
-        mathRandomIntFunct.getParam().get(1).visit(this);
+        mathRandomIntFunct.getParam().get(1).accept(this);
         this.sb.append(")");
         return null;
     }

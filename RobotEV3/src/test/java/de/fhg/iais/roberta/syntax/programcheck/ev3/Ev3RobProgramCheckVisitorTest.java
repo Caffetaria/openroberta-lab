@@ -14,7 +14,7 @@ public class Ev3RobProgramCheckVisitorTest extends Ev3LejosAstTest {
     public void check_GlobalVariableUsedInUserCreatedFunction_returnsListWithOneElement() throws Exception {
         Project.Builder builder1 = UnitTestHelper.setupWithProgramXML(testFactory, Util1.readResourceContent("/visitors/MoveWithZeroSpeed.xml"));
 
-        builder1.setConfigurationAst(makeStandardConfiguration());
+        builder1.setConfigurationAst(makeStandard());
         Ev3BrickValidatorWorker worker = new Ev3BrickValidatorWorker();
         Project project = builder1.build();
         worker.execute(project);

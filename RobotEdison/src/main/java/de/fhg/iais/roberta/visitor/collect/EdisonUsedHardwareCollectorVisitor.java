@@ -55,7 +55,7 @@ public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareColl
     @Override
     public Void visitSendIRAction(SendIRAction<Void> sendIRAction) {
         this.builder.addUsedMethod(EdisonMethods.IRSEND);
-        sendIRAction.getCode().visit(this);
+        sendIRAction.getCode().accept(this);
         return null;
     }
 
@@ -100,7 +100,7 @@ public class EdisonUsedHardwareCollectorVisitor extends AbstractUsedHardwareColl
     public Void visitWaitStmt(WaitStmt<Void> waitStmt) {
         //visit all statements to add their helper methods
         for ( Stmt<Void> s : waitStmt.getStatements().get() ) {
-            s.visit(this);
+            s.accept(this);
         }
         return super.visitWaitStmt(waitStmt);
     }

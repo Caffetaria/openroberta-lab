@@ -84,7 +84,7 @@ public class ShowPictureAction<V> extends Action<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((IEv3Visitor<V>) visitor).visitShowPictureAction(this);
     }
 

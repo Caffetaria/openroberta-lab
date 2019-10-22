@@ -8,7 +8,7 @@ import de.fhg.iais.roberta.util.test.UnitTestHelper;
 
 public class Ev3DevListsTest extends Ev3DevAstTest {
 
-    private final ConfigurationAst configuration = makeStandardConfiguration();
+    private final ConfigurationAst configuration = makeStandard();
 
     @Test
     public void ev3DevGetListsTest() throws Exception {

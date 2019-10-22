@@ -44,7 +44,7 @@ public class ConfigurationAst {
 
     public void accept(IVisitor<Void> visitor) {
         for ( ConfigurationComponent configurationComponent : this.configurationComponents.values() ) {
-            configurationComponent.accept(visitor);
+            configurationComponent.acceptImpl(visitor);
         }
     }
 

@@ -86,7 +86,7 @@ public abstract class AbstractBrickValidatorVisitor extends AbstractProgramValid
     @Override
     public Void visitVolumeAction(VolumeAction<Void> volumeAction) {
         if ( volumeAction.getMode() == Mode.SET ) {
-            volumeAction.getVolume().visit(this);
+            volumeAction.getVolume().accept(this);
         }
         return null;
     }

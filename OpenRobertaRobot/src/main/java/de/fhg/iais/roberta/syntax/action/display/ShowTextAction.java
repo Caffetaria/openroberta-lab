@@ -94,7 +94,7 @@ public class ShowTextAction<V> extends Action<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((IDisplayVisitor<V>) visitor).visitShowTextAction(this);
     }
 

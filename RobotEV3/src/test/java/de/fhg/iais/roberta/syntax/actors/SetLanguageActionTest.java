@@ -13,10 +13,10 @@ public class SetLanguageActionTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/actions/action_SetLanguage.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/actions/action_SetLanguage.xml",
+                    makeStandard(),
+                    false);
     }
 }

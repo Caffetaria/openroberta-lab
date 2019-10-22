@@ -51,7 +51,7 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
         for ( VarDeclaration<Void> var : this.usedHardwareBean.getVisitedVars() ) {
             this.sb.append("___" + var.getName());
             this.sb.append(" = ");
-            var.getValue().visit(this);
+            var.getValue().accept(this);
             this.sb.append(";");
             nlIndent();
         }
@@ -177,7 +177,7 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
                 break;
         }
         incrIndentation();
-        repeatStmt.getList().visit(this);
+        repeatStmt.getList().accept(this);
         if ( !isWaitStmt ) {
             addContinueLabelToLoop();
             if ( !isArduinoLoop ) {
@@ -228,7 +228,7 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
     @Override
     public Void visitWaitTimeStmt(WaitTimeStmt<Void> waitTimeStmt) {
         this.sb.append("delay(");
-        waitTimeStmt.getTime().visit(this);
+        waitTimeStmt.getTime().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -241,14 +241,14 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
         }
         String methodName = indexOfFunct.getLocation() == IndexLocation.LAST ? "_getLastOccuranceOfElement(" : "_getFirstOccuranceOfElement(";
         this.sb.append(methodName);
-        indexOfFunct.getParam().get(0).visit(this);
+        indexOfFunct.getParam().get(0).accept(this);
         this.sb.append(", ");
         if ( indexOfFunct.getParam().get(1).getClass().equals(StringConst.class) ) {
             this.sb.append("String(");
-            indexOfFunct.getParam().get(1).visit(this);
+            indexOfFunct.getParam().get(1).accept(this);
             this.sb.append(")");
         } else {
-            indexOfFunct.getParam().get(1).visit(this);
+            indexOfFunct.getParam().get(1).accept(this);
         }
         this.sb.append(")");
         return null;
@@ -262,12 +262,12 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
         }
         if ( lengthOfIsEmptyFunct.getFunctName() == FunctionNames.LIST_IS_EMPTY ) {
             this.sb.append("(");
-            lengthOfIsEmptyFunct.getParam().get(0).visit(this);
+            lengthOfIsEmptyFunct.getParam().get(0).accept(this);
             this.sb.append(".size()");
             this.sb.append(" == 0)");
         } else {
             this.sb.append("((int) ");
-            lengthOfIsEmptyFunct.getParam().get(0).visit(this);
+            lengthOfIsEmptyFunct.getParam().get(0).accept(this);
             this.sb.append(".size())");
         }
         return null;
@@ -276,11 +276,11 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
     @Override
     public Void visitMathConstrainFunct(MathConstrainFunct<Void> mathConstrainFunct) {
         this.sb.append("rob.clamp(");
-        mathConstrainFunct.getParam().get(0).visit(this);
+        mathConstrainFunct.getParam().get(0).accept(this);
         this.sb.append(", ");
-        mathConstrainFunct.getParam().get(1).visit(this);
+        mathConstrainFunct.getParam().get(1).accept(this);
         this.sb.append(", ");
-        mathConstrainFunct.getParam().get(2).visit(this);
+        mathConstrainFunct.getParam().get(2).accept(this);
         this.sb.append(")");
         return null;
     }
@@ -290,37 +290,37 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
         switch ( mathNumPropFunct.getFunctName() ) {
             case EVEN:
                 this.sb.append("(fmod(");
-                mathNumPropFunct.getParam().get(0).visit(this);
+                mathNumPropFunct.getParam().get(0).accept(this);
                 this.sb.append(", 2) == 0");
                 break;
             case ODD:
                 this.sb.append("(fmod(");
-                mathNumPropFunct.getParam().get(0).visit(this);
+                mathNumPropFunct.getParam().get(0).accept(this);
                 this.sb.append(", 2) != 0");
                 break;
             case PRIME:
                 this.sb.append("isPrimeD(");
-                mathNumPropFunct.getParam().get(0).visit(this);
+                mathNumPropFunct.getParam().get(0).accept(this);
                 break;
             case WHOLE:
                 this.sb.append("isWholeD(");
-                mathNumPropFunct.getParam().get(0).visit(this);
+                mathNumPropFunct.getParam().get(0).accept(this);
                 break;
             case POSITIVE:
                 this.sb.append("(");
-                mathNumPropFunct.getParam().get(0).visit(this);
+                mathNumPropFunct.getParam().get(0).accept(this);
                 this.sb.append(" > 0");
                 break;
             case NEGATIVE:
                 this.sb.append("(");
-                mathNumPropFunct.getParam().get(0).visit(this);
+                mathNumPropFunct.getParam().get(0).accept(this);
                 this.sb.append(" < 0");
                 break;
             case DIVISIBLE_BY:
                 this.sb.append("(fmod(");
-                mathNumPropFunct.getParam().get(0).visit(this);
+                mathNumPropFunct.getParam().get(0).accept(this);
                 this.sb.append(",");
-                mathNumPropFunct.getParam().get(1).visit(this);
+                mathNumPropFunct.getParam().get(1).accept(this);
                 this.sb.append(") == 0");
                 break;
             default:
@@ -339,9 +339,9 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
     @Override
     public Void visitMathRandomIntFunct(MathRandomIntFunct<Void> mathRandomIntFunct) {
         this.sb.append("_randomIntegerInRange(");
-        mathRandomIntFunct.getParam().get(0).visit(this);
+        mathRandomIntFunct.getParam().get(0).accept(this);
         this.sb.append(", ");
-        mathRandomIntFunct.getParam().get(1).visit(this);
+        mathRandomIntFunct.getParam().get(1).accept(this);
         this.sb.append(")");
         return null;
     }
@@ -387,7 +387,7 @@ public abstract class AbstractCommonArduinoCppVisitor extends AbstractCppVisitor
 
     private void writeToSerial(Expr<Void> valueToWrite) {
         this.sb.append("Serial.println(");
-        valueToWrite.visit(this);
+        valueToWrite.accept(this);
         this.sb.append(");");
     }
 }

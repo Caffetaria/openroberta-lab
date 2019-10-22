@@ -108,7 +108,7 @@ public final class ConfigurationComponent extends Phrase<Void> {
     }
 
     @Override
-    protected Void accept(IVisitor<Void> visitor) {
+    protected Void acceptImpl(IVisitor<Void> visitor) {
         // WE ACCEPT NOTHING!
         throw new DbcException("ConfigurationComponent should not be visited on it's own, instead the whole Configuration should be visited");
     }

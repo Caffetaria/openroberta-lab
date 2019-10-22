@@ -103,11 +103,11 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitRgbColor(RgbColor<Void> rgbColor) {
         this.sb.append("int(\"{:02x}{:02x}{:02x}\".format(min(max(");
-        rgbColor.getR().visit(this);
+        rgbColor.getR().accept(this);
         this.sb.append(", 0), 255), min(max(");
-        rgbColor.getG().visit(this);
+        rgbColor.getG().accept(this);
         this.sb.append(", 0), 255), min(max(");
-        rgbColor.getB().visit(this);
+        rgbColor.getB().accept(this);
         this.sb.append(", 0), 255), 16))");
         return null;
     }
@@ -126,7 +126,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitWaitTimeStmt(WaitTimeStmt<Void> waitTimeStmt) {
         this.sb.append("h.wait(");
-        waitTimeStmt.getTime().visit(this);
+        waitTimeStmt.getTime().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -134,7 +134,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
         StmtList<Void> variables = mainTask.getVariables();
-        variables.visit(this);
+        variables.accept(this);
         generateUserDefinedMethods();
         nlIndent();
         nlIndent();
@@ -386,7 +386,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
                 break;
         }
         this.sb.append(", ");
-        moveJoint.getDegrees().visit(this);
+        moveJoint.getDegrees().accept(this);
         this.sb.append(", ");
         switch ( moveJoint.getRelativeAbsolute() ) {
             case ABSOLUTE:
@@ -405,7 +405,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
         if ( walkDistance.getWalkDirection() == DriveDirection.BACKWARD ) {
             this.sb.append("-");
         }
-        walkDistance.getDistanceToWalk().visit(this);
+        walkDistance.getDistanceToWalk().accept(this);
         this.sb.append(", 0, 0)");
         return null;
     }
@@ -416,7 +416,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
         if ( turnDegrees.getTurnDirection() == TurnDirection.RIGHT ) {
             this.sb.append("-");
         }
-        turnDegrees.getDegreesToTurn().visit(this);
+        turnDegrees.getDegreesToTurn().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -424,11 +424,11 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitWalkTo(WalkTo<Void> walkTo) {
         this.sb.append("h.walk(");
-        walkTo.getWalkToX().visit(this);
+        walkTo.getWalkToX().accept(this);
         this.sb.append(",");
-        walkTo.getWalkToY().visit(this);
+        walkTo.getWalkToY().accept(this);
         this.sb.append(",");
-        walkTo.getWalkToTheta().visit(this);
+        walkTo.getWalkToTheta().accept(this);
         this.sb.append(")");
 
         return null;
@@ -465,13 +465,13 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
         this.sb.append("h.pointLookAt(" + getEnumCode(pointLookAt.getPointLook()));
         this.sb.append(", " + pointLookAt.getFrame().getValues()[0] + ", ");
 
-        pointLookAt.getpointX().visit(this);
+        pointLookAt.getpointX().accept(this);
         this.sb.append(", ");
-        pointLookAt.getpointY().visit(this);
+        pointLookAt.getpointY().accept(this);
         this.sb.append(", ");
-        pointLookAt.getpointZ().visit(this);
+        pointLookAt.getpointZ().accept(this);
         this.sb.append(", ");
-        pointLookAt.getSpeed().visit(this);
+        pointLookAt.getSpeed().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -479,7 +479,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitSetVolume(SetVolume<Void> setVolume) {
         this.sb.append("h.setVolume(");
-        setVolume.getVolume().visit(this);
+        setVolume.getVolume().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -558,17 +558,17 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
         this.sb.append("h.say(");
         if ( !sayTextAction.getMsg().getKind().hasName("STRING_CONST") ) {
             this.sb.append("str(");
-            sayTextAction.getMsg().visit(this);
+            sayTextAction.getMsg().accept(this);
             this.sb.append(")");
         } else {
-            sayTextAction.getMsg().visit(this);
+            sayTextAction.getMsg().accept(this);
         }
         BlockType emptyBlock = BlockTypeContainer.getByName("EMPTY_EXPR");
         if ( !(sayTextAction.getSpeed().getKind().equals(emptyBlock) && sayTextAction.getPitch().getKind().equals(emptyBlock)) ) {
             this.sb.append(",");
-            sayTextAction.getSpeed().visit(this);
+            sayTextAction.getSpeed().accept(this);
             this.sb.append(",");
-            sayTextAction.getPitch().visit(this);
+            sayTextAction.getPitch().accept(this);
         }
         this.sb.append(")");
         return null;
@@ -577,7 +577,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitPlayFile(PlayFile<Void> playFile) {
         this.sb.append("h.playFile(");
-        playFile.getMsg().visit(this);
+        playFile.getMsg().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -620,7 +620,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
                 this.sb.append("\"RightFootLeds\", ");
                 break;
         }
-        setLeds.getColor().visit(this);
+        setLeds.getColor().accept(this);
         this.sb.append(", 0.1)");
         return null;
     }
@@ -663,7 +663,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
                 this.sb.append("\"RightFootLeds\", ");
                 break;
         }
-        setIntensity.getIntensity().visit(this);
+        setIntensity.getIntensity().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -761,7 +761,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitRandomEyesDuration(RandomEyesDuration<Void> randomEyesDuration) {
         this.sb.append("h.randomEyes(");
-        randomEyesDuration.getDuration().visit(this);
+        randomEyesDuration.getDuration().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -769,7 +769,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitRastaDuration(RastaDuration<Void> rastaDuration) {
         this.sb.append("h.rasta(");
-        rastaDuration.getDuration().visit(this);
+        rastaDuration.getDuration().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -832,7 +832,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
         } else if ( takePicture.getCamera() == Camera.BOTTOM ) {
             this.sb.append("\"Bottom\", ");
         }
-        takePicture.getPictureName().visit(this);
+        takePicture.getPictureName().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -859,9 +859,9 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
                 this.sb.append("\"Bottom\", ");
                 break;
         }
-        recordVideo.getDuration().visit(this);
+        recordVideo.getDuration().accept(this);
         this.sb.append(", ");
-        recordVideo.getVideoName().visit(this);
+        recordVideo.getVideoName().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -869,7 +869,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitLearnFace(LearnFace<Void> learnFace) {
         this.sb.append("faceRecognitionModule.learnFace(");
-        learnFace.getFaceName().visit(this);
+        learnFace.getFaceName().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -877,7 +877,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitForgetFace(ForgetFace<Void> forgetFace) {
         this.sb.append("faceRecognitionModule.forgetFace(");
-        forgetFace.getFaceName().visit(this);
+        forgetFace.getFaceName().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -894,7 +894,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
 
     @Override
     public Void visitGetSampleSensor(GetSampleSensor<Void> sensorGetSample) {
-        return sensorGetSample.getSensor().visit(this);
+        return sensorGetSample.getSensor().accept(this);
     }
 
     @Override
@@ -1021,11 +1021,11 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitWalkAsync(WalkAsync<Void> walkAsync) {
         this.sb.append("h.walkAsync(");
-        walkAsync.getXSpeed().visit(this);
+        walkAsync.getXSpeed().accept(this);
         this.sb.append(", ");
-        walkAsync.getYSpeed().visit(this);
+        walkAsync.getYSpeed().accept(this);
         this.sb.append(", ");
-        walkAsync.getZSpeed().visit(this);
+        walkAsync.getZSpeed().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -1113,7 +1113,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitRecognizeWord(RecognizeWord<Void> recognizeWord) {
         this.sb.append("speechRecognitionModule.recognizeWordFromDictionary(");
-        recognizeWord.getVocabulary().visit(this);
+        recognizeWord.getVocabulary().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -1121,7 +1121,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitNaoMarkInformation(NaoMarkInformation<Void> naoMarkInformation) {
         this.sb.append("h.getNaoMarkInformation(");
-        naoMarkInformation.getNaoMarkId().visit(this);
+        naoMarkInformation.getNaoMarkId().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -1129,7 +1129,7 @@ public final class NaoPythonVisitor extends AbstractPythonVisitor implements INa
     @Override
     public Void visitDetecedFaceInformation(DetectedFaceInformation<Void> detectedFaceInformation) {
         this.sb.append("faceRecognitionModule.getFaceInformation(");
-        detectedFaceInformation.getFaceName().visit(this);
+        detectedFaceInformation.getFaceName().accept(this);
         this.sb.append(")");
         return null;
     }

@@ -55,7 +55,7 @@ public class ProgramAst<V> {
     public void accept(IVisitor<V> visitor) {
         for ( ArrayList<Phrase<V>> forest : this.forests ) {
             for ( Phrase<V> tree : forest ) {
-                tree.visit(visitor);
+                tree.accept(visitor);
             }
         }
     }

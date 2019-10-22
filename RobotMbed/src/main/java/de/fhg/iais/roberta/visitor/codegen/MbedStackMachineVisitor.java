@@ -88,7 +88,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitDisplayTextAction(DisplayTextAction<V> displayTextAction) {
-        displayTextAction.getMsg().visit(this);
+        displayTextAction.getMsg().accept(this);
         JSONObject o = mk(C.SHOW_TEXT_ACTION).put(C.MODE, displayTextAction.getMode().toString().toLowerCase());
 
         return app(o);
@@ -129,7 +129,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitDisplayImageAction(DisplayImageAction<V> displayImageAction) {
-        displayImageAction.getValuesToDisplay().visit(this);
+        displayImageAction.getValuesToDisplay().accept(this);
         JSONObject o = mk(C.SHOW_IMAGE_ACTION).put(C.MODE, displayImageAction.getDisplayImageMode().toString().toLowerCase());
         return app(o);
     }
@@ -142,8 +142,8 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitToneAction(ToneAction<V> toneAction) {
-        toneAction.getFrequency().visit(this);
-        toneAction.getDuration().visit(this);
+        toneAction.getFrequency().accept(this);
+        toneAction.getDuration().accept(this);
         JSONObject o = mk(C.TONE_ACTION);
         return app(o);
     }
@@ -165,7 +165,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitMotorOnAction(MotorOnAction<V> motorOnAction) {
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         app(mk(C.EXPR).put(C.EXPR, C.NUM_CONST).put(C.VALUE, 0));
         String port = motorOnAction.getUserDefinedPort();
 
@@ -187,14 +187,14 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitSerialWriteAction(SerialWriteAction<V> serialWriteAction) {
-        serialWriteAction.getValue().visit(this);
+        serialWriteAction.getValue().accept(this);
         JSONObject o = mk(C.SERIAL_WRITE_ACTION);
         return app(o);
     }
 
     @Override
     public V visitPinWriteValueAction(PinWriteValueAction<V> pinWriteValueAction) {
-        pinWriteValueAction.getValue().visit(this);
+        pinWriteValueAction.getValue().accept(this);
         String pin = pinWriteValueAction.getPort();
         String mode = pinWriteValueAction.getMode();
         JSONObject o = mk(C.WRITE_PIN_ACTION).put(C.PIN, pin).put(C.MODE, mode.toLowerCase());
@@ -209,7 +209,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitImageInvertFunction(ImageInvertFunction<V> imageInvertFunction) {
-        imageInvertFunction.getImage().visit(this);
+        imageInvertFunction.getImage().accept(this);
         JSONObject o = mk(C.EXPR).put(C.EXPR, C.SINGLE_FUNCTION).put(C.OP, C.IMAGE_INVERT_ACTION);
         return app(o);
     }
@@ -277,7 +277,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitLedOnAction(LedOnAction<V> ledOnAction) {
-        ledOnAction.getLedColor().visit(this);
+        ledOnAction.getLedColor().accept(this);
         JSONObject o = mk(C.LED_ON_ACTION);
         return app(o);
     }
@@ -299,7 +299,7 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitDisplaySetBrightnessAction(DisplaySetBrightnessAction<V> displaySetBrightnessAction) {
-        displaySetBrightnessAction.getBrightness().visit(this);
+        displaySetBrightnessAction.getBrightness().accept(this);
         JSONObject o = mk(C.DISPLAY_SET_BRIGHTNESS_ACTION);
         return app(o);
     }
@@ -312,17 +312,17 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitDisplaySetPixelAction(DisplaySetPixelAction<V> displaySetPixelAction) {
-        displaySetPixelAction.getX().visit(this);
-        displaySetPixelAction.getY().visit(this);
-        displaySetPixelAction.getBrightness().visit(this);
+        displaySetPixelAction.getX().accept(this);
+        displaySetPixelAction.getY().accept(this);
+        displaySetPixelAction.getBrightness().accept(this);
         JSONObject o = mk(C.DISPLAY_SET_PIXEL_BRIGHTNESS_ACTION);
         return app(o);
     }
 
     @Override
     public V visitDisplayGetPixelAction(DisplayGetPixelAction<V> displayGetPixelAction) {
-        displayGetPixelAction.getX().visit(this);
-        displayGetPixelAction.getY().visit(this);
+        displayGetPixelAction.getX().accept(this);
+        displayGetPixelAction.getY().accept(this);
         JSONObject o = mk(C.DISPLAY_GET_PIXEL_BRIGHTNESS_ACTION);
         return app(o);
     }
@@ -351,8 +351,8 @@ public class MbedStackMachineVisitor<V> extends AbstractStackMachineVisitor<V> i
 
     @Override
     public V visitBothMotorsOnAction(BothMotorsOnAction<V> bothMotorsOnAction) {
-        bothMotorsOnAction.getSpeedA().visit(this);
-        bothMotorsOnAction.getSpeedB().visit(this);
+        bothMotorsOnAction.getSpeedA().accept(this);
+        bothMotorsOnAction.getSpeedB().accept(this);
         app(mk(C.EXPR).put(C.EXPR, C.NUM_CONST).put(C.VALUE, 0));
         JSONObject o =
             mk(C.BOTH_MOTORS_ON_ACTION).put(C.PORT_A, bothMotorsOnAction.getPortA().toLowerCase()).put(C.PORT_B, bothMotorsOnAction.getPortB().toLowerCase());

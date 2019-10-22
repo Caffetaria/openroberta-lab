@@ -145,7 +145,7 @@ public class TypecheckVisitor implements ILanguageVisitor<BlocklyType>, ISensorV
         Assert.notNull(phrase);
 
         TypecheckVisitor astVisitor = new TypecheckVisitor(phrase);
-        astVisitor.resultType = phrase.visit(astVisitor);
+        astVisitor.resultType = phrase.accept(astVisitor);
         return astVisitor;
     }
 
@@ -242,8 +242,8 @@ public class TypecheckVisitor implements ILanguageVisitor<BlocklyType>, ISensorV
 
     @Override
     public BlocklyType visitBinary(Binary<BlocklyType> binary) {
-        BlocklyType left = binary.getLeft().visit(this);
-        BlocklyType right = binary.getRight().visit(this);
+        BlocklyType left = binary.getLeft().accept(this);
+        BlocklyType right = binary.getRight().accept(this);
         //        Sig signature = TypeTransformations.getBinarySignature(binary.getOp().getOpSymbol());
         Sig signature = binary.getOp().getSignature();
         return signature.typeCheck(binary, Arrays.asList(left, right));
@@ -465,7 +465,7 @@ public class TypecheckVisitor implements ILanguageVisitor<BlocklyType>, ISensorV
     private List<BlocklyType> typecheckList(List<Expr<BlocklyType>> params) {
         List<BlocklyType> paramTypes = new ArrayList<>(params.size());
         for ( Expr<BlocklyType> param : params ) {
-            paramTypes.add(param.visit(this));
+            paramTypes.add(param.accept(this));
         }
         return paramTypes;
     }

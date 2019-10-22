@@ -26,10 +26,10 @@ public class MotorOnActionTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/actions/action_MotorOnFor.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/actions/action_MotorOnFor.xml",
+                    makeStandard(),
+                    false);
     }
 }

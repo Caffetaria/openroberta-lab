@@ -70,7 +70,7 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
     @Override
     public Void visitWaitTimeStmt(WaitTimeStmt<Void> waitTimeStmt) {
         this.sb.append("hal.wait(");
-        waitTimeStmt.getTime().visit(this);
+        waitTimeStmt.getTime().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -100,7 +100,7 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
         StmtList<Void> variables = mainTask.getVariables();
-        variables.visit(this);
+        variables.accept(this);
         generateUserDefinedMethods();
         nlIndent();
         this.sb.append("def run():");
@@ -187,7 +187,7 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
     @Override
     public Void visitLightAction(LightAction<Void> lightAction) {
         this.sb.append("hal.set_color(").append(lightAction.getPort()).append(", ");
-        lightAction.getRgbLedColor().visit(this);
+        lightAction.getRgbLedColor().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -201,7 +201,7 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
     @Override
     public Void visitLedSetAction(LedSetAction<Void> ledSetAction) {
         this.sb.append("hal.set_brightness(").append(ledSetAction.getPort()).append(", ");
-        ledSetAction.getBrightness().visit(this);
+        ledSetAction.getBrightness().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -209,9 +209,9 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
     @Override
     public Void visitLedBlinkAction(LedBlinkAction<Void> ledBlinkAction) {
         this.sb.append("hal.blink(").append(ledBlinkAction.getPort()).append(", ");
-        ledBlinkAction.getFrequency().visit(this);
+        ledBlinkAction.getFrequency().accept(this);
         this.sb.append(", ");
-        ledBlinkAction.getDuration().visit(this);
+        ledBlinkAction.getDuration().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -219,11 +219,11 @@ public final class RaspberryPiPythonVisitor extends AbstractPythonVisitor implem
     @Override
     public Void visitLedDimAction(LedDimAction<Void> ledDimAction) {
         this.sb.append("hal.dim(").append(ledDimAction.getPort()).append(", ");
-        ledDimAction.getFrom().visit(this);
+        ledDimAction.getFrom().accept(this);
         this.sb.append(", ");
-        ledDimAction.getTo().visit(this);
+        ledDimAction.getTo().accept(this);
         this.sb.append(", ");
-        ledDimAction.getDuration().visit(this);
+        ledDimAction.getDuration().accept(this);
         this.sb.append(")");
         return null;
     }

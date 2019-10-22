@@ -65,19 +65,19 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitDisplayTextAction(DisplayTextAction<Void> displayTextAction) {
-        displayTextAction.getMsg().visit(this);
+        displayTextAction.getMsg().accept(this);
         return null;
     }
 
     @Override
     public Void visitDisplayImageAction(DisplayImageAction<Void> displayImageAction) {
-        displayImageAction.getValuesToDisplay().visit(this);
+        displayImageAction.getValuesToDisplay().accept(this);
         return null;
     }
 
     @Override
     public Void visitRadioSendAction(RadioSendAction<Void> radioSendAction) {
-        radioSendAction.getMsg().visit(this);
+        radioSendAction.getMsg().accept(this);
         this.builder.setRadioUsed(true);
         return null;
     }
@@ -90,7 +90,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitRadioSetChannelAction(RadioSetChannelAction<Void> radioSetChannelAction) {
-        radioSetChannelAction.getChannel().visit(this);
+        radioSetChannelAction.getChannel().accept(this);
         this.builder.setRadioUsed(true);
         return null;
     }
@@ -115,10 +115,10 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitRgbColor(RgbColor<Void> rgbColor) {
-        rgbColor.getR().visit(this);
-        rgbColor.getG().visit(this);
-        rgbColor.getB().visit(this);
-        rgbColor.getA().visit(this);
+        rgbColor.getR().accept(this);
+        rgbColor.getG().accept(this);
+        rgbColor.getB().accept(this);
+        rgbColor.getA().accept(this);
         return null;
     }
 
@@ -173,13 +173,13 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitImageShiftFunction(ImageShiftFunction<Void> imageShiftFunction) {
-        imageShiftFunction.getImage().visit(this);
+        imageShiftFunction.getImage().accept(this);
         return null;
     }
 
     @Override
     public Void visitImageInvertFunction(ImageInvertFunction<Void> imageInvertFunction) {
-        imageInvertFunction.getImage().visit(this);
+        imageInvertFunction.getImage().accept(this);
         return null;
     }
 
@@ -195,7 +195,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitLedOnAction(LedOnAction<Void> ledOnAction) {
-        ledOnAction.getLedColor().visit(this);
+        ledOnAction.getLedColor().accept(this);
         if ( !ledOnAction.getPort().equals("0") ) {
             this.builder.setCalliBotUsed(true);
         }
@@ -218,7 +218,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitMotorOnAction(MotorOnAction<Void> motorOnAction) {
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         if ( motorOnAction.getUserDefinedPort().equals("0")
             || motorOnAction.getUserDefinedPort().equals("2")
             || motorOnAction.getUserDefinedPort().equals("3") ) {
@@ -229,7 +229,7 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitSingleMotorOnAction(SingleMotorOnAction<Void> singleMotorOnAction) {
-        singleMotorOnAction.getSpeed().visit(this);
+        singleMotorOnAction.getSpeed().accept(this);
         return null;
     }
 
@@ -267,9 +267,9 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitFourDigitDisplayShowAction(FourDigitDisplayShowAction<Void> fourDigitDisplayShowAction) {
-        fourDigitDisplayShowAction.getValue().visit(this);
-        fourDigitDisplayShowAction.getPosition().visit(this);
-        fourDigitDisplayShowAction.getColon().visit(this);
+        fourDigitDisplayShowAction.getValue().accept(this);
+        fourDigitDisplayShowAction.getPosition().accept(this);
+        fourDigitDisplayShowAction.getColon().accept(this);
         this.builder.setFourDigitDisplayUsed(true);
         return null;
     }
@@ -282,8 +282,8 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitLedBarSetAction(LedBarSetAction<Void> ledBarSetAction) {
-        ledBarSetAction.getX().visit(this);
-        ledBarSetAction.getBrightness().visit(this);
+        ledBarSetAction.getX().accept(this);
+        ledBarSetAction.getBrightness().accept(this);
         this.builder.setLedBarUsed(true);
         return null;
     }
@@ -310,8 +310,8 @@ public final class MbedUsedHardwareCollectorVisitor extends AbstractUsedHardware
 
     @Override
     public Void visitBothMotorsOnAction(BothMotorsOnAction<Void> bothMotorsOnAction) {
-        bothMotorsOnAction.getSpeedA().visit(this);
-        bothMotorsOnAction.getSpeedB().visit(this);
+        bothMotorsOnAction.getSpeedA().accept(this);
+        bothMotorsOnAction.getSpeedB().accept(this);
         if ( bothMotorsOnAction.getPortA().equals("LEFT") ) {
             this.builder.setCalliBotUsed(true);
         }

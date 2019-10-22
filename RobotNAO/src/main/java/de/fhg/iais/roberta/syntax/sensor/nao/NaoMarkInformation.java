@@ -56,7 +56,7 @@ public final class NaoMarkInformation<V> extends Sensor<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((INaoVisitor<V>) visitor).visitNaoMarkInformation(this);
     }
 

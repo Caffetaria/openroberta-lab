@@ -175,7 +175,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
 
     @Test
     public void test2() throws Exception {
-        ConfigurationAst brickConfigurationNew = makeTouchUltrasonicColorConfiguration();
+        ConfigurationAst brickConfigurationNew = makeMediumLargeTouchUltrasonicColor();
         brickConfigurationNew.setRobotName("lejosEv3V1");
         final String BRICK_CONFIGURATION =
             "" //
@@ -227,7 +227,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
 
     @Test
     public void test3() throws Exception {
-        ConfigurationAst brickConfigurationNew = makeTouchUltrasonicColorUltrasonicConfiguration();
+        ConfigurationAst brickConfigurationNew = makeMediumLargeTouchUltrasonicColorUltrasonic();
         brickConfigurationNew.setRobotName("lejosEv3V1");
 
         final String BRICK_CONFIGURATION =
@@ -281,7 +281,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
 
     @Test
     public void test4() throws Exception {
-        ConfigurationAst brickConfigurationNew = makeTouchGyroInfraredUltrasonic();
+        ConfigurationAst brickConfigurationNew = makeMediumLargeTouchGyroInfraredUltrasonic();
         brickConfigurationNew.setRobotName("lejosEv3V1");
 
         final String BRICK_CONFIGURATION =
@@ -1240,7 +1240,7 @@ public class AstToLejosJavaVisitorTest extends Ev3LejosAstTest {
 
     @Test
     public void check_readHiTecColorSensorV2InDifferentModes() throws Exception {
-        ConfigurationAst brickConfigurationNew = makeHiTecColorSensorConfiguration();
+        ConfigurationAst brickConfigurationNew = makeHTColor();
         brickConfigurationNew.setRobotName("lejosEv3V1");
         final String BRICK_CONFIGURATION =
             "" //

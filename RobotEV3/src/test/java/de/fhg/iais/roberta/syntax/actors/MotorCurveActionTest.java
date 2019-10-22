@@ -17,11 +17,11 @@ public class MotorCurveActionTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/actions/action_MotorCurveOn.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/actions/action_MotorCurveOn.xml",
+                    makeStandard(),
+                    false);
     }
 
     @Test
@@ -34,10 +34,10 @@ public class MotorCurveActionTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/actions/action_MotorCurveOnFor.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/actions/action_MotorCurveOnFor.xml",
+                    makeStandard(),
+                    false);
     }
 }

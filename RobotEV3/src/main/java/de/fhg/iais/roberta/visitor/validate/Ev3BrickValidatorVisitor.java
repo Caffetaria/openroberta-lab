@@ -85,8 +85,8 @@ public final class Ev3BrickValidatorVisitor extends AbstractBrickValidatorVisito
 
     @Override
     public Void visitShowPictureAction(ShowPictureAction<Void> showPictureAction) {
-        showPictureAction.getX().visit(this);
-        showPictureAction.getY().visit(this);
+        showPictureAction.getX().accept(this);
+        showPictureAction.getY().accept(this);
         return null;
     }
 }

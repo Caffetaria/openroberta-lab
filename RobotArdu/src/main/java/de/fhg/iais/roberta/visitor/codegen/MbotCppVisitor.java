@@ -135,7 +135,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
         Channels.put("blue", ((RgbColor<Void>) lightAction.getRgbLedColor()).getB());
         Channels.forEach((k, v) -> {
             this.sb.append(", ");
-            v.visit(this);
+            v.accept(this);
         });
         this.sb.append(");");
         nlIndent();
@@ -162,9 +162,9 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
     public Void visitToneAction(ToneAction<Void> toneAction) {
         //8 - sound port
         this.sb.append("_meBuzzer.tone(8, ");
-        toneAction.getFrequency().visit(this);
+        toneAction.getFrequency().accept(this);
         this.sb.append(", ");
-        toneAction.getDuration().visit(this);
+        toneAction.getDuration().accept(this);
         this.sb.append(");");
         nlIndent();
         this.sb.append("delay(20); ");
@@ -192,12 +192,12 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
             this.sb.append("-1*");
         }
         this.sb.append("(");
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         this.sb.append(")*255/100);");
         if ( duration != null ) {
             nlIndent();
             this.sb.append("delay(");
-            motorOnAction.getDurationValue().visit(this);
+            motorOnAction.getDurationValue().accept(this);
             this.sb.append(");");
             nlIndent();
             this.sb.append("_meDCmotor").append(motorOnAction.getUserDefinedPort()).append(".stop();");
@@ -225,12 +225,12 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
     public Void visitDriveAction(DriveAction<Void> driveAction) {
         final MotorDuration<Void> duration = driveAction.getParam().getDuration();
         this.sb.append("_meDrive.drive(");
-        driveAction.getParam().getSpeed().visit(this);
+        driveAction.getParam().getSpeed().accept(this);
         this.sb.append(", ");
         this.sb.append(driveAction.getDirection() == DriveDirection.FOREWARD ? 1 : 0);
         if ( duration != null ) {
             this.sb.append(", ");
-            duration.getValue().visit(this);
+            duration.getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -240,13 +240,13 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
     public Void visitCurveAction(CurveAction<Void> curveAction) {
         final MotorDuration<Void> duration = curveAction.getParamLeft().getDuration();
         this.sb.append("_meDrive.steer(");
-        curveAction.getParamLeft().getSpeed().visit(this);
+        curveAction.getParamLeft().getSpeed().accept(this);
         this.sb.append(", ");
-        curveAction.getParamRight().getSpeed().visit(this);
+        curveAction.getParamRight().getSpeed().accept(this);
         this.sb.append(", ").append(curveAction.getDirection() == DriveDirection.FOREWARD ? 1 : 0);
         if ( duration != null ) {
             this.sb.append(", ");
-            duration.getValue().visit(this);
+            duration.getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -256,11 +256,11 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
     public Void visitTurnAction(TurnAction<Void> turnAction) {
         final MotorDuration<Void> duration = turnAction.getParam().getDuration();
         this.sb.append("_meDrive.turn(");
-        turnAction.getParam().getSpeed().visit(this);
+        turnAction.getParam().getSpeed().accept(this);
         this.sb.append(", ").append(turnAction.getDirection() == TurnDirection.LEFT ? 1 : 0);
         if ( duration != null ) {
             this.sb.append(", ");
-            duration.getValue().visit(this);
+            duration.getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -367,7 +367,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
 
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
-        mainTask.getVariables().visit(this);
+        mainTask.getVariables().accept(this);
         if ( !mainTask.getVariables().toString().equals("") ) {
             nlIndent();
         }
@@ -600,7 +600,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
     @Override
     public Void visitSerialWriteAction(SerialWriteAction<Void> serialWriteAction) {
         this.sb.append("Serial.println(");
-        serialWriteAction.getValue().visit(this);
+        serialWriteAction.getValue().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -608,7 +608,7 @@ public final class MbotCppVisitor extends AbstractCommonArduinoCppVisitor implem
     @Override
     public Void visitSendIRAction(SendIRAction<Void> sendIRAction) {
         this.sb.append("_meIr.sendString(");
-        sendIRAction.getMessage().visit(this);
+        sendIRAction.getMessage().accept(this);
         this.sb.append(");");
         return null;
     }

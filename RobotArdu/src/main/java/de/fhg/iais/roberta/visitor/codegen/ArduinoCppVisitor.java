@@ -68,13 +68,13 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
     @Override
     public Void visitShowTextAction(ShowTextAction<Void> showTextAction) {
         this.sb.append("_lcd_" + showTextAction.getPort() + ".setCursor(");
-        showTextAction.getX().visit(this);
+        showTextAction.getX().accept(this);
         this.sb.append(",");
-        showTextAction.getY().visit(this);
+        showTextAction.getY().accept(this);
         this.sb.append(");");
         nlIndent();
         this.sb.append("_lcd_" + showTextAction.getPort() + ".print(");
-        showTextAction.getMsg().visit(this);
+        showTextAction.getMsg().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -134,7 +134,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
             Channels.put("blue", ((RgbColor<Void>) lightAction.getRgbLedColor()).getB());
             Channels.forEach((k, v) -> {
                 this.sb.append("analogWrite(_led_" + k + "_" + lightAction.getPort() + ", ");
-                v.visit(this);
+                v.accept(this);
                 this.sb.append(");");
                 nlIndent();
             });
@@ -161,9 +161,9 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
     public Void visitToneAction(ToneAction<Void> toneAction) {
         //9 - sound port
         this.sb.append("tone(_spiele_" + toneAction.getPort() + ",");
-        toneAction.getFrequency().visit(this);
+        toneAction.getFrequency().accept(this);
         this.sb.append(", ");
-        toneAction.getDuration().visit(this);
+        toneAction.getDuration().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -173,11 +173,11 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
         boolean step = motorOnAction.getParam().getDuration() != null;
         if ( step ) {//step motor
             this.sb.append("Motor_" + motorOnAction.getUserDefinedPort() + ".setSpeed(");
-            motorOnAction.getParam().getSpeed().visit(this);
+            motorOnAction.getParam().getSpeed().accept(this);
             this.sb.append(");");
             nlIndent();
             this.sb.append("Motor_" + motorOnAction.getUserDefinedPort() + ".step(_SPU_" + motorOnAction.getUserDefinedPort() + "*(");
-            motorOnAction.getDurationValue().visit(this);
+            motorOnAction.getDurationValue().accept(this);
             this.sb.append(")");
             if ( motorOnAction.getDurationMode().equals(MotorMoveMode.DEGREE) ) {
                 this.sb.append("/360");
@@ -185,7 +185,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
             this.sb.append(");");
         } else {//servo motor
             this.sb.append("_servo_" + motorOnAction.getUserDefinedPort() + ".write(");
-            motorOnAction.getParam().getSpeed().visit(this);
+            motorOnAction.getParam().getSpeed().accept(this);
             this.sb.append(");");
         }
         return null;
@@ -404,7 +404,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
 
-        mainTask.getVariables().visit(this);
+        mainTask.getVariables().accept(this);
         nlIndent();
         generateConfigurationVariables();
         if ( this.usedHardwareBean.isTimerSensorUsed() ) {
@@ -786,12 +786,12 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
         switch ( pinWriteValueAction.getMode() ) {
             case SC.ANALOG:
                 this.sb.append("analogWrite(_output_").append(pinWriteValueAction.getPort()).append(", ");
-                pinWriteValueAction.getValue().visit(this);
+                pinWriteValueAction.getValue().accept(this);
                 this.sb.append(");");
                 break;
             case SC.DIGITAL:
                 this.sb.append("digitalWrite(_output_").append(pinWriteValueAction.getPort()).append(", ");
-                pinWriteValueAction.getValue().visit(this);
+                pinWriteValueAction.getValue().accept(this);
                 this.sb.append(");");
                 break;
             default:

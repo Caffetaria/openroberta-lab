@@ -32,9 +32,9 @@ public final class ArduinoUsedHardwareCollectorVisitor extends AbstractUsedHardw
 
     @Override
     public Void visitMotorOnAction(MotorOnAction<Void> motorOnAction) {
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         if ( motorOnAction.getParam().getDuration() != null ) {
-            motorOnAction.getDurationValue().visit(this);
+            motorOnAction.getDurationValue().accept(this);
         }
         if ( this.robotConfiguration != null ) {
             //TODO: nothing done on MotorOnAction
@@ -65,14 +65,14 @@ public final class ArduinoUsedHardwareCollectorVisitor extends AbstractUsedHardw
 
     @Override
     public Void visitPinWriteValueAction(PinWriteValueAction<Void> pinWriteValueSensor) {
-        pinWriteValueSensor.getValue().visit(this);
+        pinWriteValueSensor.getValue().accept(this);
         this.builder.addUsedActor(new UsedActor(pinWriteValueSensor.getPort(), SC.ANALOG_PIN));
         return null;
     }
 
     @Override
     public Void visitSerialWriteAction(SerialWriteAction<Void> serialWriteAction) {
-        serialWriteAction.getValue().visit(this);
+        serialWriteAction.getValue().accept(this);
         return null;
     }
 }

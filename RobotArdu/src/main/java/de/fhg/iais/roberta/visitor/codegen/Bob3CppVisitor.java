@@ -102,7 +102,7 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
         decrIndentation();
-        mainTask.getVariables().visit(this);
+        mainTask.getVariables().accept(this);
         nlIndent();
         if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             this.sb.append("unsigned long __time = millis();");
@@ -171,7 +171,7 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
         } else {
             this.sb.append("EYE_1, ");
         }
-        ledOnAction.getLedColor().visit(this);
+        ledOnAction.getLedColor().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -204,7 +204,7 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
     @Override
     public Void visitSendIRAction(SendIRAction<Void> sendIRAction) {
         this.sb.append("rob.transmitIRCode(");
-        sendIRAction.getCode().visit(this);
+        sendIRAction.getCode().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -217,14 +217,14 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
 
     @Override
     public Void visitBob3GetSampleSensor(GetSampleSensor<Void> getSampleSensor) {
-        getSampleSensor.getSensor().visit(this);
+        getSampleSensor.getSensor().accept(this);
         return null;
     }
 
     @Override
     public Void visitRememberAction(RememberAction<Void> rememberAction) {
         this.sb.append("remember((int)(");
-        rememberAction.getCode().visit(this);
+        rememberAction.getCode().accept(this);
         this.sb.append("));");
         return null;
     }
@@ -261,11 +261,11 @@ public final class Bob3CppVisitor extends AbstractCommonArduinoCppVisitor implem
     @Override
     public Void visitMathConstrainFunct(MathConstrainFunct<Void> mathConstrainFunct) {
         this.sb.append("_CLAMP(");
-        mathConstrainFunct.getParam().get(0).visit(this);
+        mathConstrainFunct.getParam().get(0).accept(this);
         this.sb.append(", ");
-        mathConstrainFunct.getParam().get(1).visit(this);
+        mathConstrainFunct.getParam().get(1).accept(this);
         this.sb.append(", ");
-        mathConstrainFunct.getParam().get(2).visit(this);
+        mathConstrainFunct.getParam().get(2).accept(this);
         this.sb.append(")");
         return null;
     }

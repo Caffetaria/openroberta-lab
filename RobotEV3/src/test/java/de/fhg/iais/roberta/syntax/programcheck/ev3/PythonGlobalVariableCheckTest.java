@@ -21,7 +21,7 @@ public class PythonGlobalVariableCheckTest extends AstTest {
         Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(builder, phrases, null);
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -37,7 +37,7 @@ public class PythonGlobalVariableCheckTest extends AstTest {
         Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(builder, phrases, null);
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -53,7 +53,7 @@ public class PythonGlobalVariableCheckTest extends AstTest {
         Ev3UsedHardwareCollectorVisitor checkVisitor = new Ev3UsedHardwareCollectorVisitor(builder, phrases, null);
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();

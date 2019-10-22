@@ -29,9 +29,9 @@ public final class BotnrollUsedHardwareCollectorVisitor extends AbstractUsedHard
 
     @Override
     public Void visitDriveAction(DriveAction<Void> driveAction) {
-        driveAction.getParam().getSpeed().visit(this);
+        driveAction.getParam().getSpeed().accept(this);
         if ( driveAction.getParam().getDuration() != null ) {
-            driveAction.getParam().getDuration().getValue().visit(this);
+            driveAction.getParam().getDuration().getValue().accept(this);
         }
         this.builder.addUsedActor(new UsedActor("B", SC.MEDIUM));
         this.builder.addUsedActor(new UsedActor("A", SC.MEDIUM));
@@ -40,9 +40,9 @@ public final class BotnrollUsedHardwareCollectorVisitor extends AbstractUsedHard
 
     @Override
     public Void visitTurnAction(TurnAction<Void> turnAction) {
-        turnAction.getParam().getSpeed().visit(this);
+        turnAction.getParam().getSpeed().accept(this);
         if ( turnAction.getParam().getDuration() != null ) {
-            turnAction.getParam().getDuration().getValue().visit(this);
+            turnAction.getParam().getDuration().getValue().accept(this);
         }
         this.builder.addUsedActor(new UsedActor("B", SC.MEDIUM));
         this.builder.addUsedActor(new UsedActor("A", SC.MEDIUM));
@@ -58,10 +58,10 @@ public final class BotnrollUsedHardwareCollectorVisitor extends AbstractUsedHard
 
     @Override
     public Void visitCurveAction(CurveAction<Void> curveAction) {
-        curveAction.getParamLeft().getSpeed().visit(this);
-        curveAction.getParamRight().getSpeed().visit(this);
+        curveAction.getParamLeft().getSpeed().accept(this);
+        curveAction.getParamRight().getSpeed().accept(this);
         if ( curveAction.getParamLeft().getDuration() != null ) {
-            curveAction.getParamLeft().getDuration().getValue().visit(this);
+            curveAction.getParamLeft().getDuration().getValue().accept(this);
         }
         this.builder.addUsedActor(new UsedActor("B", SC.MEDIUM));
         this.builder.addUsedActor(new UsedActor("A", SC.MEDIUM));

@@ -129,7 +129,7 @@ public class InfoCollector<T> implements ILanguageVisitor<T>, ISensorVisitor<T>,
     public static <T> List<NepoInfo> collectInfos(Phrase<T> phrase) //
     {
         InfoCollector<T> astVisitor = new InfoCollector<>();
-        phrase.visit(astVisitor);
+        phrase.accept(astVisitor);
         return astVisitor.infos;
     }
 

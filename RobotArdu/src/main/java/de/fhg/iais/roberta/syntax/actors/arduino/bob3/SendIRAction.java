@@ -54,7 +54,7 @@ public class SendIRAction<V> extends Action<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((IBob3Visitor<V>) visitor).visitSendIRAction(this);
     }
 

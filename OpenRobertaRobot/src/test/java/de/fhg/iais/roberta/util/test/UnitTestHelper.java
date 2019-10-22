@@ -77,7 +77,7 @@ public class UnitTestHelper {
         Assert.assertTrue(diff.identical());
     }
 
-    public static void checkProgramAstEquality(IRobotFactory factory, String expectedAst, String programBlocklyXmlFilename) throws Exception {
+    public static void checkProgramAstEquality(IRobotFactory factory, String expectedAst, String programBlocklyXmlFilename) {
         String generatedAst = getAst(factory, programBlocklyXmlFilename).toString();
         generatedAst = "BlockAST [project=" + generatedAst + "]";
         Assert.assertEquals(expectedAst.replaceAll("\\s+", ""), generatedAst.replaceAll("\\s+", ""));
@@ -103,15 +103,13 @@ public class UnitTestHelper {
         return tree.get(0).get(1);
     }
 
-    public static void checkGeneratedSourceEqualityWithExportXml(IRobotFactory factory, String expectedSourceFilename, String exportedXmlFilename)
-        throws Exception {
+    public static void checkGeneratedSourceEqualityWithExportXml(IRobotFactory factory, String expectedSourceFilename, String exportedXmlFilename) {
         String exportedXml = Util1.readResourceContent(exportedXmlFilename);
         Project.Builder builder = setupWithExportXML(factory, exportedXml);
         checkGeneratedSourceEquality(factory, Util1.readResourceContent(expectedSourceFilename), builder.build());
     }
 
-    public static void checkGeneratedSourceEqualityWithProgramXml(IRobotFactory factory, String expectedSourceFilename, String programXmlFilename)
-        throws Exception {
+    public static void checkGeneratedSourceEqualityWithProgramXml(IRobotFactory factory, String expectedSourceFilename, String programXmlFilename) {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         checkGeneratedSourceEquality(factory, Util1.readResourceContent(expectedSourceFilename), builder.build());
@@ -121,8 +119,7 @@ public class UnitTestHelper {
         IRobotFactory factory,
         String expectedSourceFilename,
         String programXmlFilename,
-        ConfigurationAst configurationAst)
-        throws Exception {
+        ConfigurationAst configurationAst) {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         builder.setConfigurationAst(configurationAst);
@@ -133,8 +130,7 @@ public class UnitTestHelper {
         IRobotFactory factory,
         String expectedSourceFilename,
         String programXmlFilename,
-        String configurationXmlFilename)
-        throws Exception {
+        String configurationXmlFilename) {
         String programXml = Util1.readResourceContent(programXmlFilename);
         String configurationXml = Util1.readResourceContent(configurationXmlFilename);
         Project.Builder builder = setupWithConfigurationAndProgramXML(factory, programXml, configurationXml);
@@ -147,8 +143,7 @@ public class UnitTestHelper {
         IRobotFactory factory,
         String expectedSource,
         String programXmlFilename,
-        boolean withWrapping)
-        throws Exception {
+        boolean withWrapping) {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         builder.setWithWrapping(withWrapping);
@@ -160,8 +155,7 @@ public class UnitTestHelper {
         String expectedSource,
         String programXmlFilename,
         ConfigurationAst configurationAst,
-        boolean withWrapping)
-        throws Exception {
+        boolean withWrapping) {
         String programXml = Util1.readResourceContent(programXmlFilename);
         Project.Builder builder = setupWithProgramXML(factory, programXml);
         builder.setConfigurationAst(configurationAst);

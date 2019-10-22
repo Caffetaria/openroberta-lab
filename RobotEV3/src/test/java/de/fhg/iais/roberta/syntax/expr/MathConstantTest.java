@@ -19,7 +19,7 @@ public class MathConstantTest extends Ev3LejosAstTest {
         String a = "hal.rotateRegulatedMotor(ActorPort.B,Math.PI,MotorMoveMode.ROTATIONS,((1.0+Math.sqrt(5.0))/2.0));}";
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_constant1.xml", makeStandardConfiguration(), false);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_constant1.xml", makeStandard(), false);
     }
 
 }

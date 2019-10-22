@@ -99,7 +99,7 @@ public class ImageShiftFunction<V> extends Function<V> {
     }
 
     @Override
-    protected V accept(IVisitor<V> visitor) {
+    protected V acceptImpl(IVisitor<V> visitor) {
         return ((IMbedVisitor<V>) visitor).visitImageShiftFunction(this);
 
     }

@@ -38,7 +38,7 @@ public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisito
         ConfigurationComponent confLedBlock = getConfigurationComponent(lightAction.getPort());
         String brickName = confLedBlock.getProperty("VAR");
         if ( brickName != null ) {
-            lightAction.getRgbLedColor().visit(this);
+            lightAction.getRgbLedColor().accept(this);
             JSONObject o = mk(C.LED_ON_ACTION).put(C.NAME, brickName);
             return app(o);
         } else {
@@ -67,10 +67,10 @@ public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisito
         String brickName = confMotorBlock.getProperty("VAR");
         String port = confMotorBlock.getProperty("CONNECTOR");
         if ( brickName != null && port != null ) {
-            motorOnAction.getParam().getSpeed().visit(this);
+            motorOnAction.getParam().getSpeed().accept(this);
             JSONObject o = mk(C.MOTOR_ON_ACTION).put(C.NAME, brickName).put(C.PORT, port);
             if ( isDuration ) {
-                motorOnAction.getParam().getDuration().getValue().visit(this);
+                motorOnAction.getParam().getDuration().getValue().accept(this);
                 app(o);
                 return app(mk(C.MOTOR_STOP).put(C.NAME, brickName).put(C.PORT, port));
             } else {
@@ -104,7 +104,7 @@ public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisito
 
     @Override
     public V visitShowTextAction(ShowTextAction<V> showTextAction) {
-        showTextAction.getMsg().visit(this);
+        showTextAction.getMsg().accept(this);
         JSONObject o = mk(C.SHOW_TEXT_ACTION);
         return app(o);
     }
@@ -169,8 +169,8 @@ public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisito
         ConfigurationComponent toneBlock = getConfigurationComponent(toneAction.getPort());
         String brickName = toneBlock.getProperty("VAR");
         if ( brickName != null ) {
-            toneAction.getFrequency().visit(this);
-            toneAction.getDuration().visit(this);
+            toneAction.getFrequency().accept(this);
+            toneAction.getDuration().accept(this);
             JSONObject o = mk(C.TONE_ACTION).put(C.NAME, brickName);
             return app(o);
         } else {
@@ -197,7 +197,7 @@ public final class WeDoStackMachineVisitor<V> extends AbstractStackMachineVisito
 
     @Override
     public V visitGetSampleSensor(GetSampleSensor<V> sensorGetSample) {
-        sensorGetSample.getSensor().visit(this);
+        sensorGetSample.getSensor().accept(this);
         return null;
     }
 

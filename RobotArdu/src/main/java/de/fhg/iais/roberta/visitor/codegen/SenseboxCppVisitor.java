@@ -73,7 +73,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
         this.nlIndent();
         this.sb.append("unsigned long _time = millis();");
         this.nlIndent();
-        mainTask.getVariables().visit(this);
+        mainTask.getVariables().accept(this);
         this.nlIndent();
         this.generateConfigurationVariables();
         this.nlIndent();
@@ -156,9 +156,9 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
     @Override
     public Void visitShowTextAction(ShowTextAction<Void> showTextAction) {
         this.sb.append("_display_").append(showTextAction.getPort()).append(".setCursor(");
-        showTextAction.getX().visit(this);
+        showTextAction.getX().accept(this);
         this.sb.append(", ");
-        showTextAction.getY().visit(this);
+        showTextAction.getY().accept(this);
         this.sb.append(");");
         nlIndent();
         this.sb.append("_display_").append(showTextAction.getPort()).append(".setTextSize(1);");
@@ -166,7 +166,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
         this.sb.append("_display_").append(showTextAction.getPort()).append(".setTextColor(WHITE, BLACK);");
         nlIndent();
         this.sb.append("_display_").append(showTextAction.getPort()).append(".println(");
-        showTextAction.getMsg().visit(this);
+        showTextAction.getMsg().accept(this);
         this.sb.append(");");
         nlIndent();
         this.sb.append("_display_").append(showTextAction.getPort()).append(".display();");
@@ -177,9 +177,9 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
     @Override
     public Void visitPlotPointAction(PlotPointAction<Void> plotPointAction) {
         this.sb.append("_plot_").append(plotPointAction.getPort()).append(".addDataPoint(");
-        plotPointAction.getTickmark().visit(this);
+        plotPointAction.getTickmark().accept(this);
         this.sb.append(", ");
-        plotPointAction.getValue().visit(this);
+        plotPointAction.getValue().accept(this);
         this.sb.append(");");
         nlIndent();
         return null;
@@ -204,11 +204,11 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
     @Override
     public Void visitToneAction(ToneAction<Void> toneAction) {
         this.sb.append("tone(_buzzer_").append(toneAction.getPort()).append(", ");
-        toneAction.getFrequency().visit(this);
+        toneAction.getFrequency().accept(this);
         this.sb.append(");");
         nlIndent();
         this.sb.append("delay(");
-        toneAction.getDuration().visit(this);
+        toneAction.getDuration().accept(this);
         this.sb.append(");");
         nlIndent();
         this.sb.append("noTone(_buzzer_").append(toneAction.getPort()).append(");");
@@ -266,7 +266,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
             Channels.put("blue", ((RgbColor<Void>) lightAction.getRgbLedColor()).getB());
             Channels.forEach((k, v) -> {
                 this.sb.append("analogWrite(_led_").append(k).append("_").append(lightAction.getPort()).append(", ");
-                v.visit(this);
+                v.accept(this);
                 this.sb.append(");");
                 this.nlIndent();
             });
@@ -288,7 +288,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
     @Override
     public Void visitSerialWriteAction(SerialWriteAction<Void> serialWriteAction) {
         this.sb.append("Serial.println(");
-        serialWriteAction.getValue().visit(this);
+        serialWriteAction.getValue().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -519,7 +519,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
         if ( sendDataAction.getDestination().equals("SENSEMAP") ) {
             for ( Pair<String, Expr<Void>> entry : sendDataAction.getId2Phenomena() ) {
                 this.sb.append("_osm.uploadMeasurement(");
-                entry.getSecond().visit(this);
+                entry.getSecond().accept(this);
                 this.sb.append(", _").append(entry.getFirst()).append(");");
                 nlIndent();
             }
@@ -534,7 +534,7 @@ public class SenseboxCppVisitor extends AbstractCommonArduinoCppVisitor implemen
                 this.sb.append("_dataFile.print(\" : \");");
                 nlIndent();
                 this.sb.append("_dataFile.println(");
-                entry.getSecond().visit(this);
+                entry.getSecond().accept(this);
                 this.sb.append(");");
                 nlIndent();
             }

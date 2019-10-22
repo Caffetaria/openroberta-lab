@@ -74,7 +74,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
 
         this.sb.append("one.lcd");
         if ( showTextAction.getY().toString().equals("NumConst [1]") || showTextAction.getY().toString().equals("NumConst [2]") ) {
-            showTextAction.getY().visit(this);
+            showTextAction.getY().accept(this);
         } else {
             this.sb.append("1");
         }
@@ -88,10 +88,10 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
 
         if ( varType.equals("BOOLEAN") ) {
             this.sb.append("bnr.boolToString(");
-            showTextAction.getMsg().visit(this);
+            showTextAction.getMsg().accept(this);
             this.sb.append(")");
         } else {
-            showTextAction.getMsg().visit(this);
+            showTextAction.getMsg().accept(this);
         }
 
         this.sb.append(toChar + ");");
@@ -115,9 +115,9 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
     public Void visitToneAction(ToneAction<Void> toneAction) {
         //9 - sound port
         this.sb.append("tone(9, ");
-        toneAction.getFrequency().visit(this);
+        toneAction.getFrequency().accept(this);
         this.sb.append(", ");
-        toneAction.getDuration().visit(this);
+        toneAction.getDuration().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -155,10 +155,10 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
         if ( reverse ) {
             this.sb.append("-");
         }
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         if ( isDuration ) {
             this.sb.append(", ");
-            motorOnAction.getParam().getDuration().getValue().visit(this);
+            motorOnAction.getParam().getDuration().getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -203,13 +203,13 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
             sign = "-";
         }
         this.sb.append(sign);
-        driveAction.getParam().getSpeed().visit(this);
+        driveAction.getParam().getSpeed().accept(this);
         this.sb.append(", ");
         this.sb.append(sign);
-        driveAction.getParam().getSpeed().visit(this);
+        driveAction.getParam().getSpeed().accept(this);
         if ( isDuration ) {
             this.sb.append(", ");
-            driveAction.getParam().getDuration().getValue().visit(this);
+            driveAction.getParam().getDuration().getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -240,13 +240,13 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
             sign = "-";
         }
         this.sb.append(sign);
-        curveAction.getParamLeft().getSpeed().visit(this);
+        curveAction.getParamLeft().getSpeed().accept(this);
         this.sb.append(", ");
         this.sb.append(sign);
-        curveAction.getParamRight().getSpeed().visit(this);
+        curveAction.getParamRight().getSpeed().accept(this);
         if ( isDuration ) {
             this.sb.append(", ");
-            curveAction.getParamLeft().getDuration().getValue().visit(this);
+            curveAction.getParamLeft().getDuration().getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -285,13 +285,13 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
         methodName = methodName + "(";
         this.sb.append(methodName);
         this.sb.append(leftMotorSign);
-        turnAction.getParam().getSpeed().visit(this);
+        turnAction.getParam().getSpeed().accept(this);
         this.sb.append(", ");
         this.sb.append(rightMotorSign);
-        turnAction.getParam().getSpeed().visit(this);
+        turnAction.getParam().getSpeed().accept(this);
         if ( isDuration ) {
             this.sb.append(", ");
-            turnAction.getParam().getDuration().getValue().visit(this);
+            turnAction.getParam().getDuration().getValue().accept(this);
         }
         this.sb.append(");");
 
@@ -413,7 +413,7 @@ public final class BotnrollCppVisitor extends AbstractCommonArduinoCppVisitor im
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
         decrIndentation();
-        mainTask.getVariables().visit(this);
+        mainTask.getVariables().accept(this);
         nlIndent();
         if ( this.usedHardwareBean.isTimerSensorUsed() ) {
             nlIndent();

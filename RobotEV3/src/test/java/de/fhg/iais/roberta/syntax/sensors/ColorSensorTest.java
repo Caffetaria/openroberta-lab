@@ -17,10 +17,10 @@ public class ColorSensorTest extends Ev3LejosAstTest {
 
         UnitTestHelper
             .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(
-                testFactory,
-                a,
-                "/syntax/sensors/sensor_setColor.xml",
-                makeStandardConfiguration(),
-                false);
+                    testFactory,
+                    a,
+                    "/syntax/sensors/sensor_setColor.xml",
+                    makeStandard(),
+                    false);
     }
 }

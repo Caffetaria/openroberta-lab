@@ -19,7 +19,7 @@ public class MathTrigTest extends Ev3LejosAstTest {
         String a = "if(0==Math.sin(0)){hal.regulatedDrive(DriveDirection.FOREWARD,Math.acos(0));}}";
 
         UnitTestHelper
-            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_trig1.xml", makeStandardConfiguration(), false);
+            .checkGeneratedSourceEqualityWithProgramXmlAndSourceAsString(testFactory, a, "/syntax/math/math_trig1.xml", makeStandard(), false);
     }
 
 }

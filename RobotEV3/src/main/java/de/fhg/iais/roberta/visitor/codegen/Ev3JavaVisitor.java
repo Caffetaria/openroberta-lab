@@ -211,7 +211,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
     @Override
     public Void visitWaitTimeStmt(WaitTimeStmt<Void> waitTimeStmt) {
         this.sb.append("hal.waitFor(");
-        waitTimeStmt.getTime().visit(this);
+        waitTimeStmt.getTime().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -227,7 +227,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         switch ( volumeAction.getMode() ) {
             case SET:
                 this.sb.append("hal.setVolume(");
-                volumeAction.getVolume().visit(this);
+                volumeAction.getVolume().accept(this);
                 this.sb.append(");");
                 break;
             case GET:
@@ -255,17 +255,17 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
             this.sb.append("hal.sayText(");
             if ( !sayTextAction.getMsg().getKind().hasName("STRING_CONST") ) {
                 this.sb.append("String.valueOf(");
-                sayTextAction.getMsg().visit(this);
+                sayTextAction.getMsg().accept(this);
                 this.sb.append(")");
             } else {
-                sayTextAction.getMsg().visit(this);
+                sayTextAction.getMsg().accept(this);
             }
             BlockType emptyBlock = BlockTypeContainer.getByName("EMPTY_EXPR");
             if ( !(sayTextAction.getSpeed().getKind().equals(emptyBlock) && sayTextAction.getPitch().getKind().equals(emptyBlock)) ) {
                 this.sb.append(",");
-                sayTextAction.getSpeed().visit(this);
+                sayTextAction.getSpeed().accept(this);
                 this.sb.append(",");
-                sayTextAction.getPitch().visit(this);
+                sayTextAction.getPitch().accept(this);
             }
             this.sb.append(");");
         }
@@ -302,9 +302,9 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
     @Override
     public Void visitShowPictureAction(ShowPictureAction<Void> showPictureAction) {
         this.sb.append("hal.drawPicture(predefinedImages.get(\"" + showPictureAction.getPicture() + "\"), ");
-        showPictureAction.getX().visit(this);
+        showPictureAction.getX().accept(this);
         this.sb.append(", ");
-        showPictureAction.getY().visit(this);
+        showPictureAction.getY().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -314,15 +314,15 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         this.sb.append("hal.drawText(");
         if ( !showTextAction.getMsg().getKind().hasName("STRING_CONST") ) {
             this.sb.append("String.valueOf(");
-            showTextAction.getMsg().visit(this);
+            showTextAction.getMsg().accept(this);
             this.sb.append(")");
         } else {
-            showTextAction.getMsg().visit(this);
+            showTextAction.getMsg().accept(this);
         }
         this.sb.append(", ");
-        showTextAction.getX().visit(this);
+        showTextAction.getX().accept(this);
         this.sb.append(", ");
-        showTextAction.getY().visit(this);
+        showTextAction.getY().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -330,9 +330,9 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
     @Override
     public Void visitToneAction(ToneAction<Void> toneAction) {
         this.sb.append("hal.playTone(");
-        toneAction.getFrequency().visit(this);
+        toneAction.getFrequency().accept(this);
         this.sb.append(", ");
-        toneAction.getDuration().visit(this);
+        toneAction.getDuration().accept(this);
         this.sb.append(");");
         return null;
     }
@@ -368,11 +368,11 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
                 methodName = isRegulated ? "hal.turnOnRegulatedMotor(" : "hal.turnOnUnregulatedMotor(";
             }
             this.sb.append(methodName + "ActorPort." + userDefinedPort + ", ");
-            motorOnAction.getParam().getSpeed().visit(this);
+            motorOnAction.getParam().getSpeed().accept(this);
             if ( duration ) {
                 this.sb.append(", " + getEnumCode(motorOnAction.getDurationMode()));
                 this.sb.append(", ");
-                motorOnAction.getDurationValue().visit(this);
+                motorOnAction.getDurationValue().accept(this);
             }
             this.sb.append(");");
         }
@@ -386,7 +386,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
             boolean isRegulated = this.brickConfiguration.isMotorRegulated(userDefinedPort);
             String methodName = isRegulated ? "hal.setRegulatedMotorSpeed(" : "hal.setUnregulatedMotorSpeed(";
             this.sb.append(methodName + "ActorPort." + userDefinedPort + ", ");
-            motorSetPowerAction.getPower().visit(this);
+            motorSetPowerAction.getPower().accept(this);
             this.sb.append(");");
         }
         return null;
@@ -420,10 +420,10 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         String methodName = isDuration ? "hal.driveDistance(" : "hal.regulatedDrive(";
         this.sb.append(methodName);
         this.sb.append(getEnumCode(driveAction.getDirection()) + ", ");
-        driveAction.getParam().getSpeed().visit(this);
+        driveAction.getParam().getSpeed().accept(this);
         if ( isDuration ) {
             this.sb.append(", ");
-            driveAction.getParam().getDuration().getValue().visit(this);
+            driveAction.getParam().getDuration().getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -435,12 +435,12 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
 
         this.sb.append("hal.driveInCurve(");
         this.sb.append(getEnumCode(curveAction.getDirection()) + ", ");
-        curveAction.getParamLeft().getSpeed().visit(this);
+        curveAction.getParamLeft().getSpeed().accept(this);
         this.sb.append(", ");
-        curveAction.getParamRight().getSpeed().visit(this);
+        curveAction.getParamRight().getSpeed().accept(this);
         if ( duration != null ) {
             this.sb.append(", ");
-            duration.getValue().visit(this);
+            duration.getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -452,10 +452,10 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         String methodName = "hal.rotateDirection" + (isDuration ? "Angle" : "Regulated") + "(";
         this.sb.append(methodName);
         this.sb.append(getEnumCode(turnAction.getDirection()) + ", ");
-        turnAction.getParam().getSpeed().visit(this);
+        turnAction.getParam().getSpeed().accept(this);
         if ( isDuration ) {
             this.sb.append(", ");
-            turnAction.getParam().getDuration().getValue().visit(this);
+            turnAction.getParam().getDuration().getValue().accept(this);
         }
         this.sb.append(");");
         return null;
@@ -660,7 +660,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
 
     @Override
     public Void visitMainTask(MainTask<Void> mainTask) {
-        mainTask.getVariables().visit(this);
+        mainTask.getVariables().accept(this);
         nlIndent();
         nlIndent();
         this.sb.append("public void run() throws Exception {");
@@ -687,7 +687,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
 
         boolean isLeftAParam = loc0 == FROM_START || loc0 == FROM_END;
         this.sb.append("new ArrayList<>(");
-        getSubFunct.getParam().get(0).visit(this);
+        getSubFunct.getParam().get(0).accept(this);
         this.sb.append(".subList(");
 
         switch ( loc0 ) {
@@ -695,17 +695,17 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
                 this.sb.append("0");
                 break;
             case LAST:
-                getSubFunct.getParam().get(0).visit(this);
+                getSubFunct.getParam().get(0).accept(this);
                 this.sb.append(".size() - 1");
                 break;
             case FROM_START:
-                getSubFunct.getParam().get(1).visit(this);
+                getSubFunct.getParam().get(1).accept(this);
                 break;
             case FROM_END:
                 this.sb.append("(");
-                getSubFunct.getParam().get(0).visit(this);
+                getSubFunct.getParam().get(0).accept(this);
                 this.sb.append(".size() - 1) - ");
-                getSubFunct.getParam().get(1).visit(this);
+                getSubFunct.getParam().get(1).accept(this);
                 break;
         }
 
@@ -716,24 +716,24 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
                 this.sb.append("0");
                 break;
             case LAST:
-                getSubFunct.getParam().get(0).visit(this);
+                getSubFunct.getParam().get(0).accept(this);
                 this.sb.append(".size()");
                 break;
             case FROM_START:
                 if ( isLeftAParam ) {
-                    getSubFunct.getParam().get(2).visit(this);
+                    getSubFunct.getParam().get(2).accept(this);
                 } else {
-                    getSubFunct.getParam().get(1).visit(this);
+                    getSubFunct.getParam().get(1).accept(this);
                 }
                 break;
             case FROM_END:
                 this.sb.append("(");
-                getSubFunct.getParam().get(0).visit(this);
+                getSubFunct.getParam().get(0).accept(this);
                 this.sb.append(".size() - 1) - ");
                 if ( isLeftAParam ) {
-                    getSubFunct.getParam().get(2).visit(this);
+                    getSubFunct.getParam().get(2).accept(this);
                 } else {
-                    getSubFunct.getParam().get(1).visit(this);
+                    getSubFunct.getParam().get(1).accept(this);
                 }
                 break;
         }
@@ -744,7 +744,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
 
     @Override
     public Void visitIndexOfFunct(IndexOfFunct<Void> indexOfFunct) {
-        indexOfFunct.getParam().get(0).visit(this);
+        indexOfFunct.getParam().get(0).accept(this);
         switch ( (IndexLocation) indexOfFunct.getLocation() ) {
             case FIRST:
                 this.sb.append(".indexOf(");
@@ -758,14 +758,14 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         if ( indexOfFunct.getParam().get(1).getVarType() == BlocklyType.NUMBER ) {
             this.sb.append(" (float) ");
         }
-        indexOfFunct.getParam().get(1).visit(this);
+        indexOfFunct.getParam().get(1).accept(this);
         this.sb.append(")");
         return null;
     }
 
     @Override
     public Void visitLengthOfIsEmptyFunct(LengthOfIsEmptyFunct<Void> lengthOfIsEmptyFunct) {
-        lengthOfIsEmptyFunct.getParam().get(0).visit(this);
+        lengthOfIsEmptyFunct.getParam().get(0).accept(this);
         switch ( lengthOfIsEmptyFunct.getFunctName() ) {
             case LIST_IS_EMPTY:
                 this.sb.append(".isEmpty()");
@@ -812,14 +812,14 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
                 List<Expr<Void>> expressions = listCreate.getValue().get();
                 for ( int i = 0; i < expressions.size(); i++ ) {
                     this.sb.append("(float) ");
-                    expressions.get(i).visit(this);
+                    expressions.get(i).accept(this);
                     if ( i != expressions.size() - 1 ) {
                         this.sb.append(", ");
                     }
                 }
 
             } else {
-                listCreate.getValue().visit(this);
+                listCreate.getValue().accept(this);
             }
             this.sb.append(")");
         }
@@ -833,7 +833,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         ListElementOperations op = (ListElementOperations) listGetIndex.getElementOperation();
         IndexLocation loc = (IndexLocation) listGetIndex.getLocation();
 
-        listGetIndex.getParam().get(0).visit(this);
+        listGetIndex.getParam().get(0).accept(this);
         if ( op == GET ) {
             this.sb.append(".get( (int) (");
         } else if ( op == GET_REMOVE || op == REMOVE ) {
@@ -844,17 +844,17 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
                 this.sb.append("0");
                 break;
             case LAST:
-                listGetIndex.getParam().get(0).visit(this);
+                listGetIndex.getParam().get(0).accept(this);
                 this.sb.append(".size() - 1");
                 break;
             case FROM_START:
-                listGetIndex.getParam().get(1).visit(this);
+                listGetIndex.getParam().get(1).accept(this);
                 break;
             case FROM_END:
                 this.sb.append("(");
-                listGetIndex.getParam().get(0).visit(this);
+                listGetIndex.getParam().get(0).accept(this);
                 this.sb.append(".size() - 1) - ");
-                listGetIndex.getParam().get(1).visit(this);
+                listGetIndex.getParam().get(1).accept(this);
                 break;
             case RANDOM:
                 this.sb.append("0 /* absolutely random number */");
@@ -874,7 +874,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         ListElementOperations op = (ListElementOperations) listSetIndex.getElementOperation();
         IndexLocation loc = (IndexLocation) listSetIndex.getLocation();
 
-        listSetIndex.getParam().get(0).visit(this);
+        listSetIndex.getParam().get(0).accept(this);
         if ( op == SET ) {
             this.sb.append(".set(");
         } else if ( op == INSERT ) {
@@ -887,22 +887,22 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
             case LAST:
                 if ( op == SET ) {
                     this.sb.append("(int) (");
-                    listSetIndex.getParam().get(0).visit(this);
+                    listSetIndex.getParam().get(0).accept(this);
                     this.sb.append(".size() - 1");
                     this.sb.append("), ");
                 }
                 break;
             case FROM_START:
                 this.sb.append("(int) (");
-                listSetIndex.getParam().get(2).visit(this);
+                listSetIndex.getParam().get(2).accept(this);
                 this.sb.append("), ");
                 break;
             case FROM_END:
                 this.sb.append("(int) (");
                 this.sb.append("(");
-                listSetIndex.getParam().get(0).visit(this);
+                listSetIndex.getParam().get(0).accept(this);
                 this.sb.append(".size() - 1) - ");
-                listSetIndex.getParam().get(2).visit(this);
+                listSetIndex.getParam().get(2).accept(this);
                 this.sb.append("), ");
                 break;
             case RANDOM:
@@ -914,7 +914,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
             this.sb.append("(float) ");
         }
 
-        listSetIndex.getParam().get(1).visit(this);
+        listSetIndex.getParam().get(1).accept(this);
 
         this.sb.append(");");
         return null;
@@ -923,7 +923,7 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
     @Override
     public Void visitBluetoothReceiveAction(BluetoothReceiveAction<Void> bluetoothReadAction) {
         this.sb.append("hal.readMessage(");
-        bluetoothReadAction.getConnection().visit(this);
+        bluetoothReadAction.getConnection().accept(this);
         this.sb.append(")");
         return null;
     }
@@ -933,10 +933,10 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         this.sb.append("hal.establishConnectionTo(");
         if ( !bluetoothConnectAction.getAddress().getKind().hasName("STRING_CONST") ) {
             this.sb.append("String.valueOf(");
-            bluetoothConnectAction.getAddress().visit(this);
+            bluetoothConnectAction.getAddress().accept(this);
             this.sb.append(")");
         } else {
-            bluetoothConnectAction.getAddress().visit(this);
+            bluetoothConnectAction.getAddress().accept(this);
         }
         this.sb.append(")");
         return null;
@@ -947,13 +947,13 @@ public final class Ev3JavaVisitor extends AbstractJavaVisitor implements IEv3Vis
         this.sb.append("hal.sendMessage(");
         if ( !bluetoothSendAction.getMsg().getKind().hasName("STRING_CONST") ) {
             this.sb.append("String.valueOf(");
-            bluetoothSendAction.getMsg().visit(this);
+            bluetoothSendAction.getMsg().accept(this);
             this.sb.append(")");
         } else {
-            bluetoothSendAction.getMsg().visit(this);
+            bluetoothSendAction.getMsg().accept(this);
         }
         this.sb.append(", ");
-        bluetoothSendAction.getConnection().visit(this);
+        bluetoothSendAction.getConnection().accept(this);
         this.sb.append(");");
         return null;
     }

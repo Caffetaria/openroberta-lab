@@ -193,9 +193,9 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitDriveAction(DriveAction<Void> driveAction) {
-        driveAction.getParam().getSpeed().visit(this);
+        driveAction.getParam().getSpeed().accept(this);
         if ( driveAction.getParam().getDuration() != null ) {
-            driveAction.getParam().getDuration().getValue().visit(this);
+            driveAction.getParam().getDuration().getValue().accept(this);
         }
         addLeftAndRightMotorToUsedActors();
         return null;
@@ -203,10 +203,10 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitCurveAction(CurveAction<Void> curveAction) {
-        curveAction.getParamLeft().getSpeed().visit(this);
-        curveAction.getParamRight().getSpeed().visit(this);
+        curveAction.getParamLeft().getSpeed().accept(this);
+        curveAction.getParamRight().getSpeed().accept(this);
         if ( curveAction.getParamLeft().getDuration() != null ) {
-            curveAction.getParamLeft().getDuration().getValue().visit(this);
+            curveAction.getParamLeft().getDuration().getValue().accept(this);
         }
         addLeftAndRightMotorToUsedActors();
         return null;
@@ -214,9 +214,9 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitTurnAction(TurnAction<Void> turnAction) {
-        turnAction.getParam().getSpeed().visit(this);
+        turnAction.getParam().getSpeed().accept(this);
         if ( turnAction.getParam().getDuration() != null ) {
-            turnAction.getParam().getDuration().getValue().visit(this);
+            turnAction.getParam().getDuration().getValue().accept(this);
         }
         addLeftAndRightMotorToUsedActors();
         return null;
@@ -249,9 +249,9 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitMotorOnAction(MotorOnAction<Void> motorOnAction) {
-        motorOnAction.getParam().getSpeed().visit(this);
+        motorOnAction.getParam().getSpeed().accept(this);
         if ( motorOnAction.getParam().getDuration() != null ) {
-            motorOnAction.getDurationValue().visit(this);
+            motorOnAction.getDurationValue().accept(this);
         }
         ConfigurationComponent actor = this.robotConfiguration.getConfigurationComponent(motorOnAction.getUserDefinedPort());
         this.builder.addUsedActor(new UsedActor(motorOnAction.getUserDefinedPort(), actor.getComponentType()));
@@ -260,7 +260,7 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitMotorSetPowerAction(MotorSetPowerAction<Void> motorSetPowerAction) {
-        motorSetPowerAction.getPower().visit(this);
+        motorSetPowerAction.getPower().accept(this);
         ConfigurationComponent actor = this.robotConfiguration.getConfigurationComponent(motorSetPowerAction.getUserDefinedPort());
         this.builder.addUsedActor(new UsedActor(motorSetPowerAction.getUserDefinedPort(), actor.getComponentType()));
         return null;
@@ -280,9 +280,9 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitShowTextAction(ShowTextAction<Void> showTextAction) {
-        showTextAction.getMsg().visit(this);
-        showTextAction.getX().visit(this);
-        showTextAction.getY().visit(this);
+        showTextAction.getMsg().accept(this);
+        showTextAction.getX().accept(this);
+        showTextAction.getY().accept(this);
         return null;
     }
 
@@ -298,8 +298,8 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitToneAction(ToneAction<Void> toneAction) {
-        toneAction.getDuration().visit(this);
-        toneAction.getFrequency().visit(this);
+        toneAction.getDuration().accept(this);
+        toneAction.getFrequency().accept(this);
         return null;
     }
 
@@ -311,7 +311,7 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
     @Override
     public Void visitVolumeAction(VolumeAction<Void> volumeAction) {
         if ( volumeAction.getMode() == Mode.SET ) {
-            volumeAction.getVolume().visit(this);
+            volumeAction.getVolume().accept(this);
         }
         return null;
     }
@@ -323,9 +323,9 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitSayTextAction(SayTextAction<Void> sayTextAction) {
-        sayTextAction.getMsg().visit(this);
-        sayTextAction.getSpeed().visit(this);
-        sayTextAction.getPitch().visit(this);
+        sayTextAction.getMsg().accept(this);
+        sayTextAction.getSpeed().accept(this);
+        sayTextAction.getPitch().accept(this);
         return null;
     }
 
@@ -336,20 +336,20 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitBluetoothReceiveAction(BluetoothReceiveAction<Void> bluetoothReceiveAction) {
-        bluetoothReceiveAction.getConnection().visit(this);
+        bluetoothReceiveAction.getConnection().accept(this);
         return null;
     }
 
     @Override
     public Void visitBluetoothConnectAction(BluetoothConnectAction<Void> bluetoothConnectAction) {
-        bluetoothConnectAction.getAddress().visit(this);
+        bluetoothConnectAction.getAddress().accept(this);
         return null;
     }
 
     @Override
     public Void visitBluetoothSendAction(BluetoothSendAction<Void> bluetoothSendAction) {
-        bluetoothSendAction.getConnection().visit(this);
-        bluetoothSendAction.getMsg().visit(this);
+        bluetoothSendAction.getConnection().accept(this);
+        bluetoothSendAction.getMsg().accept(this);
         return null;
     }
 
@@ -360,13 +360,13 @@ public abstract class AbstractUsedHardwareCollectorVisitor extends AbstractColle
 
     @Override
     public Void visitBluetoothCheckConnectAction(BluetoothCheckConnectAction<Void> bluetoothCheckConnectAction) {
-        bluetoothCheckConnectAction.getConnection().visit(this);
+        bluetoothCheckConnectAction.getConnection().accept(this);
         return null;
     }
 
     @Override
     public Void visitSerialWriteAction(SerialWriteAction<Void> serialWriteAction) {
-        serialWriteAction.getValue().visit(this);
+        serialWriteAction.getValue().accept(this);
         return null;
     }
 }

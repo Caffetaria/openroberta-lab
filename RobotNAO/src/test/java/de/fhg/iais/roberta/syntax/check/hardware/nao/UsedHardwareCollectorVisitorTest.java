@@ -26,7 +26,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -42,7 +42,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -58,7 +58,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -73,7 +73,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -88,7 +88,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -103,7 +103,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -118,7 +118,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -133,7 +133,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -148,7 +148,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -164,7 +164,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
 
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
@@ -179,7 +179,7 @@ public class UsedHardwareCollectorVisitorTest extends NaoAstTest {
         NaoUsedHardwareCollectorVisitor checkVisitor = new NaoUsedHardwareCollectorVisitor(builder, phrases, makeConfiguration());
         for ( ArrayList<Phrase<Void>> tree : phrases ) {
             for ( Phrase<Void> phrase : tree ) {
-                phrase.visit(checkVisitor);
+                phrase.accept(checkVisitor);
             }
         }
         UsedHardwareBean bean = builder.build();
