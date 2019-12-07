@@ -155,6 +155,15 @@ public abstract class AbstractSimValidatorVisitor extends AbstractProgramValidat
         }
         return null;
     }
+    
+    @Override
+    public Void visitUltrasonicSensor(UltrasonicSensor<Void> ultrasonicSensor) {
+        super.visitUltrasonicSensor(ultrasonicSensor);
+        if ( ultrasonicSensor.getMode().toString().equals("AMBIENTLIGHT") ) { {
+            ultrasonicSensor.addInfo(NepoInfo.warning("SIM_BLOCK_NOT_SUPPORTED"));
+        }
+        return null;
+    }
 
     @Override
     public Void visitRepeatStmt(RepeatStmt<Void> repeatStmt) {
