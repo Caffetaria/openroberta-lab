@@ -43,7 +43,7 @@ public interface IBluetoothVisitor<V> extends IHardwareVisitor<V> {
      * @param bluetoothWaitForConnection to be visited
      */
     default V visitBluetoothWaitForConnectionAction(BluetoothWaitForConnectionAction<V> bluetoothWaitForConnection) {
-        throw new DbcException("Not implemented!");
+        return null;
     }
 
     /**
